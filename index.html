@@ -1721,5 +1721,77 @@ document.addEventListener('keydown',function(e){
 });
 </script>
 
+
+<style>
+/* === layer visibility + collapsed text style panel patch === */
+#presetLayerList,
+#objectList.object-list{
+  max-height:none!important;
+  height:auto!important;
+  overflow:visible!important;
+}
+#objectList.object-list .object-item,
+#presetLayerList .object-item{
+  display:flex!important;
+}
+#textControls{
+  max-height:none!important;
+}
+#textPanelContent{
+  display:none;
+}
+@media (max-height:820px){
+  #presetLayerList,
+  #objectList.object-list{
+    max-height:none!important;
+    height:auto!important;
+    overflow:visible!important;
+  }
+}
+@media (min-width:901px){
+  #presetLayerList,
+  #objectList.object-list{
+    max-height:none!important;
+    height:auto!important;
+    overflow:visible!important;
+  }
+}
+</style>
+<script>
+// Keep all template layers visible; keep text style presets collapsed after selecting a layer.
+(function(){
+  function collapseTextStylePanel(){
+    const content=document.getElementById('textPanelContent');
+    const icon=document.getElementById('textPanelToggle');
+    if(content) content.style.display='none';
+    if(icon) icon.innerText='▲';
+  }
+  const originalUpdateControls=window.updateControls;
+  if(typeof originalUpdateControls==='function'){
+    window.updateControls=function(){
+      originalUpdateControls.apply(this,arguments);
+      collapseTextStylePanel();
+    };
+  }
+  const originalUpdateObjectList=window.updateObjectList;
+  if(typeof originalUpdateObjectList==='function'){
+    window.updateObjectList=function(){
+      originalUpdateObjectList.apply(this,arguments);
+      const list=document.getElementById('objectList');
+      const preset=document.getElementById('presetLayerList');
+      [list,preset].forEach(el=>{
+        if(el){
+          el.style.maxHeight='none';
+          el.style.height='auto';
+          el.style.overflow='visible';
+        }
+      });
+    };
+  }
+  document.addEventListener('DOMContentLoaded',collapseTextStylePanel);
+  collapseTextStylePanel();
+})();
+</script>
+
 </body>
 </html>
