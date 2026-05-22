@@ -239,6 +239,48 @@ input[type="color"]{width:26px!important;height:24px!important;border-color:rgba
 @media (min-width:901px){.toolbar-row{grid-template-columns:1fr 1fr!important}.controls-panel{display:block!important}.workspace{flex-direction:column!important}.object-list{max-height:92px!important}}
 @media (max-height:820px){#mainCanvas{max-height:34svh!important}.object-list{max-height:70px!important}.btn{min-height:24px!important;font-size:10.5px!important}.toolbar-label{font-size:9px!important}.toolbar{padding:5px!important}.toolbar-row{gap:4px!important;margin-bottom:4px!important}.control-section{margin-bottom:4px!important;padding-bottom:4px!important}.preset-header{padding:4px 6px!important}.object-item{min-height:23px!important;padding:4px 6px!important}.controls-panel{padding:6px!important}}
 
+
+/* === v2 ultra-thin edge preview + Safari floating liquid background === */
+:root{--stage-w:min(100vw,46.7svh)!important;--ice:#89f4ff!important;--white:#eef7ff!important;}
+html{background:#00040a!important;overscroll-behavior-y:none;}
+body{background:transparent!important;padding:4px!important;min-height:100svh!important;-webkit-overflow-scrolling:touch;}
+#cosmicBg{position:fixed!important;inset:-8vh -8vw!important;width:116vw!important;height:116vh!important;z-index:-3!important;opacity:.86!important;filter:saturate(.78) brightness(.66) contrast(1.08)!important;transform:translate3d(var(--bgx,0px),var(--bgy,0px),0) scale(1.035);transition:transform .22s cubic-bezier(.2,.8,.2,1);will-change:transform;}
+#liquidNebula{position:fixed!important;inset:-22vh -22vw!important;z-index:-2!important;opacity:.50!important;filter:blur(34px) saturate(.82) brightness(.58)!important;transform:translate3d(calc(var(--bgx,0px) * -0.45),calc(var(--bgy,0px) * -0.45),0) scale(1.10)!important;will-change:transform,filter;}
+body::before{opacity:.18!important;}
+body::after{opacity:.32!important;}
+.toolbar,.workspace{width:calc(100vw - 8px)!important;max-width:calc(100vw - 8px)!important;margin-left:0!important;margin-right:0!important;}
+.toolbar{padding:4px!important;margin:0 0 4px!important;border-width:1px!important;background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(0,0,0,.76) 48%,rgba(2,10,18,.52))!important;box-shadow:0 8px 24px rgba(0,0,0,.52),0 0 0 1px rgba(137,244,255,.08) inset!important;}
+.toolbar-row{gap:3px!important;margin-bottom:3px!important;}
+.toolbar-group{grid-template-columns:28px repeat(2,minmax(0,1fr))!important;gap:3px!important;padding:3px!important;min-height:24px!important;border-color:rgba(137,244,255,.13)!important;background:rgba(255,255,255,.026)!important;clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px)!important;}
+.toolbar-label{font-size:8.5px!important;letter-spacing:.55px!important;line-height:1!important;text-shadow:0 0 8px rgba(137,244,255,.54)!important;}
+.btn{min-height:20px!important;height:20px!important;padding:2px 5px!important;font-size:10px!important;line-height:1!important;letter-spacing:.2px!important;gap:2px!important;border-width:1px!important;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)!important;box-shadow:0 4px 9px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.12),inset 0 -5px 9px rgba(0,0,0,.18)!important;}
+.btn:hover,.btn.active{transform:none!important;box-shadow:0 0 12px rgba(137,244,255,.16),inset 0 1px 0 rgba(255,255,255,.18)!important;}
+.workspace{gap:4px!important;}
+.canvas-container{padding:0!important;margin:0!important;border:none!important;background:transparent!important;box-shadow:none!important;clip-path:none!important;max-width:none!important;width:100%!important;overflow:visible!important;}
+.canvas-container::before,.canvas-container::after{display:none!important;}
+#mainCanvas{display:block!important;width:auto!important;max-width:calc(100vw - 8px)!important;max-height:43svh!important;border:none!important;border-radius:0!important;box-shadow:none!important;background:#05080e!important;}
+.controls-panel{padding:5px!important;margin:0!important;border-color:rgba(137,244,255,.18)!important;background:linear-gradient(145deg,rgba(255,255,255,.032),rgba(0,0,0,.72) 46%,rgba(2,11,20,.50))!important;box-shadow:0 8px 26px rgba(0,0,0,.46),0 0 0 1px rgba(137,244,255,.06) inset!important;}
+.control-section{margin-bottom:4px!important;padding-bottom:4px!important;}
+.control-section h3{font-size:10px!important;margin-bottom:4px!important;}
+#selectedInfo{font-size:10px!important;padding:2px 0!important;}
+#transformControls,#textControls{max-height:22svh!important;}
+.control-row{margin-bottom:3px!important;}
+.control-row label{font-size:9px!important;min-width:30px!important;}
+input[type="range"]{height:15px!important;}
+input[type="number"],input[type="text"],input[type="date"]{height:21px!important;font-size:10px!important;padding:2px 4px!important;}
+input[type="color"]{width:23px!important;height:20px!important;}
+.align-row .btn,.style-preset-row .btn,.btn-sm{height:19px!important;min-height:19px!important;padding:2px 4px!important;font-size:9.5px!important;}
+.preset-header{padding:4px 6px!important;margin-bottom:4px!important;}
+.preset-header-icon{font-size:11px!important;}.preset-header-text{font-size:9.5px!important;}
+.object-list{max-height:82px!important;margin-top:3px!important;}
+.object-item{min-height:21px!important;padding:3px 6px!important;margin-bottom:3px!important;font-size:10px!important;}
+.eye-btn,.lock-btn{font-size:9px!important;padding:1px 4px!important;}
+.delete-btn{font-size:11px!important;padding:0 4px!important;}
+.layer-name{font-size:10px!important;}
+.batch-panel{margin-top:16px!important;}
+@media (max-height:820px){#mainCanvas{max-height:41svh!important}.object-list{max-height:66px!important}.btn{height:18px!important;min-height:18px!important;font-size:9px!important}.toolbar-group{min-height:22px!important}.controls-panel{padding:4px!important}.control-section h3{font-size:9.5px!important}.object-item{min-height:19px!important;padding:2px 5px!important}}
+@media (min-width:720px){.toolbar,.workspace{width:min(100vw,720px)!important;max-width:min(100vw,720px)!important;margin-left:auto!important;margin-right:auto!important}#mainCanvas{max-width:min(100vw,720px)!important}}
+
 </style>
 </head>
 <body>
@@ -1578,5 +1620,45 @@ requestAnimationFrame(draw);
 init();
 initCosmicBackground();
 </script>
+<script>
+// v2 Safari-friendly floating liquid background layer; visual only, no editor/export logic touched.
+(function(){
+  const root=document.documentElement;
+  const bg=document.getElementById('cosmicBg');
+  const nebula=document.getElementById('liquidNebula');
+  let sx=0, sy=0, tx=0, ty=0, lastScroll=window.scrollY||0;
+  function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
+  function setTargetFromPoint(x,y){
+    const vw=window.innerWidth||1, vh=window.innerHeight||1;
+    tx=clamp((x/vw-.5)*34,-22,22);
+    ty=clamp((y/vh-.5)*44,-28,28);
+    if(nebula){
+      nebula.style.setProperty('--mx',tx.toFixed(2)+'px');
+      nebula.style.setProperty('--my',ty.toFixed(2)+'px');
+    }
+  }
+  function onScroll(){
+    const y=window.scrollY||0;
+    const delta=clamp(y-lastScroll,-80,80);
+    lastScroll=y;
+    ty=clamp(ty+delta*.18,-36,36);
+    tx=clamp(tx+Math.sin(y*.012)*1.8,-24,24);
+  }
+  function tick(){
+    sx+=(tx-sx)*.075;
+    sy+=(ty-sy)*.075;
+    root.style.setProperty('--bgx',sx.toFixed(2)+'px');
+    root.style.setProperty('--bgy',sy.toFixed(2)+'px');
+    requestAnimationFrame(tick);
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('touchstart',e=>{if(e.touches&&e.touches[0])setTargetFromPoint(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
+  window.addEventListener('touchmove',e=>{if(e.touches&&e.touches[0])setTargetFromPoint(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
+  window.addEventListener('mousemove',e=>setTargetFromPoint(e.clientX,e.clientY),{passive:true});
+  setTargetFromPoint((window.innerWidth||1)/2,(window.innerHeight||1)/2);
+  tick();
+})();
+</script>
+
 </body>
 </html>
