@@ -319,6 +319,34 @@ body.preview-fullscreen-open .fullscreen-preview-btn{
 }
 body.preview-fullscreen-open .fullscreen-preview-btn::after{content:'';position:absolute;inset:-8px;pointer-events:auto;}
 
+
+.lock-btn{min-width:24px;text-align:center;filter:drop-shadow(0 1px 4px rgba(118,234,255,.18));}
+.lock-btn:not(.locked){background:linear-gradient(180deg,rgba(118,234,255,.20),rgba(118,234,255,.06))!important;color:#9ff3ff!important;border-color:rgba(118,234,255,.45)!important;}
+.lock-btn.locked{background:linear-gradient(180deg,rgba(255,241,168,.95),rgba(255,204,153,.75))!important;color:#221900!important;border-color:rgba(255,241,168,.9)!important;box-shadow:0 0 12px rgba(255,241,168,.22) inset,0 0 10px rgba(255,241,168,.14)!important;}
+
+
+
+/* === Safari fullscreen pinch fix: visual/touch behavior only === */
+html,body{overscroll-behavior:none;}
+#canvasContainer,#mainCanvas{
+  -webkit-user-select:none!important;user-select:none!important;
+  -webkit-touch-callout:none!important;
+}
+body.preview-fullscreen-open,
+body.preview-fullscreen-open .workspace,
+body.preview-fullscreen-open #canvasContainer,
+body.preview-fullscreen-open #mainCanvas{
+  touch-action:none!important;
+  -ms-touch-action:none!important;
+  overscroll-behavior:none!important;
+  -webkit-user-select:none!important;user-select:none!important;
+  -webkit-touch-callout:none!important;
+}
+body.preview-fullscreen-open #mainCanvas{
+  transform:translateZ(0);
+  -webkit-transform:translateZ(0);
+}
+
 </style>
 </head>
 <body>
@@ -515,6 +543,10 @@ let history=[];
 let historyIndex=-1;
 const MAX_HISTORY=50;
 let dragStart={x:0,y:0};
+let isPinching=false;
+let pinchStartDistance=0;
+let pinchStartScale=1;
+let pinchTarget=null;
 let currentTemplateMode='default';
 let saveHistoryTimeout=null;
 // 默认模板配置 - 使用当前系统时间
@@ -813,8 +845,13 @@ if(selectedType==='template')return templateElements[selectedIndex];
 return null;
 }
 canvas.addEventListener('mousedown',handleStart);canvas.addEventListener('touchstart',handleStart,{passive:false});canvas.addEventListener('mousemove',handleMove);canvas.addEventListener('touchmove',handleMove,{passive:false});canvas.addEventListener('mouseup',handleEnd);canvas.addEventListener('touchend',handleEnd);canvas.addEventListener('mouseleave',handleEnd);
-function handleStart(e){if(e.target!==canvas)return;const pos=getPointerPos(e);let found=false;for(let i=presetElements.length-1;i>=0;i--){const el=presetElements[i];if(el.visible===false)continue;let w=getTextWidth(el),h=el.cache?el.cache.textHeight:el.fontSize;if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2){selectedType='preset';selectedIndex=i;markDirty();updateObjectList();updateControls();return;}}for(let i=templateElements.length-1;i>=0;i--){const el=templateElements[i];if(el.visible===false)continue;if(el.type==='imageSlot'){let w=el.width*(el.scale||1),h=el.height*(el.scale||1);if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2){selectedType='template';selectedIndex=i;markDirty();updateObjectList();updateControls();showUploadPanel();return;}}if(el.locked)continue;let w,h;if(el.type==='image'){w=el.width*(el.scale||1);h=el.height*(el.scale||1);}else{w=getTextWidth(el);h=el.cache?el.cache.textHeight:el.fontSize;}if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2){selectedType='template';selectedIndex=i;isDragging=true;dragStart={x:pos.x-el.x,y:pos.y-el.y};found=true;markDirty();updateObjectList();updateControls();break;}}if(!found){selectedType='';selectedIndex=-1;markDirty();updateControls();}}
+function getTouchCanvasPoint(touch){const rect=canvas.getBoundingClientRect();const scaleX=canvas.width/rect.width,scaleY=canvas.height/rect.height;return{x:(touch.clientX-rect.left)*scaleX,y:(touch.clientY-rect.top)*scaleY};}
+function getTouchDistance(e){if(!e.touches||e.touches.length<2)return 0;const p1=getTouchCanvasPoint(e.touches[0]);const p2=getTouchCanvasPoint(e.touches[1]);return Math.hypot(p2.x-p1.x,p2.y-p1.y);}
+function getTouchCenter(e){const p1=getTouchCanvasPoint(e.touches[0]);const p2=getTouchCanvasPoint(e.touches[1]);return{x:(p1.x+p2.x)/2,y:(p1.y+p2.y)/2};}
+function findTopElementAt(pos){for(let i=presetElements.length-1;i>=0;i--){const el=presetElements[i];if(el.visible===false)continue;let w=getTextWidth(el),h=el.cache?el.cache.textHeight:el.fontSize;if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2)return{type:'preset',index:i,el};}for(let i=templateElements.length-1;i>=0;i--){const el=templateElements[i];if(el.visible===false)continue;let w,h;if(el.type==='image'||el.type==='imageSlot'){w=el.width*(el.scale||1);h=el.height*(el.scale||1);}else{w=getTextWidth(el);h=el.cache?el.cache.textHeight:el.fontSize;}if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2)return{type:'template',index:i,el};}return null;}
+function handleStart(e){if(e.target!==canvas)return;if(e.touches&&e.touches.length>=2){e.preventDefault();const center=getTouchCenter(e);let hit=findTopElementAt(center);if(!hit&&selectedType){hit={type:selectedType,index:selectedIndex,el:getSelectedElement()};}if(hit&&hit.el&&!hit.el.locked&&hit.el.type!=='imageSlot'){selectedType=hit.type;selectedIndex=hit.index;pinchTarget=hit.el;isPinching=true;isDragging=false;pinchStartDistance=getTouchDistance(e);pinchStartScale=pinchTarget.scale||1;updateObjectList();updateControls();}return;}const pos=getPointerPos(e);let found=false;for(let i=presetElements.length-1;i>=0;i--){const el=presetElements[i];if(el.visible===false)continue;let w=getTextWidth(el),h=el.cache?el.cache.textHeight:el.fontSize;if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2){selectedType='preset';selectedIndex=i;markDirty();updateObjectList();updateControls();return;}}for(let i=templateElements.length-1;i>=0;i--){const el=templateElements[i];if(el.visible===false)continue;if(el.type==='imageSlot'){let w=el.width*(el.scale||1),h=el.height*(el.scale||1);if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2){selectedType='template';selectedIndex=i;markDirty();updateObjectList();updateControls();showUploadPanel();return;}}if(el.locked)continue;let w,h;if(el.type==='image'){w=el.width*(el.scale||1);h=el.height*(el.scale||1);}else{w=getTextWidth(el);h=el.cache?el.cache.textHeight:el.fontSize;}if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2){selectedType='template';selectedIndex=i;isDragging=true;dragStart={x:pos.x-el.x,y:pos.y-el.y};found=true;markDirty();updateObjectList();updateControls();break;}}if(!found){selectedType='';selectedIndex=-1;markDirty();updateControls();}}
 function handleMove(e){
+if(e.touches&&e.touches.length>=2&&isPinching&&pinchTarget){e.preventDefault();const dist=getTouchDistance(e);if(pinchStartDistance>0){let nextScale=pinchStartScale*(dist/pinchStartDistance);nextScale=Math.max(0.01,Math.min(10,nextScale));pinchTarget.scale=nextScale;if(pinchTarget.type==='text')pinchTarget.cache=null;markDirty();updateControlsInputsOnly();const scaleInput=document.getElementById('scaleInput');const scaleRange=document.getElementById('scale');if(scaleInput&&scaleRange){const pct=Math.round(nextScale*100);scaleInput.value=pct;scaleRange.value=Math.max(1,Math.min(1000,pct));}}return;}
 const el=getSelectedElement();
 if(!el)return;
 if(el&&el.locked){
@@ -846,6 +883,7 @@ markDirty();
 updateControlsInputsOnly();
 }
 function handleEnd(){
+if(isPinching){isPinching=false;pinchTarget=null;saveState();}
 if(isDragging){
 isDragging=false;
 document.getElementById('canvasContainer').classList.remove('snap-active');
@@ -945,7 +983,7 @@ document.getElementById('posYInput').value=Math.round(el.y);
 }
 function updateControls(){
 const el=getSelectedElement();
-const infoTxt=el?`${el.type==='text'?'📝':'🖼️'} ${el.name||el.text||el.type} ${el.locked?'🔒':''}`:'NONE';
+const infoTxt=el?`${el.type==='text'?'📝':'🖼️'} ${el.name||el.text||el.type} ${el.locked?'🔒':'🔓'}`:'NONE';
 document.getElementById('selectedInfo').textContent=infoTxt;
 const showTrans=!!el;
 document.getElementById('transformControls').style.display=showTrans?'block':'none';
@@ -1168,7 +1206,7 @@ presetElements.forEach((el,idx)=>{
 const div=document.createElement('div');
 div.className=`object-item preset-item ${selectedType==='preset'&&selectedIndex===idx?'selected':''} ${el.locked?'locked-item':''} ${!el.visible?'hidden-item':''}`;
 const displayName=el.name||el.text;
-div.innerHTML=`<div class="object-info"><button class="eye-btn ${!el.visible?'hidden-eye':''}" onclick="event.stopPropagation();togglePresetVisibility(${idx});">👁</button><button class="lock-btn ${el.locked?'locked':''}" onclick="event.stopPropagation();togglePresetLock(${idx});">🔒</button><span class="layer-name" ondblclick="editLayerName(event, ${idx}, 'preset')">${displayName}</span></div><button class="delete-btn" onclick="event.stopPropagation();deletePresetLayer(${idx});">×</button>`;
+div.innerHTML=`<div class="object-info"><button class="eye-btn ${!el.visible?'hidden-eye':''}" onclick="event.stopPropagation();togglePresetVisibility(${idx});">👁</button><button class="lock-btn ${el.locked?'locked':''}" onclick="event.stopPropagation();togglePresetLock(${idx});">${el.locked?'🔒':'🔓'}</button><span class="layer-name" ondblclick="editLayerName(event, ${idx}, 'preset')">${displayName}</span></div><button class="delete-btn" onclick="event.stopPropagation();deletePresetLayer(${idx});">×</button>`;
 div.onclick=(e)=>{if(e.target.tagName==='INPUT')return;selectedType='preset';selectedIndex=idx;markDirty();updateObjectList();updateControls();};
 presetList.appendChild(div);
 });
@@ -1179,7 +1217,7 @@ const realIdx=templateElements.length-1-idx;
 const div=document.createElement('div');
 div.className=`object-item ${selectedType==='template'&&selectedIndex===realIdx?'selected':''} ${el.locked?'locked-item':''} ${!el.visible?'hidden-item':''}`;
 const displayName=el.type==='text'&&el.name?.includes('标题')?el.text:(el.name||el.text);
-div.innerHTML=`<div class="object-info"><button class="eye-btn ${!el.visible?'hidden-eye':''}" onclick="event.stopPropagation();toggleTemplateVisibility(${realIdx});">👁</button><button class="lock-btn ${el.locked?'locked':''}" onclick="event.stopPropagation();toggleTemplateLock(${realIdx});">🔒</button><span class="layer-name" ondblclick="editLayerName(event, ${realIdx}, 'template')">${displayName}</span></div><button class="delete-btn" onclick="event.stopPropagation();templateElements.splice(${realIdx},1);selectedIndex=-1;selectedType='';markDirty();updateObjectList();updateControls();saveState();">×</button>`;
+div.innerHTML=`<div class="object-info"><button class="eye-btn ${!el.visible?'hidden-eye':''}" onclick="event.stopPropagation();toggleTemplateVisibility(${realIdx});">👁</button><button class="lock-btn ${el.locked?'locked':''}" onclick="event.stopPropagation();toggleTemplateLock(${realIdx});">${el.locked?'🔒':'🔓'}</button><span class="layer-name" ondblclick="editLayerName(event, ${realIdx}, 'template')">${displayName}</span></div><button class="delete-btn" onclick="event.stopPropagation();templateElements.splice(${realIdx},1);selectedIndex=-1;selectedType='';markDirty();updateObjectList();updateControls();saveState();">×</button>`;
 div.onclick=(e)=>{if(e.target.tagName==='INPUT')return;if(e.target.classList.contains('layer-nameInput'))return;if(e.target.tagName!=='BUTTON'){selectedType='template';selectedIndex=realIdx;markDirty();updateObjectList();updateControls();}};
 list.appendChild(div);
 });
@@ -1756,6 +1794,11 @@ document.addEventListener('keydown',function(e){
     overflow:visible!important;
   }
 }
+
+.lock-btn{min-width:24px;text-align:center;filter:drop-shadow(0 1px 4px rgba(118,234,255,.18));}
+.lock-btn:not(.locked){background:linear-gradient(180deg,rgba(118,234,255,.20),rgba(118,234,255,.06))!important;color:#9ff3ff!important;border-color:rgba(118,234,255,.45)!important;}
+.lock-btn.locked{background:linear-gradient(180deg,rgba(255,241,168,.95),rgba(255,204,153,.75))!important;color:#221900!important;border-color:rgba(255,241,168,.9)!important;box-shadow:0 0 12px rgba(255,241,168,.22) inset,0 0 10px rgba(255,241,168,.14)!important;}
+
 </style>
 <script>
 // Keep all template layers visible; keep text style presets collapsed after selecting a layer.
