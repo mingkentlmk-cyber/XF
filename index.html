@@ -299,8 +299,9 @@ input[type="color"]{width:23px!important;height:20px!important;}
 .anchor-zoom-btn{right:58px!important;}
 .anchor-zoom-btn.active{color:#021016!important;background:linear-gradient(180deg,rgba(141,239,255,.92),rgba(174,245,255,.62))!important;border-color:rgba(220,255,255,.95)!important;box-shadow:0 0 18px rgba(141,239,255,.55),inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 0 rgba(0,0,0,.28)!important;}
 .anchor-zoom-hint{position:absolute!important;left:50%!important;bottom:8px!important;transform:translateX(-50%)!important;z-index:22!important;padding:5px 10px!important;border:1px solid rgba(141,239,255,.42)!important;background:rgba(2,8,14,.55)!important;color:rgba(234,255,255,.88)!important;font-size:9px!important;font-weight:800!important;letter-spacing:.5px!important;backdrop-filter:blur(12px)!important;-webkit-backdrop-filter:blur(12px)!important;pointer-events:none!important;display:none!important;white-space:nowrap!important;}
-body.anchor-zoom-mode .anchor-zoom-hint{display:block!important;}
-body.anchor-zoom-mode #mainCanvas{cursor:zoom-in!important;}
+body.anchor-scaling-active .anchor-zoom-hint,body.pinch-scaling-active .anchor-zoom-hint{display:block!important;}
+body.anchor-scaling-active #mainCanvas{cursor:zoom-in!important;}
+.anchor-zoom-btn{display:none!important;}
 body.preview-fullscreen-open{overflow:hidden!important;}
 body.preview-fullscreen-open .toolbar,body.preview-fullscreen-open .controls-panel,body.preview-fullscreen-open .toast{display:none!important;}
 body.preview-fullscreen-open .workspace{
@@ -395,8 +396,7 @@ body.preview-fullscreen-open #mainCanvas{
 <div class="canvas-container" id="canvasContainer">
 <div id="snapLineV" class="snap-line snap-line-vertical" style="left:50%;display:none;"></div>
 <div id="snapLineH" class="snap-line snap-line-horizontal" style="top:50%;display:none;"></div>
-<button class="fullscreen-preview-btn anchor-zoom-btn" id="anchorZoomBtn" onclick="toggleAnchorZoomMode(event)" type="button" aria-label="Anchor Zoom">ZOOM</button>
-<div class="anchor-zoom-hint" id="anchorZoomHint">ZOOM: press any point, drag outward/inward</div>
+<div class="anchor-zoom-hint" id="anchorZoomHint">HOLD: anchor zoom · 2 fingers: pinch zoom</div>
 <button class="fullscreen-preview-btn" id="fullscreenPreviewBtn" onclick="togglePreviewFullscreen(event)" type="button" aria-label="Fullscreen Preview">FULL</button>
 <canvas id="mainCanvas" width="600" height="800"></canvas>
 </div>
@@ -555,6 +555,8 @@ let dragStart={x:0,y:0};
 let isPinching=false;
 let pinchStartDistance=0;
 let pinchStartScale=1;
+let pinchStartX=0;
+let pinchStartY=0;
 let pinchTarget=null;
 let pinchAnchorTouchId=null;
 let pinchMoveTouchId=null;
@@ -570,6 +572,13 @@ let anchorScaleStartX=0;
 let anchorScaleStartY=0;
 let anchorScaleStartDist=0;
 let anchorScaleSaved=false;
+let longPressTimer=null;
+let longPressStartPoint=null;
+let longPressTouchId=null;
+let longPressMoved=false;
+let suppressNextDrag=false;
+const LONG_PRESS_MS=360;
+const LONG_PRESS_MOVE_TOLERANCE=10;
 let currentTemplateMode='default';
 let saveHistoryTimeout=null;
 // 默认模板配置 - 使用当前系统时间
@@ -869,10 +878,14 @@ return null;
 }
 canvas.addEventListener('mousedown',handleStart);canvas.addEventListener('touchstart',handleStart,{passive:false});canvas.addEventListener('mousemove',handleMove);canvas.addEventListener('touchmove',handleMove,{passive:false});canvas.addEventListener('mouseup',handleEnd);canvas.addEventListener('touchend',handleEnd);canvas.addEventListener('touchcancel',handleEnd);canvas.addEventListener('mouseleave',handleEnd);
 const canvasContainerEl=document.getElementById('canvasContainer');
-canvasContainerEl.addEventListener('touchstart',function(e){if(e.target!==canvas&&anchorZoomMode)handleStart(e);},{passive:false});
-canvasContainerEl.addEventListener('touchmove',function(e){if(e.target!==canvas&&anchorZoomMode)handleMove(e);},{passive:false});
-canvasContainerEl.addEventListener('touchend',function(e){if(anchorZoomMode)handleEnd(e);},{passive:false});
-canvasContainerEl.addEventListener('touchcancel',function(e){if(anchorZoomMode)handleEnd(e);},{passive:false});
+canvasContainerEl.addEventListener('touchstart',function(e){if(e.target!==canvas&&document.body.classList.contains('preview-fullscreen-open'))handleStart(e);},{passive:false});
+canvasContainerEl.addEventListener('touchmove',function(e){if(e.target!==canvas&&document.body.classList.contains('preview-fullscreen-open'))handleMove(e);},{passive:false});
+canvasContainerEl.addEventListener('touchend',function(e){handleEnd(e);},{passive:false});
+canvasContainerEl.addEventListener('touchcancel',function(e){handleEnd(e);},{passive:false});
+document.addEventListener('touchstart',function(e){if(document.body.classList.contains('preview-fullscreen-open')&&e.target!==canvas&&canvasContainerEl.contains(e.target)){handleStart(e);}},{passive:false});
+document.addEventListener('touchmove',function(e){if(document.body.classList.contains('preview-fullscreen-open')&&(isPinching||isAnchorScaling)){handleMove(e);}},{passive:false});
+document.addEventListener('touchend',function(e){if(isPinching||isAnchorScaling){handleEnd(e);}},{passive:false});
+document.addEventListener('touchcancel',function(e){if(isPinching||isAnchorScaling){handleEnd(e);}},{passive:false});
 function getTouchCanvasPoint(touch){const rect=canvas.getBoundingClientRect();const scaleX=canvas.width/rect.width,scaleY=canvas.height/rect.height;return{x:(touch.clientX-rect.left)*scaleX,y:(touch.clientY-rect.top)*scaleY};}
 function getTouchById(touchList,id){if(!touchList)return null;for(let i=0;i<touchList.length;i++){if(touchList[i].identifier===id)return touchList[i];}return null;}
 function getTouchDistance(e){if(!e.touches||e.touches.length<2)return 0;const p1=getTouchCanvasPoint(e.touches[0]);const p2=getTouchCanvasPoint(e.touches[1]);return Math.hypot(p2.x-p1.x,p2.y-p1.y);}
@@ -881,17 +894,15 @@ function findTopElementAt(pos){for(let i=presetElements.length-1;i>=0;i--){const
 
 function toggleAnchorZoomMode(e){
 if(e){e.preventDefault();e.stopPropagation();}
-anchorZoomMode=!anchorZoomMode;
-document.body.classList.toggle('anchor-zoom-mode',anchorZoomMode);
-const btn=document.getElementById('anchorZoomBtn');
-if(btn){btn.classList.toggle('active',anchorZoomMode);btn.textContent=anchorZoomMode?'MOVE':'ZOOM';}
-showToast(anchorZoomMode?'缩放模式：按住任意点拖动缩放':'移动模式');
+anchorZoomMode=false;
+document.body.classList.remove('anchor-zoom-mode');
+showToast('无需ZOOM按钮：双指缩放，长按单指锚点缩放');
 }
 function getCanvasPointFromClient(clientX,clientY){const rect=canvas.getBoundingClientRect();const scaleX=canvas.width/rect.width,scaleY=canvas.height/rect.height;return{x:(clientX-rect.left)*scaleX,y:(clientY-rect.top)*scaleY};}
 function getPrimaryTouch(e){if(!e.touches||e.touches.length<1)return null;return e.touches[0];}
 function getDistFromPointToElementCenter(point,el){return Math.hypot(point.x-(el.x||0),point.y-(el.y||0));}
 function startSingleAnchorScale(e){
-if(!anchorZoomMode||!e.touches||e.touches.length!==1)return false;
+if(!e.touches||e.touches.length!==1)return false;
 e.preventDefault();e.stopPropagation();
 const touch=getPrimaryTouch(e);
 const point=getTouchCanvasPoint(touch);
@@ -915,6 +926,7 @@ anchorScaleStartY=el.y||0;
 anchorScaleStartDist=Math.max(18,getDistFromPointToElementCenter(point,el));
 anchorScaleSaved=false;
 isAnchorScaling=true;
+document.body.classList.add('anchor-scaling-active');
 isDragging=false;
 isPinching=false;
 updateObjectList();updateControls();markDirty();
@@ -936,7 +948,7 @@ let ratio=currentDist/startDist;
 ratio=Math.max(0.15,Math.min(6,ratio));
 let nextScale=anchorScaleStartScale*ratio;
 nextScale=Math.max(0.01,Math.min(10,nextScale));
-const factor=nextScale/anchorScaleStartScale;
+const factor=nextScale/Math.max(0.0001,anchorScaleStartScale);
 anchorScaleTarget.scale=nextScale;
 anchorScaleTarget.x=anchorScalePoint.x-(anchorScalePoint.x-anchorScaleStartX)*factor;
 anchorScaleTarget.y=anchorScalePoint.y-(anchorScalePoint.y-anchorScaleStartY)*factor;
@@ -951,7 +963,7 @@ return true;
 }
 function endSingleAnchorScale(){
 if(isAnchorScaling){
-isAnchorScaling=false;anchorScaleTouchId=null;anchorScaleTarget=null;anchorScalePoint=null;
+isAnchorScaling=false;document.body.classList.remove('anchor-scaling-active');anchorScaleTouchId=null;anchorScaleTarget=null;anchorScalePoint=null;
 if(!anchorScaleSaved){anchorScaleSaved=true;saveState();}
 }
 }
@@ -970,6 +982,9 @@ pinchAnchorTouchId=anchorTouch.identifier;pinchMoveTouchId=moveTouch.identifier;
 const movePoint=getTouchCanvasPoint(moveTouch);
 pinchStartDistance=Math.max(12,Math.hypot(movePoint.x-anchorPoint.x,movePoint.y-anchorPoint.y));
 pinchStartScale=pinchTarget.scale||1;
+pinchStartX=pinchTarget.x||0;
+pinchStartY=pinchTarget.y||0;
+document.body.classList.add('pinch-scaling-active');
 updateObjectList();updateControls();markDirty();
 return true;
 }
@@ -984,19 +999,71 @@ const dist=Math.max(12,Math.hypot(movePoint.x-anchorPoint.x,movePoint.y-anchorPo
 if(pinchStartDistance>0){
 let nextScale=pinchStartScale*(dist/pinchStartDistance);
 nextScale=Math.max(0.01,Math.min(10,nextScale));
+const factor=nextScale/Math.max(0.0001,pinchStartScale);
 pinchTarget.scale=nextScale;
+pinchTarget.x=anchorPoint.x-(anchorPoint.x-pinchStartX)*factor;
+pinchTarget.y=anchorPoint.y-(anchorPoint.y-pinchStartY)*factor;
 if(pinchTarget.type==='text')pinchTarget.cache=null;
 markDirty();updateControlsInputsOnly();
+const posX=document.getElementById('posX'),posY=document.getElementById('posY'),posXI=document.getElementById('posXInput'),posYI=document.getElementById('posYInput');
+if(posX)posX.value=pinchTarget.x;if(posY)posY.value=pinchTarget.y;if(posXI)posXI.value=Math.round(pinchTarget.x);if(posYI)posYI.value=Math.round(pinchTarget.y);
 const scaleInput=document.getElementById('scaleInput');const scaleRange=document.getElementById('scale');
 if(scaleInput&&scaleRange){const pct=Math.round(nextScale*100);scaleInput.value=pct;scaleRange.value=Math.max(1,Math.min(1000,pct));}
 }
 return true;
 }
-function handleStart(e){if(e.touches&&anchorZoomMode&&e.touches.length===1){startSingleAnchorScale(e);return;}if(e.target!==canvas&&!anchorZoomMode)return;if(e.touches&&e.touches.length>=2){startAnchorZoom(e);return;}const pos=getPointerPos(e);let found=false;for(let i=presetElements.length-1;i>=0;i--){const el=presetElements[i];if(el.visible===false)continue;let w=getTextWidth(el),h=el.cache?el.cache.textHeight:el.fontSize;if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2){selectedType='preset';selectedIndex=i;markDirty();updateObjectList();updateControls();return;}}for(let i=templateElements.length-1;i>=0;i--){const el=templateElements[i];if(el.visible===false)continue;if(el.type==='imageSlot'){let w=el.width*(el.scale||1),h=el.height*(el.scale||1);if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2){selectedType='template';selectedIndex=i;markDirty();updateObjectList();updateControls();showUploadPanel();return;}}if(el.locked)continue;let w,h;if(el.type==='image'){w=el.width*(el.scale||1);h=el.height*(el.scale||1);}else{w=getTextWidth(el);h=el.cache?el.cache.textHeight:el.fontSize;}if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2){selectedType='template';selectedIndex=i;isDragging=true;dragStart={x:pos.x-el.x,y:pos.y-el.y};found=true;markDirty();updateObjectList();updateControls();break;}}if(!found){selectedType='';selectedIndex=-1;markDirty();updateControls();}}
+
+function clearLongPressZoom(){
+if(longPressTimer){clearTimeout(longPressTimer);longPressTimer=null;}
+longPressStartPoint=null;longPressTouchId=null;longPressMoved=false;
+}
+function scheduleLongPressZoom(e){
+if(!e.touches||e.touches.length!==1)return;
+const touch=e.touches[0];
+const point=getTouchCanvasPoint(touch);
+longPressStartPoint=point;longPressTouchId=touch.identifier;longPressMoved=false;
+if(longPressTimer)clearTimeout(longPressTimer);
+longPressTimer=setTimeout(()=>{
+  longPressTimer=null;
+  if(longPressMoved||isPinching)return;
+  const fakeEvent={touches:[touch],preventDefault:()=>{},stopPropagation:()=>{}};
+  // Use the original start point even if Safari delays coordinates.
+  const hit=findTopElementAt(longPressStartPoint);
+  if(hit&&hit.el&&!hit.el.locked&&hit.el.type!=='imageSlot'){
+    selectedType=hit.type;selectedIndex=hit.index;
+  }
+  const el=getSelectedElement();
+  if(!el||el.locked||el.type==='imageSlot')return;
+  anchorScaleTouchId=longPressTouchId;
+  anchorScaleTarget=el;
+  anchorScalePoint=longPressStartPoint;
+  anchorScaleStartScale=el.scale||1;
+  anchorScaleStartX=el.x||0;
+  anchorScaleStartY=el.y||0;
+  anchorScaleStartDist=Math.max(18,getDistFromPointToElementCenter(longPressStartPoint,el));
+  anchorScaleSaved=false;
+  isAnchorScaling=true;
+  isDragging=false;
+  suppressNextDrag=true;
+  document.body.classList.add('anchor-scaling-active');
+  updateObjectList();updateControls();markDirty();
+  if(navigator.vibrate)navigator.vibrate(8);
+},LONG_PRESS_MS);
+}
+function checkLongPressMove(e){
+if(!longPressTimer||!longPressStartPoint||!e.touches||e.touches.length!==1)return;
+const t=getTouchById(e.touches,longPressTouchId)||e.touches[0];
+const p=getTouchCanvasPoint(t);
+if(Math.hypot(p.x-longPressStartPoint.x,p.y-longPressStartPoint.y)>LONG_PRESS_MOVE_TOLERANCE){
+  longPressMoved=true;
+  clearLongPressZoom();
+}
+}
+function handleStart(e){if(e.touches&&e.touches.length>=2){clearLongPressZoom();startAnchorZoom(e);return;}if(e.target!==canvas)return;if(e.touches&&e.touches.length===1){scheduleLongPressZoom(e);}const pos=getPointerPos(e);let found=false;for(let i=presetElements.length-1;i>=0;i--){const el=presetElements[i];if(el.visible===false)continue;let w=getTextWidth(el),h=el.cache?el.cache.textHeight:el.fontSize;if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2){selectedType='preset';selectedIndex=i;markDirty();updateObjectList();updateControls();return;}}for(let i=templateElements.length-1;i>=0;i--){const el=templateElements[i];if(el.visible===false)continue;if(el.type==='imageSlot'){let w=el.width*(el.scale||1),h=el.height*(el.scale||1);if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2){selectedType='template';selectedIndex=i;markDirty();updateObjectList();updateControls();showUploadPanel();return;}}if(el.locked)continue;let w,h;if(el.type==='image'){w=el.width*(el.scale||1);h=el.height*(el.scale||1);}else{w=getTextWidth(el);h=el.cache?el.cache.textHeight:el.fontSize;}if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2){selectedType='template';selectedIndex=i;isDragging=true;dragStart={x:pos.x-el.x,y:pos.y-el.y};found=true;markDirty();updateObjectList();updateControls();break;}}if(!found){selectedType='';selectedIndex=-1;markDirty();updateControls();}}
 function handleMove(e){
 if(isAnchorScaling){applySingleAnchorScale(e);return;}
-if(e.touches&&anchorZoomMode&&e.touches.length===1){return;}
-if(e.touches&&e.touches.length>=2){if(isPinching){applyAnchorZoom(e);return;}if(startAnchorZoom(e))return;}
+if(e.touches&&e.touches.length>=2){clearLongPressZoom();if(isPinching){applyAnchorZoom(e);return;}if(startAnchorZoom(e))return;}
+if(e.touches&&e.touches.length===1){checkLongPressMove(e);} 
 const el=getSelectedElement();
 if(!el)return;
 if(el&&el.locked){
@@ -1028,8 +1095,10 @@ markDirty();
 updateControlsInputsOnly();
 }
 function handleEnd(){
+clearLongPressZoom();
+suppressNextDrag=false;
 endSingleAnchorScale();
-if(isPinching){isPinching=false;pinchTarget=null;pinchAnchorTouchId=null;pinchMoveTouchId=null;pinchAnchorPoint=null;if(!pinchSavedOnce){pinchSavedOnce=true;saveState();}}
+if(isPinching){isPinching=false;document.body.classList.remove('pinch-scaling-active');pinchTarget=null;pinchAnchorTouchId=null;pinchMoveTouchId=null;pinchAnchorPoint=null;if(!pinchSavedOnce){pinchSavedOnce=true;saveState();}}
 if(isDragging){
 isDragging=false;
 document.getElementById('canvasContainer').classList.remove('snap-active');
