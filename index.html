@@ -547,6 +547,10 @@ let isPinching=false;
 let pinchStartDistance=0;
 let pinchStartScale=1;
 let pinchTarget=null;
+let pinchAnchorTouchId=null;
+let pinchMoveTouchId=null;
+let pinchAnchorPoint=null;
+let pinchSavedOnce=false;
 let currentTemplateMode='default';
 let saveHistoryTimeout=null;
 // 默认模板配置 - 使用当前系统时间
@@ -846,12 +850,50 @@ return null;
 }
 canvas.addEventListener('mousedown',handleStart);canvas.addEventListener('touchstart',handleStart,{passive:false});canvas.addEventListener('mousemove',handleMove);canvas.addEventListener('touchmove',handleMove,{passive:false});canvas.addEventListener('mouseup',handleEnd);canvas.addEventListener('touchend',handleEnd);canvas.addEventListener('mouseleave',handleEnd);
 function getTouchCanvasPoint(touch){const rect=canvas.getBoundingClientRect();const scaleX=canvas.width/rect.width,scaleY=canvas.height/rect.height;return{x:(touch.clientX-rect.left)*scaleX,y:(touch.clientY-rect.top)*scaleY};}
+function getTouchById(touchList,id){if(!touchList)return null;for(let i=0;i<touchList.length;i++){if(touchList[i].identifier===id)return touchList[i];}return null;}
 function getTouchDistance(e){if(!e.touches||e.touches.length<2)return 0;const p1=getTouchCanvasPoint(e.touches[0]);const p2=getTouchCanvasPoint(e.touches[1]);return Math.hypot(p2.x-p1.x,p2.y-p1.y);}
 function getTouchCenter(e){const p1=getTouchCanvasPoint(e.touches[0]);const p2=getTouchCanvasPoint(e.touches[1]);return{x:(p1.x+p2.x)/2,y:(p1.y+p2.y)/2};}
-function findTopElementAt(pos){for(let i=presetElements.length-1;i>=0;i--){const el=presetElements[i];if(el.visible===false)continue;let w=getTextWidth(el),h=el.cache?el.cache.textHeight:el.fontSize;if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2)return{type:'preset',index:i,el};}for(let i=templateElements.length-1;i>=0;i--){const el=templateElements[i];if(el.visible===false)continue;let w,h;if(el.type==='image'||el.type==='imageSlot'){w=el.width*(el.scale||1);h=el.height*(el.scale||1);}else{w=getTextWidth(el);h=el.cache?el.cache.textHeight:el.fontSize;}if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2)return{type:'template',index:i,el};}return null;}
-function handleStart(e){if(e.target!==canvas)return;if(e.touches&&e.touches.length>=2){e.preventDefault();const center=getTouchCenter(e);let hit=findTopElementAt(center);if(!hit&&selectedType){hit={type:selectedType,index:selectedIndex,el:getSelectedElement()};}if(hit&&hit.el&&!hit.el.locked&&hit.el.type!=='imageSlot'){selectedType=hit.type;selectedIndex=hit.index;pinchTarget=hit.el;isPinching=true;isDragging=false;pinchStartDistance=getTouchDistance(e);pinchStartScale=pinchTarget.scale||1;updateObjectList();updateControls();}return;}const pos=getPointerPos(e);let found=false;for(let i=presetElements.length-1;i>=0;i--){const el=presetElements[i];if(el.visible===false)continue;let w=getTextWidth(el),h=el.cache?el.cache.textHeight:el.fontSize;if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2){selectedType='preset';selectedIndex=i;markDirty();updateObjectList();updateControls();return;}}for(let i=templateElements.length-1;i>=0;i--){const el=templateElements[i];if(el.visible===false)continue;if(el.type==='imageSlot'){let w=el.width*(el.scale||1),h=el.height*(el.scale||1);if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2){selectedType='template';selectedIndex=i;markDirty();updateObjectList();updateControls();showUploadPanel();return;}}if(el.locked)continue;let w,h;if(el.type==='image'){w=el.width*(el.scale||1);h=el.height*(el.scale||1);}else{w=getTextWidth(el);h=el.cache?el.cache.textHeight:el.fontSize;}if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2){selectedType='template';selectedIndex=i;isDragging=true;dragStart={x:pos.x-el.x,y:pos.y-el.y};found=true;markDirty();updateObjectList();updateControls();break;}}if(!found){selectedType='';selectedIndex=-1;markDirty();updateControls();}}
+function findTopElementAt(pos){for(let i=presetElements.length-1;i>=0;i--){const el=presetElements[i];if(el.visible===false)continue;let w=getTextWidth(el)*(el.scale||1),h=(el.cache?el.cache.textHeight:el.fontSize)*(el.scale||1);if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2)return{type:'preset',index:i,el};}for(let i=templateElements.length-1;i>=0;i--){const el=templateElements[i];if(el.visible===false)continue;let w,h;if(el.type==='image'||el.type==='imageSlot'){w=el.width*(el.scale||1);h=el.height*(el.scale||1);}else{w=getTextWidth(el)*(el.scale||1);h=(el.cache?el.cache.textHeight:el.fontSize)*(el.scale||1);}if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2)return{type:'template',index:i,el};}return null;}
+function startAnchorZoom(e){
+if(!e.touches||e.touches.length<2)return false;
+e.preventDefault();e.stopPropagation();
+const anchorTouch=e.touches[0];
+const moveTouch=e.touches[1];
+const anchorPoint=getTouchCanvasPoint(anchorTouch);
+let hit=findTopElementAt(anchorPoint);
+if(!hit&&selectedType){hit={type:selectedType,index:selectedIndex,el:getSelectedElement()};}
+if(!hit||!hit.el||hit.el.locked||hit.el.type==='imageSlot')return false;
+selectedType=hit.type;selectedIndex=hit.index;pinchTarget=hit.el;
+isPinching=true;isDragging=false;pinchSavedOnce=false;
+pinchAnchorTouchId=anchorTouch.identifier;pinchMoveTouchId=moveTouch.identifier;pinchAnchorPoint=anchorPoint;
+const movePoint=getTouchCanvasPoint(moveTouch);
+pinchStartDistance=Math.max(12,Math.hypot(movePoint.x-anchorPoint.x,movePoint.y-anchorPoint.y));
+pinchStartScale=pinchTarget.scale||1;
+updateObjectList();updateControls();markDirty();
+return true;
+}
+function applyAnchorZoom(e){
+if(!isPinching||!pinchTarget||!e.touches||e.touches.length<2)return false;
+e.preventDefault();e.stopPropagation();
+const anchorTouch=getTouchById(e.touches,pinchAnchorTouchId)||e.touches[0];
+const moveTouch=getTouchById(e.touches,pinchMoveTouchId)||e.touches[1];
+const anchorPoint=pinchAnchorPoint||getTouchCanvasPoint(anchorTouch);
+const movePoint=getTouchCanvasPoint(moveTouch);
+const dist=Math.max(12,Math.hypot(movePoint.x-anchorPoint.x,movePoint.y-anchorPoint.y));
+if(pinchStartDistance>0){
+let nextScale=pinchStartScale*(dist/pinchStartDistance);
+nextScale=Math.max(0.01,Math.min(10,nextScale));
+pinchTarget.scale=nextScale;
+if(pinchTarget.type==='text')pinchTarget.cache=null;
+markDirty();updateControlsInputsOnly();
+const scaleInput=document.getElementById('scaleInput');const scaleRange=document.getElementById('scale');
+if(scaleInput&&scaleRange){const pct=Math.round(nextScale*100);scaleInput.value=pct;scaleRange.value=Math.max(1,Math.min(1000,pct));}
+}
+return true;
+}
+function handleStart(e){if(e.target!==canvas)return;if(e.touches&&e.touches.length>=2){startAnchorZoom(e);return;}const pos=getPointerPos(e);let found=false;for(let i=presetElements.length-1;i>=0;i--){const el=presetElements[i];if(el.visible===false)continue;let w=getTextWidth(el),h=el.cache?el.cache.textHeight:el.fontSize;if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2){selectedType='preset';selectedIndex=i;markDirty();updateObjectList();updateControls();return;}}for(let i=templateElements.length-1;i>=0;i--){const el=templateElements[i];if(el.visible===false)continue;if(el.type==='imageSlot'){let w=el.width*(el.scale||1),h=el.height*(el.scale||1);if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2){selectedType='template';selectedIndex=i;markDirty();updateObjectList();updateControls();showUploadPanel();return;}}if(el.locked)continue;let w,h;if(el.type==='image'){w=el.width*(el.scale||1);h=el.height*(el.scale||1);}else{w=getTextWidth(el);h=el.cache?el.cache.textHeight:el.fontSize;}if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2){selectedType='template';selectedIndex=i;isDragging=true;dragStart={x:pos.x-el.x,y:pos.y-el.y};found=true;markDirty();updateObjectList();updateControls();break;}}if(!found){selectedType='';selectedIndex=-1;markDirty();updateControls();}}
 function handleMove(e){
-if(e.touches&&e.touches.length>=2&&isPinching&&pinchTarget){e.preventDefault();const dist=getTouchDistance(e);if(pinchStartDistance>0){let nextScale=pinchStartScale*(dist/pinchStartDistance);nextScale=Math.max(0.01,Math.min(10,nextScale));pinchTarget.scale=nextScale;if(pinchTarget.type==='text')pinchTarget.cache=null;markDirty();updateControlsInputsOnly();const scaleInput=document.getElementById('scaleInput');const scaleRange=document.getElementById('scale');if(scaleInput&&scaleRange){const pct=Math.round(nextScale*100);scaleInput.value=pct;scaleRange.value=Math.max(1,Math.min(1000,pct));}}return;}
+if(e.touches&&e.touches.length>=2){if(isPinching){applyAnchorZoom(e);return;}if(startAnchorZoom(e))return;}
 const el=getSelectedElement();
 if(!el)return;
 if(el&&el.locked){
@@ -883,7 +925,7 @@ markDirty();
 updateControlsInputsOnly();
 }
 function handleEnd(){
-if(isPinching){isPinching=false;pinchTarget=null;saveState();}
+if(isPinching){isPinching=false;pinchTarget=null;pinchAnchorTouchId=null;pinchMoveTouchId=null;pinchAnchorPoint=null;if(!pinchSavedOnce){pinchSavedOnce=true;saveState();}}
 if(isDragging){
 isDragging=false;
 document.getElementById('canvasContainer').classList.remove('snap-active');
@@ -1757,6 +1799,14 @@ document.addEventListener('keydown',function(e){
     togglePreviewFullscreen(e);
   }
 });
+
+// iOS Safari: stop native page zoom while using the editor preview.
+['gesturestart','gesturechange','gestureend'].forEach(function(type){
+  document.addEventListener(type,function(e){
+    if(document.body.classList.contains('preview-fullscreen-open')){e.preventDefault();}
+  },{passive:false});
+});
+
 </script>
 
 
