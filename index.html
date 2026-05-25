@@ -591,6 +591,17 @@ function formatAmount(num){return num.toLocaleString('en-US',{minimumFractionDig
 function formatTitle(num){return num.toLocaleString('en-US',{maximumFractionDigits:0});}
 function getRandomTime(){let h=Math.floor(Math.random()*12)+1;let m=Math.floor(Math.random()*60);let ampm=Math.random()<0.5?'AM':'PM';return`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')} ${ampm}`;}
 function getRandomTime24(){let h=Math.floor(Math.random()*24);let m=Math.floor(Math.random()*60);let s=Math.floor(Math.random()*60);return`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}
+function shuffleArray(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=arr[i];arr[i]=arr[j];arr[j]=t;}return arr;}
+function getRandomTime24InRange(startHour,endHour){let h=Math.floor(Math.random()*(endHour-startHour+1))+startHour;let m=Math.floor(Math.random()*60);let s=Math.floor(Math.random()*60);return`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}
+function getBalancedDailyTimes(count){
+const total=Math.max(1,parseInt(count)||1);
+const amCount=Math.floor(total/2);
+const pmCount=total-amCount;
+const times=[];
+for(let i=0;i<amCount;i++){times.push(getRandomTime24InRange(0,11));}
+for(let i=0;i<pmCount;i++){times.push(getRandomTime24InRange(12,23));}
+return shuffleArray(times);
+}
 function formatDateDMY(date){const d=date.getDate();const m=date.getMonth()+1;const y=date.getFullYear();return`${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')}/${y}`;}
 // 防抖保存HIS记录
 function debouncedSaveState(){
@@ -1777,16 +1788,17 @@ let current=new Date(start);
 let totalGenerated=0;
 try{
 while(current<=end){
+const dailyTimes=getBalancedDailyTimes(count);
 for(let i=0;i<count;i++){
 const tempTemplate=JSON.parse(JSON.stringify(templateElements));
 const tempPreset=JSON.parse(JSON.stringify(presetElements));
 const amount=getRandomAmount();
-const timeStr=getRandomTime24();
+const timeStr=dailyTimes[i]||getRandomTime24();
 const dateStr=current.toISOString().slice(0,10);
 tempPreset.forEach(el=>{
 if(el.name==='标题'){el.text=`RM ${formatTitle(amount)}`;el.cache=null;}
 if(el.name==='金额'){if(currentTemplateMode==='custom'){el.text=formatTitle(amount)+'.00';}else{el.text=`MYR ${formatAmount(amount)}`;}el.cache=null;}
-if(el.name==='日期'){if(currentTemplateMode==='custom'){el.text=formatDateDMY(current);}else{const time12=to12HourFormat(parseInt(timeStr.split(':')[0])%12||12,parseInt(timeStr.split(':')[1]));el.text=`${dateStr} ${time12}`;}el.cache=null;}
+if(el.name==='日期'){if(currentTemplateMode==='custom'){el.text=formatDateDMY(current);}else{const time12=to12HourFormat(parseInt(timeStr.split(':')[0]),parseInt(timeStr.split(':')[1]));el.text=`${dateStr} ${time12}`;}el.cache=null;}
 if(el.name==='时间'&&currentTemplateMode==='custom'){el.text=timeStr;el.cache=null;}});
 const backupTemplate=templateElements;
 const backupPreset=presetElements;
