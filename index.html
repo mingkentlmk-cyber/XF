@@ -377,7 +377,7 @@ body.preview-fullscreen-open #mainCanvas{
 <button class="btn" onclick="exportProject()">OUT</button>
 </div>
 <div class="toolbar-group"><span class="toolbar-label">SAVE</span>
-<button class="btn primary" onclick="exportCanvas(false)">PNG</button>
+<button class="btn primary" onclick="copyCanvasToClipboard()">COPY</button>
 <button class="btn" onclick="exportCanvas(true)">ALPHA</button>
 </div>
 </div>
@@ -2069,6 +2069,16 @@ document.addEventListener('keydown',function(e){
   document.addEventListener('DOMContentLoaded',collapseTextStylePanel);
   collapseTextStylePanel();
 })();
+
+async function copyCanvasToClipboard(){
+ try{
+  const canvas=document.getElementById('mainCanvas');
+  canvas.toBlob(async(blob)=>{
+   try{await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);showToast('图片已复制');}
+   catch(e){showToast('复制失败','error');}
+  },'image/png');
+ }catch(e){showToast('复制失败','error');}
+}
 </script>
 
 </body>
