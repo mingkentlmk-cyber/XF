@@ -356,6 +356,18 @@ body.preview-fullscreen-open #mainCanvas{
 }
 
 </style>
+
+<style>
+#mobileCopyFallback{position:fixed;inset:0;z-index:30000;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.82);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
+#mobileCopyFallback.show{display:flex;}
+.mobile-copy-card{width:min(94vw,420px);max-height:92svh;overflow:auto;padding:14px;background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(0,0,0,.82));border:1px solid rgba(137,244,255,.42);clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);box-shadow:0 20px 60px rgba(0,0,0,.65),0 0 22px rgba(137,244,255,.18);}
+.mobile-copy-title{font-size:14px;font-weight:900;color:#89f4ff;text-align:center;margin-bottom:5px;letter-spacing:1px;}
+.mobile-copy-tip{font-size:12px;font-weight:800;color:rgba(238,247,255,.76);text-align:center;margin-bottom:10px;}
+#mobileCopyFallbackImg{display:block;width:100%;height:auto;max-height:64svh;object-fit:contain;background:repeating-conic-gradient(rgba(255,255,255,.10) 0 25%,rgba(0,0,0,.18) 0 50%) 50%/20px 20px;border:1px solid rgba(137,244,255,.22);-webkit-user-select:auto!important;user-select:auto!important;-webkit-touch-callout:default!important;touch-action:auto!important;}
+.mobile-copy-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px;}
+.mobile-copy-actions .btn{text-decoration:none;height:28px!important;min-height:28px!important;font-size:11px!important;}
+</style>
+
 </head>
 <body>
 <canvas id="cosmicBg" aria-hidden="true"></canvas>
@@ -377,7 +389,7 @@ body.preview-fullscreen-open #mainCanvas{
 <button class="btn" onclick="exportProject()">OUT</button>
 </div>
 <div class="toolbar-group"><span class="toolbar-label">SAVE</span>
-<button class="btn primary" onclick="copyCanvasToClipboard()">COPY</button>
+<button class="btn primary" onclick="copyCanvasToClipboard(true)">COPY</button>
 <button class="btn" onclick="exportCanvas(true)">ALPHA</button>
 </div>
 </div>
@@ -2070,14 +2082,83 @@ document.addEventListener('keydown',function(e){
   collapseTextStylePanel();
 })();
 
-async function copyCanvasToClipboard(){
- try{
-  const canvas=document.getElementById('mainCanvas');
-  canvas.toBlob(async(blob)=>{
-   try{await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);showToast('图片已复制');}
-   catch(e){showToast('复制失败','error');}
-  },'image/png');
- }catch(e){showToast('复制失败','error');}
+async function copyCanvasToClipboard(transparent=true){
+  let dataURL='';
+  try{
+    dataURL=exportCanvasToBase64(transparent);
+    if(!navigator.clipboard || !window.ClipboardItem){
+      showMobileCopyFallback(dataURL);
+      showToast('手机浏览器不支持直接COPY，请长按图片','error');
+      return;
+    }
+
+    // iOS/Safari needs clipboard.write to stay close to the user tap.
+    const blobPromise=fetch(dataURL).then(r=>r.blob());
+    await navigator.clipboard.write([
+      new ClipboardItem({'image/png':blobPromise})
+    ]);
+
+    if(navigator.vibrate) navigator.vibrate(30);
+    showToast('已复制透明PNG','success');
+  }catch(e){
+    console.error(e);
+    if(dataURL){
+      showMobileCopyFallback(dataURL);
+      showToast('COPY失败，请长按图片复制/保存','error');
+    }else{
+      showToast('COPY失败，请用ALPHA下载','error');
+    }
+  }
+}
+
+function showMobileCopyFallback(dataURL){
+  let panel=document.getElementById('mobileCopyFallback');
+  let img=document.getElementById('mobileCopyFallbackImg');
+  let download=document.getElementById('mobileCopyFallbackDownload');
+  if(!panel){
+    panel=document.createElement('div');
+    panel.id='mobileCopyFallback';
+    panel.innerHTML=`<div class="mobile-copy-card">
+      <div class="mobile-copy-title">手机备用复制</div>
+      <div class="mobile-copy-tip">长按图片 → 复制 / 保存图片</div>
+      <img id="mobileCopyFallbackImg" alt="COPY PNG PREVIEW">
+      <div class="mobile-copy-actions">
+        <button class="btn primary" type="button" onclick="shareMobileCopyImage()">SHARE</button>
+        <a class="btn" id="mobileCopyFallbackDownload" download="poster-alpha.png">ALPHA</a>
+        <button class="btn" type="button" onclick="hideMobileCopyFallback()">CLOSE</button>
+      </div>
+    </div>`;
+    document.body.appendChild(panel);
+    img=document.getElementById('mobileCopyFallbackImg');
+    download=document.getElementById('mobileCopyFallbackDownload');
+  }
+  img.src=dataURL;
+  download.href=dataURL;
+  window.__mobileCopyDataURL=dataURL;
+  panel.classList.add('show');
+}
+
+function hideMobileCopyFallback(){
+  const panel=document.getElementById('mobileCopyFallback');
+  if(panel) panel.classList.remove('show');
+}
+
+async function shareMobileCopyImage(){
+  try{
+    const dataURL=window.__mobileCopyDataURL;
+    if(!dataURL) return;
+    const blob=await (await fetch(dataURL)).blob();
+    const file=new File([blob],'poster-alpha.png',{type:'image/png'});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({files:[file],title:'poster-alpha'});
+      showToast('已打开分享','success');
+    }else{
+      showToast('此手机不支持直接分享，请长按图片','error');
+    }
+  }catch(e){
+    console.error(e);
+    showToast('分享失败，请长按图片','error');
+  }
 }
 </script>
 
