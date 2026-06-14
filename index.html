@@ -921,6 +921,78 @@ if(selectedType==='preset')return presetElements[selectedIndex];
 if(selectedType==='template')return templateElements[selectedIndex];
 return null;
 }
+function getSnapElementSize(el){
+let w=0,h=0;
+if(!el)return{w:0,h:0};
+if(el.type==='image'||el.type==='imageSlot'){
+w=(el.width||0)*(el.scale||1);
+h=(el.height||0)*(el.scale||1);
+}else{
+w=getTextWidth(el);
+h=el.cache?el.cache.textHeight:(el.fontSize||40);
+}
+return{w,h};
+}
+function pickNearestSnap(value,candidates){
+let best=null;
+for(const c of candidates){
+const d=Math.abs(value-c.value);
+if(d<=SNAP_THRESHOLD&&(!best||d<best.dist))best={...c,dist:d};
+}
+return best;
+}
+function applySnapForMove(newX,newY,el){
+const size=getSnapElementSize(el);
+const halfW=size.w/2,halfH=size.h/2;
+const xSnap=pickNearestSnap(newX,[
+{value:CENTER_X,line:CENTER_X},
+{value:halfW,line:0},
+{value:canvasConfig.width-halfW,line:canvasConfig.width}
+]);
+const ySnap=pickNearestSnap(newY,[
+{value:CENTER_Y,line:CENTER_Y},
+{value:halfH,line:0},
+{value:canvasConfig.height-halfH,line:canvasConfig.height}
+]);
+return{x:xSnap?xSnap.value:newX,y:ySnap?ySnap.value:newY,snappedX:!!xSnap,snappedY:!!ySnap,lineX:xSnap?xSnap.line:null,lineY:ySnap?ySnap.line:null};
+}
+function updateSnapGuides(snappedX,snappedY,lineX,lineY){
+const container=document.getElementById('canvasContainer');
+const lineV=document.getElementById('snapLineV');
+const lineH=document.getElementById('snapLineH');
+if(!container||!lineV||!lineH)return;
+if(snappedX||snappedY){
+container.classList.add('snap-active');
+const cRect=container.getBoundingClientRect();
+const canvasRect=canvas.getBoundingClientRect();
+if(snappedX){
+const left=(canvasRect.left-cRect.left)+(lineX/canvasConfig.width)*canvasRect.width;
+lineV.style.left=left+'px';
+lineV.style.top=(canvasRect.top-cRect.top)+'px';
+lineV.style.height=canvasRect.height+'px';
+lineV.style.display='block';
+}else{lineV.style.display='none';}
+if(snappedY){
+const top=(canvasRect.top-cRect.top)+(lineY/canvasConfig.height)*canvasRect.height;
+lineH.style.top=top+'px';
+lineH.style.left=(canvasRect.left-cRect.left)+'px';
+lineH.style.width=canvasRect.width+'px';
+lineH.style.display='block';
+}else{lineH.style.display='none';}
+}else{
+container.classList.remove('snap-active');
+lineV.style.display='none';
+lineH.style.display='none';
+}
+}
+function clearSnapGuides(){
+const container=document.getElementById('canvasContainer');
+const lineV=document.getElementById('snapLineV');
+const lineH=document.getElementById('snapLineH');
+if(container)container.classList.remove('snap-active');
+if(lineV)lineV.style.display='none';
+if(lineH)lineH.style.display='none';
+}
 canvas.addEventListener('mousedown',handleStart);canvas.addEventListener('touchstart',handleStart,{passive:false});canvas.addEventListener('mousemove',handleMove);canvas.addEventListener('touchmove',handleMove,{passive:false});canvas.addEventListener('mouseup',handleEnd);canvas.addEventListener('touchend',handleEnd);canvas.addEventListener('touchcancel',handleEnd);canvas.addEventListener('mouseleave',handleEnd);
 const canvasContainerEl=document.getElementById('canvasContainer');
 canvasContainerEl.addEventListener('touchstart',function(e){if(e.target!==canvas&&document.body.classList.contains('preview-fullscreen-open'))handleStart(e);},{passive:false});
@@ -1121,21 +1193,10 @@ if(!isDragging)return;
 e.preventDefault();
 const pos=getPointerPos(e);
 let newX=pos.x-dragStart.x,newY=pos.y-dragStart.y;
-let snappedX=false,snappedY=false;
-if(Math.abs(newX-CENTER_X)<SNAP_THRESHOLD){newX=CENTER_X;snappedX=true;}
-if(Math.abs(newY-CENTER_Y)<SNAP_THRESHOLD){newY=CENTER_Y;snappedY=true;}
-el.x=newX;
-el.y=newY;
-const container=document.getElementById('canvasContainer');
-if(snappedX||snappedY){
-container.classList.add('snap-active');
-document.getElementById('snapLineV').style.display=snappedX?'block':'none';
-document.getElementById('snapLineH').style.display=snappedY?'block':'none';
-}else{
-container.classList.remove('snap-active');
-document.getElementById('snapLineV').style.display='none';
-document.getElementById('snapLineH').style.display='none';
-}
+const snapResult=applySnapForMove(newX,newY,el);
+el.x=snapResult.x;
+el.y=snapResult.y;
+updateSnapGuides(snapResult.snappedX,snapResult.snappedY,snapResult.lineX,snapResult.lineY);
 markDirty();
 updateControlsInputsOnly();
 }
@@ -1146,9 +1207,7 @@ endSingleAnchorScale();
 if(isPinching){isPinching=false;document.body.classList.remove('pinch-scaling-active');pinchTarget=null;pinchAnchorTouchId=null;pinchMoveTouchId=null;pinchAnchorPoint=null;if(!pinchSavedOnce){pinchSavedOnce=true;saveState();}}
 if(isDragging){
 isDragging=false;
-document.getElementById('canvasContainer').classList.remove('snap-active');
-document.getElementById('snapLineV').style.display='none';
-document.getElementById('snapLineH').style.display='none';
+clearSnapGuides();
 saveState();
 }
 canvas.style.cursor='move';
@@ -1512,16 +1571,6 @@ markDirty();
 updateObjectList();
 updateControls();
 saveState();
-}
-function toggleSelectedLock(){
-const el=getSelectedElement();
-if(!el){showToast('请先选择图层','error');return;}
-el.locked=!el.locked;
-markDirty();
-updateObjectList();
-updateControls();
-saveState();
-showToast(el.locked?'已锁定当前图层':'已解锁当前图层','success');
 }
 function deletePresetLayer(idx){
 if(presetElements.length<=1){showToast('至少保留一个预设图层','error');return;}
