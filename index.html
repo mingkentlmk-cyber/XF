@@ -97,7 +97,7 @@ input:disabled{opacity:.48;cursor:not-allowed;}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:linear-gradient(180deg,#eaffff,#76eaff);color:#04111c;padding:11px 22px;clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);font-weight:900;font-size:14px;opacity:0;transition:all .3s;z-index:1000;pointer-events:none;box-shadow:0 14px 32px rgba(0,0,0,.38),0 0 24px rgba(118,234,255,.25);}.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}.toast.error{background:linear-gradient(180deg,#ffe2f0,#ffc7df);color:#3b0718;}.toast.success{background:linear-gradient(180deg,#e6fff0,#b9f7d0);color:#062414;}
 .upload-panel{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.62);display:none;justify-content:center;align-items:center;z-index:1000;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);pointer-events:auto;}.upload-panel.show{display:flex;}.upload-panel-inner{padding:34px;width:90%;max-width:410px;text-align:center;transition:border-color .2s,transform .2s,background .2s;}.upload-panel-inner.drag-over{border-color:var(--ice);background:rgba(9,22,38,.72);transform:scale(1.025);box-shadow:0 0 42px rgba(118,234,255,.24);}.upload-panel-inner h3{color:var(--white);margin-bottom:12px;font-size:19px;font-weight:900;}.upload-panel-inner p{color:var(--muted);font-size:13px;font-weight:700;margin-bottom:14px;}.upload-actions{display:flex;justify-content:center;gap:10px;margin-top:10px;}.upload-actions .btn{min-width:118px;}
 .locked-hint{background:rgba(255,241,168,.12);border:1px solid rgba(255,241,168,.42);clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px);padding:8px 12px;margin-bottom:9px;font-size:12px;font-weight:900;color:var(--pastel-yellow);text-align:center;}
-.batch-panel{padding:11px;margin-bottom:8px;}.batch-panel h4{color:var(--ice);font-size:13px;font-weight:900;margin-bottom:9px;text-transform:uppercase;text-shadow:0 0 12px rgba(118,234,255,.45);}.batch-row{display:flex;align-items:center;gap:6px;margin-bottom:7px;flex-wrap:wrap;position:relative;z-index:1;}.batch-row label{font-size:12px;color:var(--muted);min-width:46px;font-weight:900;}.batch-row input[type="date"],.batch-row input[type="number"]{width:104px;}.batch-preview{font-size:12px;color:var(--pastel-purple);font-weight:900;margin-top:7px;padding:7px;background:rgba(216,199,255,.10);border:1px solid rgba(216,199,255,.24);clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);}
+.lock-toggle-hint{cursor:pointer;user-select:none;transition:all .16s ease;}.lock-toggle-hint:hover{border-color:rgba(118,234,255,.62);color:#eaffff;background:rgba(118,234,255,.14);box-shadow:0 0 16px rgba(118,234,255,.15) inset;}.lock-toggle-hint.unlocked{color:#9ff3ff;border-color:rgba(118,234,255,.42);background:rgba(118,234,255,.08);}.batch-panel{padding:11px;margin-bottom:8px;}.batch-panel h4{color:var(--ice);font-size:13px;font-weight:900;margin-bottom:9px;text-transform:uppercase;text-shadow:0 0 12px rgba(118,234,255,.45);}.batch-row{display:flex;align-items:center;gap:6px;margin-bottom:7px;flex-wrap:wrap;position:relative;z-index:1;}.batch-row label{font-size:12px;color:var(--muted);min-width:46px;font-weight:900;}.batch-row input[type="date"],.batch-row input[type="number"]{width:104px;}.batch-preview{font-size:12px;color:var(--pastel-purple);font-weight:900;margin-top:7px;padding:7px;background:rgba(216,199,255,.10);border:1px solid rgba(216,199,255,.24);clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);}
 .loading-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.76);display:none;justify-content:center;align-items:center;z-index:2000;flex-direction:column;gap:18px;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);}.loading-overlay.show{display:flex;}.loading-spinner{width:52px;height:52px;border:4px solid rgba(255,255,255,.12);border-top:4px solid var(--ice);border-radius:50%;animation:spin 1s linear infinite;box-shadow:0 0 20px rgba(118,234,255,.28);}@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}.loading-text{color:#fff;font-size:15px;font-weight:900;}
 @media (max-width:900px){.toolbar{padding:8px;}.toolbar-row{flex-wrap:wrap;gap:5px;}.toolbar-group{flex:1 1 auto;min-width:45%;padding:4px;border-right:none;border-bottom:1px solid rgba(118,234,255,.12);margin-bottom:3px;}.toolbar-group:last-child{border-bottom:none;}.btn{font-size:12px;padding:6px 7px;min-height:30px;}.workspace{flex-direction:column;align-items:center;gap:12px;}.controls-panel{width:100%;max-width:600px;margin-top:0;}}
 @supports (padding: max(0px)){body{padding-top:max(10px,env(safe-area-inset-top));padding-right:max(10px,env(safe-area-inset-right));padding-bottom:max(10px,env(safe-area-inset-bottom));padding-left:max(10px,env(safe-area-inset-left));}}
@@ -433,7 +433,7 @@ body.preview-fullscreen-open #mainCanvas{
 </div>
 <div class="controls-panel" id="sidePanel">
 <div class="control-section"><h3>SELECT</h3><div id="selectedInfo" style="font-size:11px;color:#999;padding:5px 0;word-break:break-all;">NONE</div></div>
-<div id="lockedHint" class="locked-hint" style="display:none;">LOCKED</div>
+<div id="lockedHint" class="locked-hint lock-toggle-hint" style="display:none;" onclick="toggleSelectedLock()" title="点击切换当前图层锁定状态">LOCKED</div>
 <div class="control-section" id="transformControls" style="display:none;">
 <h3>MOVE</h3>
 <div class="control-row" id="textContentRow" style="display:none;margin-bottom:10px;"><input type="text" id="textContentInput" placeholder="输入TXT..." style="width:100%;padding:5px;background:#222;border:1px solid #444;color:#fff;border-radius:4px;" oninput="updateTextContent()"></div>
@@ -1249,7 +1249,10 @@ const showTrans=!!el;
 document.getElementById('transformControls').style.display=showTrans?'block':'none';
 if(!el)return;
 const isLocked=el.locked,isImageSlot=el.type==='imageSlot';
-document.getElementById('lockedHint').style.display=(isLocked&&!isImageSlot)?'block':'none';
+const lockHint=document.getElementById('lockedHint');
+lockHint.style.display=el?'block':'none';
+lockHint.textContent=isLocked?'LOCKED':'UNLOCKED';
+lockHint.classList.toggle('unlocked',!isLocked);
 document.querySelectorAll('#transformControls input').forEach(i=>i.disabled=isLocked||isImageSlot);
 document.querySelectorAll('#transformControls button').forEach(b=>b.disabled=isLocked||isImageSlot);
 document.getElementById('textContentInput').disabled=false;
@@ -1509,6 +1512,16 @@ markDirty();
 updateObjectList();
 updateControls();
 saveState();
+}
+function toggleSelectedLock(){
+const el=getSelectedElement();
+if(!el){showToast('请先选择图层','error');return;}
+el.locked=!el.locked;
+markDirty();
+updateObjectList();
+updateControls();
+saveState();
+showToast(el.locked?'已锁定当前图层':'已解锁当前图层','success');
 }
 function deletePresetLayer(idx){
 if(presetElements.length<=1){showToast('至少保留一个预设图层','error');return;}
