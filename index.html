@@ -1648,14 +1648,35 @@ function updateUndoRedoButtons(){
 document.getElementById('undoBtn').disabled=historyIndex<=0;
 document.getElementById('redoBtn').disabled=historyIndex>=history.length-1;
 }
+function serializeProjectElement(e){
+const b={...e};
+if(b.img){
+  b.imgData=b.imgData||imageToDataURL(b.img);
+  delete b.img;
+}
+if(b.cache)delete b.cache;
+return b;
+}
+async function hydrateProjectElement(ed){
+const el={...ed};
+if(el.imgData){
+  el.img=await dataURLToImage(el.imgData);
+}
+if(el.type==='text')el.cache=null;
+return el;
+}
 function exportProject(){
-const d={version:'1.0',template:templateElements.map(e=>{const b={type:e.type,x:e.x,y:e.y,scale:e.scale,rotation:e.rotation,opacity:e.opacity,name:e.name,locked:e.locked,visible:e.visible,align:e.align};if(e.type==='image'||e.type==='imageSlot'){b.imgData=e.imgData;b.width=e.width;b.height=e.height;}else if(e.type==='text'){b.text=e.text;b.fontSize=e.fontSize;b.color=e.color;b.stylePreset=e.stylePreset;b.gradientColor1=e.gradientColor1;b.gradientColor2=e.gradientColor2;b.gradientColor3=e.gradientColor3;b.gradientAngle=e.gradientAngle;b.gradientSize=e.gradientSize;b.gradientX=e.gradientX;b.gradientY=e.gradientY;b.shadowOffsetX=e.shadowOffsetX;b.shadowOffsetY=e.shadowOffsetY;b.shadowSize=e.shadowSize;b.shadowSpread=e.shadowSpread;b.shadowColor=e.shadowColor;b.glowBlur=e.glowBlur;b.glowColor=e.glowColor;b.strokeColor1=e.strokeColor1;b.strokeWidth1=e.strokeWidth1;b.strokeColor2=e.strokeColor2;b.strokeWidth2=e.strokeWidth2;}return b;})};
+const d={
+  version:'1.1',
+  preset:presetElements.map(serializeProjectElement),
+  template:templateElements.map(serializeProjectElement)
+};
 const b=new Blob([JSON.stringify(d)],{type:'application/json'});
 const a=document.createElement('a');
 a.download='poster-project.json';
 a.href=URL.createObjectURL(b);
 a.click();
-showToast('FILE已SAVE');
+showToast('FILE已SAVE + PRESET');
 }
 async function importProject(evt){
 const f=evt.target.files[0];
@@ -1666,21 +1687,23 @@ try{
 const data=JSON.parse(e.target.result);
 templateElements=[];
 for(const ed of data.elements||data.template||[]){
-if(ed.type==='image'||ed.type==='imageSlot'){
-const img=ed.imgData?await dataURLToImage(ed.imgData):null;
-templateElements.push({...ed,img});
+  templateElements.push(await hydrateProjectElement(ed));
+}
+if(Array.isArray(data.preset)){
+  presetElements=[];
+  for(const ed of data.preset){
+    presetElements.push(await hydrateProjectElement(ed));
+  }
 }else{
-templateElements.push({...ed,cache:null});
+  presetElements=createPresetElements();
 }
-}
-presetElements=createPresetElements();
 selectedIndex=-1;
 selectedType='';
 markDirty();
 updateObjectList();
 updateControls();
 saveState();
-showToast('FILE导入成功');
+showToast('FILE导入成功 + PRESET');
 }catch(err){
 console.error(err);
 showToast('导入失败');
