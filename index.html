@@ -368,6 +368,25 @@ body.preview-fullscreen-open #mainCanvas{
 .mobile-copy-actions .btn{text-decoration:none;height:28px!important;min-height:28px!important;font-size:11px!important;}
 </style>
 
+
+<style>
+/* === Full image mosaic editor === */
+#mosaicEditor{position:fixed;inset:0;z-index:40000;display:none;flex-direction:column;background:rgba(0,0,0,.92);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);touch-action:none;color:#eef7ff;}
+#mosaicEditor.show{display:flex;}
+.mosaic-topbar{height:42px;display:grid;grid-template-columns:72px 1fr 72px;align-items:center;gap:6px;padding:max(8px,env(safe-area-inset-top)) 8px 4px;border-bottom:1px solid rgba(137,244,255,.25);background:linear-gradient(180deg,rgba(8,18,30,.92),rgba(0,0,0,.45));}
+.mosaic-title{text-align:center;font-size:12px;font-weight:900;letter-spacing:1.2px;color:#89f4ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mosaic-canvas-wrap{position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:6px;overflow:hidden;}
+#mosaicCanvas{display:block;max-width:100%;max-height:100%;background:#05080e;box-shadow:0 0 0 1px rgba(137,244,255,.22),0 18px 50px rgba(0,0,0,.68);touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;}
+.mosaic-bottom{padding:8px max(8px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));border-top:1px solid rgba(137,244,255,.25);background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(8,18,30,.96));}
+.mosaic-row{display:grid;grid-template-columns:58px 1fr 42px;gap:8px;align-items:center;margin-bottom:6px;}
+.mosaic-row label{font-size:10px;font-weight:900;color:rgba(238,247,255,.78);letter-spacing:.6px;}
+.mosaic-row input[type="range"]{width:100%;height:22px;accent-color:#89f4ff;}
+.mosaic-val{font-size:10px;font-weight:900;text-align:right;color:#89f4ff;}
+.mosaic-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:7px;}
+.mosaic-actions .btn,.mosaic-topbar .btn{height:26px!important;min-height:26px!important;font-size:10px!important;}
+.mosaic-help{position:absolute;left:50%;top:10px;transform:translateX(-50%);padding:5px 9px;background:rgba(0,0,0,.55);border:1px solid rgba(137,244,255,.25);font-size:10px;font-weight:800;color:rgba(238,247,255,.74);pointer-events:none;white-space:nowrap;}
+</style>
+
 </head>
 <body>
 <canvas id="cosmicBg" aria-hidden="true"></canvas>
@@ -489,6 +508,9 @@ body.preview-fullscreen-open #mainCanvas{
 <div style="display:flex; gap:6px; margin-bottom:8px;">
 <button class="btn btn-sm" style="flex:1" onclick="copyStyle()">COPY FX</button>
 <button class="btn btn-sm" style="flex:1" onclick="pasteStyle()">PASTE FX</button>
+</div>
+<div style="display:flex; gap:6px; margin-bottom:8px;">
+<button class="btn btn-sm primary" style="flex:1" onclick="openMosaicEditor()">MOSAIC</button>
 </div>
 <h3 style="margin-top:15px;">TEMPLATE</h3>
 <div class="object-list" id="objectList"></div>
@@ -2159,6 +2181,157 @@ async function shareMobileCopyImage(){
     console.error(e);
     showToast('分享失败，请长按图片','error');
   }
+}
+
+
+/* === Full image mosaic editor: selected image layer -> drag rectangle -> preview -> apply === */
+let mosaicState=null;
+function ensureMosaicEditorUi(){
+  if(document.getElementById('mosaicEditor'))return;
+  const panel=document.createElement('div');
+  panel.id='mosaicEditor';
+  panel.innerHTML=`
+    <div class="mosaic-topbar">
+      <button class="btn" type="button" onclick="closeMosaicEditor()">BACK</button>
+      <div class="mosaic-title" id="mosaicEditorTitle">MOSAIC SIZE</div>
+      <button class="btn primary" type="button" onclick="applyMosaicEditor()">OK</button>
+    </div>
+    <div class="mosaic-canvas-wrap">
+      <div class="mosaic-help">拖动方框 / 拉四角选择区域 · 效果固定100%</div>
+      <canvas id="mosaicCanvas"></canvas>
+    </div>
+    <div class="mosaic-bottom">
+      <div class="mosaic-row"><label>格子</label><input id="mosaicBlockSlider" type="range" min="4" max="80" value="18" oninput="updateMosaicSlider()"><span class="mosaic-val" id="mosaicBlockVal">18</span></div>
+      <div class="mosaic-actions"><button class="btn" type="button" onclick="resetMosaicRect()">RESET</button><button class="btn" type="button" onclick="closeMosaicEditor()">CANCEL</button></div>
+    </div>`;
+  document.body.appendChild(panel);
+  const mc=document.getElementById('mosaicCanvas');
+  mc.addEventListener('pointerdown',mosaicPointerDown,{passive:false});
+  window.addEventListener('pointermove',mosaicPointerMove,{passive:false});
+  window.addEventListener('pointerup',mosaicPointerUp,{passive:false});
+  window.addEventListener('resize',()=>{if(mosaicState){resizeMosaicCanvas();drawMosaicEditor();}});
+}
+function openMosaicEditor(){
+  const el=getSelectedElement();
+  if(selectedType!=='template'||!el){showToast('请先选中图片图层','error');return;}
+  if(el.locked){showToast('图层已锁定，先解锁','error');return;}
+  if(el.type!=='image' && !(el.type==='imageSlot'&&el.img)){showToast('MOSAIC只支持图片图层','error');return;}
+  const img=el.img;
+  if(!img){showToast('这个图层还没有图片','error');return;}
+  ensureMosaicEditorUi();
+  mosaicState={el, img, dragging:false, mode:'', start:null, rect:{x:img.width*.2,y:img.height*.2,w:img.width*.6,h:img.height*.35}, fit:{x:0,y:0,w:1,h:1,scale:1}, block:18};
+  document.getElementById('mosaicEditorTitle').textContent=(el.name||'IMAGE')+' · MOSAIC';
+  document.getElementById('mosaicBlockSlider').value=mosaicState.block;
+  document.getElementById('mosaicBlockVal').textContent=mosaicState.block;
+  document.getElementById('mosaicEditor').classList.add('show');
+  resizeMosaicCanvas();
+  drawMosaicEditor();
+}
+function closeMosaicEditor(){
+  const panel=document.getElementById('mosaicEditor');
+  if(panel)panel.classList.remove('show');
+  mosaicState=null;
+}
+function resizeMosaicCanvas(){
+  const c=document.getElementById('mosaicCanvas');
+  const wrap=c.parentElement;
+  const img=mosaicState.img;
+  const maxW=Math.max(240,wrap.clientWidth-12);
+  const maxH=Math.max(240,wrap.clientHeight-12);
+  const scale=Math.min(maxW/img.width,maxH/img.height);
+  c.width=Math.max(1,Math.round(img.width*scale));
+  c.height=Math.max(1,Math.round(img.height*scale));
+  mosaicState.fit={x:0,y:0,w:c.width,h:c.height,scale};
+}
+function updateMosaicSlider(){
+  if(!mosaicState)return;
+  mosaicState.block=parseInt(document.getElementById('mosaicBlockSlider').value)||18;
+  document.getElementById('mosaicBlockVal').textContent=mosaicState.block;
+  drawMosaicEditor();
+}
+function resetMosaicRect(){
+  if(!mosaicState)return;
+  const img=mosaicState.img;
+  mosaicState.rect={x:img.width*.2,y:img.height*.2,w:img.width*.6,h:img.height*.35};
+  drawMosaicEditor();
+}
+function normalizeMosaicRect(r){
+  if(r.w<0){r.x+=r.w;r.w=Math.abs(r.w);}if(r.h<0){r.y+=r.h;r.h=Math.abs(r.h);}return r;
+}
+function clampMosaicRect(){
+  const img=mosaicState.img;let r=normalizeMosaicRect(mosaicState.rect);
+  r.w=Math.max(8,Math.min(img.width,r.w));r.h=Math.max(8,Math.min(img.height,r.h));
+  r.x=Math.max(0,Math.min(img.width-r.w,r.x));r.y=Math.max(0,Math.min(img.height-r.h,r.y));mosaicState.rect=r;
+}
+function drawPixelMosaicOn(ctx,img,rect,block,scale){
+  const r=normalizeMosaicRect({...rect});
+  const sx=Math.max(0,Math.round(r.x)),sy=Math.max(0,Math.round(r.y)),sw=Math.max(1,Math.round(r.w)),sh=Math.max(1,Math.round(r.h));
+  const smallW=Math.max(1,Math.ceil(sw/block)),smallH=Math.max(1,Math.ceil(sh/block));
+  const tmp=document.createElement('canvas');tmp.width=smallW;tmp.height=smallH;
+  const t=tmp.getContext('2d');
+  t.imageSmoothingEnabled=true;t.drawImage(img,sx,sy,sw,sh,0,0,smallW,smallH);
+  ctx.save();
+  ctx.globalAlpha=1;
+  ctx.imageSmoothingEnabled=false;
+  ctx.drawImage(tmp,0,0,smallW,smallH,sx*scale,sy*scale,sw*scale,sh*scale);
+  ctx.restore();
+}
+function drawMosaicEditor(){
+  if(!mosaicState)return;
+  const c=document.getElementById('mosaicCanvas');const g=c.getContext('2d');const img=mosaicState.img;const sc=mosaicState.fit.scale;
+  g.clearRect(0,0,c.width,c.height);
+  g.imageSmoothingEnabled=true;g.drawImage(img,0,0,c.width,c.height);
+  drawPixelMosaicOn(g,img,mosaicState.rect,mosaicState.block,sc);
+  const r=normalizeMosaicRect({...mosaicState.rect});const x=r.x*sc,y=r.y*sc,w=r.w*sc,h=r.h*sc;
+  g.save();
+  g.fillStyle='rgba(0,0,0,.18)';
+  g.fillRect(0,0,c.width,y);g.fillRect(0,y+h,c.width,c.height-y-h);g.fillRect(0,y,x,h);g.fillRect(x+w,y,c.width-x-w,h);
+  g.strokeStyle='#89f4ff';g.lineWidth=2;g.setLineDash([8,5]);g.strokeRect(x,y,w,h);g.setLineDash([]);
+  g.fillStyle='#89f4ff';g.strokeStyle='rgba(0,0,0,.85)';g.lineWidth=2;
+  const hs=12;[[x,y],[x+w,y],[x,y+h],[x+w,y+h]].forEach(p=>{g.beginPath();g.rect(p[0]-hs/2,p[1]-hs/2,hs,hs);g.fill();g.stroke();});
+  g.restore();
+}
+function mosaicCanvasPoint(e){
+  const c=document.getElementById('mosaicCanvas');const rect=c.getBoundingClientRect();const sc=mosaicState.fit.scale;
+  return {x:(e.clientX-rect.left)/sc,y:(e.clientY-rect.top)/sc};
+}
+function mosaicHitTest(p){
+  const r=normalizeMosaicRect({...mosaicState.rect});const tol=24/mosaicState.fit.scale;
+  const corners=[['tl',r.x,r.y],['tr',r.x+r.w,r.y],['bl',r.x,r.y+r.h],['br',r.x+r.w,r.y+r.h]];
+  for(const [name,x,y] of corners){if(Math.abs(p.x-x)<=tol&&Math.abs(p.y-y)<=tol)return name;}
+  if(p.x>=r.x&&p.x<=r.x+r.w&&p.y>=r.y&&p.y<=r.y+r.h)return 'move';
+  return 'new';
+}
+function mosaicPointerDown(e){
+  if(!mosaicState)return;e.preventDefault();
+  const p=mosaicCanvasPoint(e);const mode=mosaicHitTest(p);
+  mosaicState.dragging=true;mosaicState.mode=mode;mosaicState.start={p,rect:{...normalizeMosaicRect({...mosaicState.rect})}};
+  document.getElementById('mosaicCanvas').setPointerCapture?.(e.pointerId);
+  if(mode==='new'){mosaicState.rect={x:p.x,y:p.y,w:1,h:1};}
+  drawMosaicEditor();
+}
+function mosaicPointerMove(e){
+  if(!mosaicState||!mosaicState.dragging)return;e.preventDefault();
+  const p=mosaicCanvasPoint(e),st=mosaicState.start,r={...st.rect};
+  if(mosaicState.mode==='move'){mosaicState.rect={...r,x:r.x+(p.x-st.p.x),y:r.y+(p.y-st.p.y)};}
+  else if(mosaicState.mode==='tl'){mosaicState.rect={x:p.x,y:p.y,w:r.x+r.w-p.x,h:r.y+r.h-p.y};}
+  else if(mosaicState.mode==='tr'){mosaicState.rect={x:r.x,y:p.y,w:p.x-r.x,h:r.y+r.h-p.y};}
+  else if(mosaicState.mode==='bl'){mosaicState.rect={x:p.x,y:r.y,w:r.x+r.w-p.x,h:p.y-r.y};}
+  else if(mosaicState.mode==='br'){mosaicState.rect={x:r.x,y:r.y,w:p.x-r.x,h:p.y-r.y};}
+  else {mosaicState.rect={x:st.p.x,y:st.p.y,w:p.x-st.p.x,h:p.y-st.p.y};}
+  clampMosaicRect();drawMosaicEditor();
+}
+function mosaicPointerUp(e){if(!mosaicState||!mosaicState.dragging)return;e.preventDefault();mosaicState.dragging=false;clampMosaicRect();drawMosaicEditor();}
+function applyMosaicEditor(){
+  if(!mosaicState)return;
+  const el=mosaicState.el,img=mosaicState.img;
+  const out=document.createElement('canvas');out.width=img.width;out.height=img.height;
+  const g=out.getContext('2d');g.drawImage(img,0,0);
+  drawPixelMosaicOn(g,img,mosaicState.rect,mosaicState.block,1);
+  const data=out.toDataURL('image/png');
+  const newImg=new Image();
+  newImg.onload=()=>{el.img=newImg;el.imgData=data;markDirty();updateObjectList();updateControls();saveState();closeMosaicEditor();showToast('马赛克已应用','success');};
+  newImg.src=data;
 }
 </script>
 
