@@ -3003,5 +3003,129 @@ function applyMosaicEditor(){
   window.addEventListener('load', function(){ setTimeout(cleanAllTextFonts, 80); });
 })();
 </script>
+
+
+<!-- mobile locked preview / scroll-only-controls fix -->
+<style id="mobile-fixed-preview-scroll-controls">
+@media (max-width:900px){
+  html,
+  body{
+    width:100%!important;
+    height:100%!important;
+    min-height:0!important;
+    overflow:hidden!important;
+    overscroll-behavior:none!important;
+  }
+  body{
+    height:100dvh!important;
+    max-height:100dvh!important;
+    min-height:0!important;
+    padding:8px 8px max(6px,env(safe-area-inset-bottom)) 8px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    gap:6px!important;
+    touch-action:none!important;
+  }
+  body.preview-fullscreen-open{
+    display:block!important;
+    padding:0!important;
+    height:100svh!important;
+    max-height:100svh!important;
+  }
+  .toolbar{
+    flex:0 0 auto!important;
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:8px!important;
+    overflow:hidden!important;
+    position:relative!important;
+    z-index:30!important;
+  }
+  .workspace{
+    flex:1 1 auto!important;
+    min-height:0!important;
+    height:auto!important;
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:stretch!important;
+    justify-content:flex-start!important;
+    gap:6px!important;
+    overflow:hidden!important;
+  }
+  .canvas-container{
+    flex:0 0 auto!important;
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:8px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    overflow:hidden!important;
+    min-height:0!important;
+    touch-action:none!important;
+  }
+  #mainCanvas{
+    width:auto!important;
+    height:auto!important;
+    max-width:100%!important;
+    max-height:42dvh!important;
+    touch-action:none!important;
+  }
+  .controls-panel{
+    flex:1 1 auto!important;
+    min-height:0!important;
+    height:auto!important;
+    max-height:none!important;
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    -webkit-overflow-scrolling:touch!important;
+    overscroll-behavior:contain!important;
+    touch-action:pan-y!important;
+    padding-bottom:calc(88px + env(safe-area-inset-bottom))!important;
+    position:relative!important;
+    z-index:20!important;
+  }
+  .controls-panel input[type="range"],
+  .controls-panel input[type="number"],
+  .controls-panel input[type="text"],
+  .controls-panel button,
+  .controls-panel .control-section{
+    touch-action:manipulation!important;
+  }
+  .controls-panel::-webkit-scrollbar{width:5px!important;}
+}
+</style>
+<script id="mobile-fixed-preview-scroll-controls-js">
+(function(){
+  function isMobileLayout(){
+    return window.matchMedia && window.matchMedia('(max-width: 900px)').matches;
+  }
+  function allowOwnTouchScroll(target){
+    if(!target || !target.closest) return false;
+    return !!target.closest('#sidePanel, #mosaicEditor, .upload-panel, .upload-panel-inner, .batch-panel');
+  }
+  document.addEventListener('touchmove', function(e){
+    if(!isMobileLayout()) return;
+    if(document.body.classList.contains('preview-fullscreen-open')) return;
+    if(allowOwnTouchScroll(e.target)) return;
+    e.preventDefault();
+  }, {passive:false});
+  document.addEventListener('wheel', function(e){
+    if(!isMobileLayout()) return;
+    if(document.body.classList.contains('preview-fullscreen-open')) return;
+    if(allowOwnTouchScroll(e.target)) return;
+    e.preventDefault();
+  }, {passive:false});
+})();
+</script>
+
 </body>
 </html>
