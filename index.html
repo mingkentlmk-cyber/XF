@@ -474,6 +474,7 @@ ctx.drawImage(el.img,-w/2,-h/2,w,h);
 }
 ctx.restore();
 });
+if(!isTransparent){drawLayerSelectionOverlay(ctx);}
 }
 function renderText(ctx,el){
 ctx.save();
@@ -655,6 +656,92 @@ ctx.restore();
 }
 function drawSelectionBox(el){
 // SAVE时不绘制选中框
+}
+function measureTextVisualWidth(el){
+const preset=textPresetConfig[el.stylePreset]||textPresetConfig.normal;
+const f=getElementFont(el,preset);
+const t=document.createElement('canvas').getContext('2d');
+const fs=Math.max(1,(el.fontSize||40)*(el.scale||1));
+t.font=`${f.weight} ${fs}px ${f.family}`;
+return Math.max(1,t.measureText(el.text||'').width);
+}
+function getSelectionLocalBounds(el){
+if(!el)return null;
+if(el.type==='image'||el.type==='imageSlot'){
+const w=(el.width||1)*(el.scale||1);
+const h=(el.height||1)*(el.scale||1);
+return{left:-w/2,top:-h/2,right:w/2,bottom:h/2};
+}
+if(el.type==='text'){
+const fs=Math.max(1,(el.fontSize||40)*(el.scale||1));
+const w=measureTextVisualWidth(el);
+let left=-w/2,right=w/2;
+if(el.align==='left'){left=0;right=w;}
+if(el.align==='right'){left=-w;right=0;}
+let top=-fs*.58,bottom=fs*.58;
+const strokePad=Math.max(0,
+  (el.strokeWidth1||0),(el.strokeWidth2||0),
+  (el.extrudeStrokeWidth1||0),(el.extrudeStrokeWidth2||0)
+)/2+4;
+const depth=Math.max(0,el.extrudeDepth||0);
+const sx=(typeof el.extrudeStepX==='number')?el.extrudeStepX:0;
+const sy=(typeof el.extrudeStepY==='number')?el.extrudeStepY:0;
+const dx=depth*sx;
+const dy=depth*sy;
+left+=Math.min(0,dx)-strokePad;
+right+=Math.max(0,dx)+strokePad;
+top+=Math.min(0,dy)-strokePad;
+bottom+=Math.max(0,dy)+strokePad;
+return{left,top,right,bottom};
+}
+return null;
+}
+function drawLayerSelectionOverlay(ctx){
+const el=getSelectedElement();
+if(!el||el.visible===false)return;
+const b=getSelectionLocalBounds(el);
+if(!b)return;
+ctx.save();
+ctx.translate(el.x||0,el.y||0);
+ctx.rotate((el.rotation||0)*Math.PI/180);
+const w=b.right-b.left,h=b.bottom-b.top;
+const locked=!!el.locked;
+const main=locked?'rgba(255,241,168,.98)':'rgba(118,234,255,.98)';
+const glow=locked?'rgba(255,210,70,.35)':'rgba(118,234,255,.36)';
+ctx.lineJoin='miter';
+ctx.lineCap='butt';
+ctx.setLineDash([8,5]);
+ctx.lineWidth=2.2;
+ctx.strokeStyle=main;
+ctx.shadowColor=glow;
+ctx.shadowBlur=8;
+ctx.strokeRect(b.left,b.top,w,h);
+ctx.setLineDash([]);
+ctx.shadowBlur=0;
+const size=Math.max(7,Math.min(12,Math.max(w,h)*0.035));
+const corners=[[b.left,b.top],[b.right,b.top],[b.right,b.bottom],[b.left,b.bottom]];
+for(const c of corners){
+ctx.fillStyle='rgba(3,8,15,.92)';
+ctx.strokeStyle=main;
+ctx.lineWidth=2;
+ctx.fillRect(c[0]-size/2,c[1]-size/2,size,size);
+ctx.strokeRect(c[0]-size/2,c[1]-size/2,size,size);
+}
+// subtle layer name tag near top-left, useful when small object is selected
+const label=(el.name||el.text||'LAYER').toString().slice(0,18);
+if(label){
+ctx.font='900 11px Arial, sans-serif';
+ctx.textAlign='left';ctx.textBaseline='bottom';
+const pad=4,tw=ctx.measureText(label).width;
+const lx=b.left,ly=b.top-6;
+ctx.fillStyle='rgba(0,0,0,.62)';
+ctx.fillRect(lx,ly-16,tw+pad*2,16);
+ctx.strokeStyle=main;ctx.lineWidth=1;
+ctx.strokeRect(lx,ly-16,tw+pad*2,16);
+ctx.fillStyle=main;
+ctx.fillText(label,lx+pad,ly-3);
+}
+ctx.restore();
 }
 function getTextWidth(el){
 const preset=textPresetConfig[el.stylePreset]||textPresetConfig.normal;
@@ -933,7 +1020,41 @@ if(Math.hypot(p.x-longPressStartPoint.x,p.y-longPressStartPoint.y)>LONG_PRESS_MO
   clearLongPressZoom();
 }
 }
-function handleStart(e){if(e.touches&&e.touches.length>=2){clearLongPressZoom();startAnchorZoom(e);return;}if(e.target!==canvas)return;if(e.touches&&e.touches.length===1){scheduleLongPressZoom(e);}const pos=getPointerPos(e);let found=false;for(let i=presetElements.length-1;i>=0;i--){const el=presetElements[i];if(el.visible===false)continue;let w=getTextWidth(el),h=el.cache?el.cache.textHeight:el.fontSize;if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2){selectedType='preset';selectedIndex=i;markDirty();updateObjectList();updateControls();return;}}for(let i=templateElements.length-1;i>=0;i--){const el=templateElements[i];if(el.visible===false)continue;if(el.type==='imageSlot'){let w=el.width*(el.scale||1),h=el.height*(el.scale||1);if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2){selectedType='template';selectedIndex=i;markDirty();updateObjectList();updateControls();showUploadPanel();return;}}if(el.locked)continue;let w,h;if(el.type==='image'){w=el.width*(el.scale||1);h=el.height*(el.scale||1);}else{w=getTextWidth(el);h=el.cache?el.cache.textHeight:el.fontSize;}if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2){selectedType='template';selectedIndex=i;isDragging=true;dragStart={x:pos.x-el.x,y:pos.y-el.y};found=true;markDirty();updateObjectList();updateControls();break;}}if(!found){selectedType='';selectedIndex=-1;markDirty();updateControls();}}
+function handleStart(e){
+if(e.touches&&e.touches.length>=2){clearLongPressZoom();startAnchorZoom(e);return;}
+if(e.target!==canvas)return;
+if(e.touches&&e.touches.length===1){scheduleLongPressZoom(e);}
+const pos=getPointerPos(e);
+const hit=findTopElementAt(pos);
+if(hit&&hit.el){
+  selectedType=hit.type;
+  selectedIndex=hit.index;
+  const el=hit.el;
+  markDirty();
+  updateObjectList();
+  updateControls();
+  if(el.type==='imageSlot'){
+    showUploadPanel();
+    isDragging=false;
+    return;
+  }
+  if(!el.locked){
+    isDragging=true;
+    dragStart={x:pos.x-(el.x||0),y:pos.y-(el.y||0)};
+  }else{
+    // Locked layers can still be selected from the preview, but cannot be moved.
+    isDragging=false;
+    canvas.style.cursor='default';
+  }
+  return;
+}
+selectedType='';
+selectedIndex=-1;
+isDragging=false;
+markDirty();
+updateObjectList();
+updateControls();
+}
 function handleMove(e){
 if(isAnchorScaling){applySingleAnchorScale(e);return;}
 if(e.touches&&e.touches.length>=2){clearLongPressZoom();if(isPinching){applyAnchorZoom(e);return;}if(startAnchorZoom(e))return;}
@@ -3812,5 +3933,48 @@ function applyMosaicEditor(){
   }
 })();
 </script>
+
+
+<!-- TEMP(1) DEFAULT PRESET + PS-LIKE SELECTED LAYER BOUNDING BOX -->
+<script id="empire4-default-preset-and-selection-box-v1">
+(function(){
+  const EMPIRE4_PROJECT={"version":"1.1","preset":[{"type":"text","name":"日期","text":"2026-07-07 02:25 AM","x":144,"y":649,"scale":0.96,"rotation":0,"opacity":1,"fontSize":24,"align":"center","color":"#D4AF37","stylePreset":"normal","gradientColor1":"#4b3514","gradientColor2":"#927034","locked":true,"visible":true,"extrudeStrokeColor1":"#000000","extrudeStrokeWidth1":0,"extrudeStrokeColor2":"#ffffff","extrudeStrokeWidth2":0,"cache":null},{"type":"text","name":"金额","text":"MYR 10,000.00","x":572,"y":651,"scale":0.92,"rotation":0,"opacity":1,"fontSize":27,"align":"right","color":"#D4AF37","stylePreset":"normal","gradientColor1":"#453112","gradientColor2":"#977234","locked":true,"visible":true,"extrudeStrokeColor1":"#000000","extrudeStrokeWidth1":0,"extrudeStrokeColor2":"#ffffff","extrudeStrokeWidth2":0,"cache":null},{"type":"text","name":"标题","text":"RM 10,000","x":574,"y":520,"scale":1.14,"rotation":0,"opacity":1,"fontSize":60,"align":"right","color":"#D4AF37","stylePreset":"gold_basic","gradientColor1":"#86874f","gradientColor2":"#feffe0","gradientColor3":"#858351","gradientAngle":90,"gradientSize":4,"gradientX":0,"gradientY":5,"shadowOffsetX":0,"shadowOffsetY":0,"shadowSize":0,"shadowSpread":16,"glowBlur":16,"glowColor":"rgba(255,215,0,0.6)","strokeColor1":"#f5f299","strokeWidth1":3,"strokeColor2":"#54522c","strokeWidth2":8,"locked":true,"visible":true,"extrudeDepth":8,"extrudeStrokeColor1":"#eff594","extrudeStrokeWidth1":3,"extrudeStrokeColor2":"#0c0c08","extrudeStrokeWidth2":8,"extrudeStepX":0,"extrudeStepY":0,"extrudeColor1":"#000000","fontPreset":"condensed","shadowColor":"#000000","cache":null}],"template":[]};
+  function cloneProject(){return JSON.parse(JSON.stringify(EMPIRE4_PROJECT));}
+  async function hydrateList(list){
+    const arr=[];
+    for(const ed of (list||[])){
+      const el={...ed};
+      if(el.imgData){try{el.img=await dataURLToImage(el.imgData);}catch(e){console.warn('Image hydrate failed',e);}}
+      if(el.type==='text')el.cache=null;
+      arr.push(el);
+    }
+    return arr;
+  }
+  window.loadEmpire4DefaultPreset=async function(){
+    const d=cloneProject();
+    templateElements=await hydrateList(d.template);
+    presetElements=await hydrateList(d.preset);
+    selectedType='';
+    selectedIndex=-1;
+    history=[];
+    historyIndex=-1;
+    markDirty();
+    updateObjectList();
+    updateControls();
+    saveState();
+    if(typeof showToast==='function')showToast('预设已载入');
+  };
+  try{
+    createPresetElements=function(){return JSON.parse(JSON.stringify(EMPIRE4_PROJECT.preset||[]));};
+    switchTemplate=function(){window.loadEmpire4DefaultPreset();};
+  }catch(e){console.warn('Preset override skipped',e);}
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',function(){setTimeout(window.loadEmpire4DefaultPreset,30);},{once:true});
+  }else{
+    setTimeout(window.loadEmpire4DefaultPreset,30);
+  }
+})();
+</script>
+
 </body>
 </html>
