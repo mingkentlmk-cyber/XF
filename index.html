@@ -157,34 +157,13 @@
 <div class="control-row" style="margin-top:6px;"><label>SIZE</label><input type="range" id="fontSize" min="12" max="200" value="48" oninput="updateText('fontSize')"><input type="number" id="fontSizeInput" value="48" min="12" max="200" oninput="inputSyncSlider('fontSize')" onchange="updateTextFromInput('fontSize')"><span class="unit">px</span></div>
 </div>
 </div>
-<div class="txt-subsection">
-<div class="txt-subtitle" onclick="toggleTxtGroup('txtGroupPreset')"><span>02 效果预设</span><span id="txtGroupPresetIcon">▼</span></div>
-<div class="txt-subcontent" id="txtGroupPreset">
-<div class="txt-tip">预设只是一键写入下面所有参数，之后还能继续微调。</div>
-<div class="style-preset-row">
-<button class="btn btn-sm btn-gold" id="preset_gold_basic" onclick="setStylePreset('gold_basic')">金</button>
-<button class="btn btn-sm btn-vip" id="preset_vip_gold" onclick="setStylePreset('vip_gold')">VIP</button>
-<button class="btn btn-sm btn-fire" id="preset_red_fire" onclick="setStylePreset('red_fire')">火</button>
-<button class="btn btn-sm btn-neon-blue" id="preset_blue_neon" onclick="setStylePreset('blue_neon')">蓝</button>
-</div>
-<div class="style-preset-row">
-<button class="btn btn-sm" style="background:#660099;color:white;border-color:#660099" id="preset_purple_glow" onclick="setStylePreset('purple_glow')">紫</button>
-<button class="btn btn-sm btn-glass" id="preset_white_glass" onclick="setStylePreset('white_glass')">白</button>
-<button class="btn btn-sm" style="background:linear-gradient(180deg,#fff6c7,#ff8a00);color:#1b0b00;border-color:#ffd66b" id="preset_huazi" onclick="setStylePreset('huazi')">花</button>
-</div>
-<div class="style-preset-row">
-<button class="btn btn-sm" style="background:linear-gradient(180deg,#fff7c8,#b67909);color:#140b00;border-color:#ffdb72" id="preset_huazi_gold_3d" onclick="setStylePreset('huazi_gold_3d')">金3D</button>
-<button class="btn btn-sm" style="background:linear-gradient(180deg,#efffff,#2ccfff);color:#03151d;border-color:#9af5ff" id="preset_huazi_ice_3d" onclick="setStylePreset('huazi_ice_3d')">冰3D</button>
-<button class="btn btn-sm" style="background:linear-gradient(180deg,#ffd7df,#cf0032);color:white;border-color:#ff8ba4" id="preset_huazi_ruby_3d" onclick="setStylePreset('huazi_ruby_3d')">红3D</button>
-</div>
-<div class="style-preset-row">
-<button class="btn btn-sm" style="background:linear-gradient(180deg,#292929,#050505);color:#ffd978;border-color:#8f6a20" id="preset_huazi_black_gold_3d" onclick="setStylePreset('huazi_black_gold_3d')">黑金</button>
-<button class="btn btn-sm" style="background:linear-gradient(180deg,#ffffff,#9ea9b8);color:#0b1016;border-color:#dce8ff" id="preset_huazi_silver_3d" onclick="setStylePreset('huazi_silver_3d')">银3D</button>
-<button class="btn btn-sm" style="background:linear-gradient(180deg,#f0d7ff,#8016e7);color:white;border-color:#ddb2ff" id="preset_huazi_purple_3d" onclick="setStylePreset('huazi_purple_3d')">紫3D</button>
-<button class="btn btn-sm" style="background:linear-gradient(180deg,#fff2ca,#b87c12);color:#140b00;border-color:#f0dfb0" id="preset_empire_ornate_gold" onclick="setStylePreset('empire_ornate_gold')">帝</button>
+<div class="txt-subsection" id="txtGroupPresetRemovedBox">
+<div class="txt-subtitle"><span>02 手动样式</span><span>OFF</span></div>
+<div class="txt-subcontent">
+<div class="txt-tip">已移除所有效果预设。新增标题保持纯色无特效；需要效果时请用下方渐变、描边、3D、阴影、发光手动调整。</div>
 </div>
 </div>
-</div>
+
 <div class="txt-subsection">
 <div class="txt-subtitle" onclick="toggleTxtGroup('txtGroupFace')"><span>03 正面渐变</span><span id="txtGroupFaceIcon">▼</span></div>
 <div class="txt-subcontent" id="txtGroupFace">
@@ -208,13 +187,13 @@
 <div class="txt-subtitle" onclick="toggleTxtGroup('txtGroup3D')"><span>05 3D立体 / 切面</span><span id="txtGroup3DIcon">▼</span></div>
 <div class="txt-subcontent" id="txtGroup3D">
 <div class="txt-tip">深度为 0 就是平面字；增加深度会产生同一套连续的 3D 侧面。</div>
-<div class="control-row"><label>DEPTH</label><input type="range" id="extrudeDepth" min="0" max="40" value="0" oninput="updateEffect('extrudeDepth');syncNumber('extrudeDepth')"><input type="number" id="extrudeDepthInput" value="0" min="0" max="40" oninput="inputSyncSlider('extrudeDepth');updateEffectFromInput('extrudeDepth')"><span class="unit">px</span></div>
+<div class="control-row"><label>DEPTH</label><input type="range" id="extrudeDepth" min="0" max="80" value="0" oninput="updateEffect('extrudeDepth');syncNumber('extrudeDepth')"><input type="number" id="extrudeDepthInput" value="0" min="0" max="80" oninput="inputSyncSlider('extrudeDepth');updateEffectFromInput('extrudeDepth')"><span class="unit">px</span></div>
 <div class="control-row"><label>X DIR</label><input type="range" id="extrudeStepX" min="-3" max="3" step="0.05" value="0" oninput="updateEffect('extrudeStepX');syncNumber('extrudeStepX')"><input type="number" id="extrudeStepXInput" value="0" min="-3" max="3" step="0.05" oninput="inputSyncSlider('extrudeStepX');updateEffectFromInput('extrudeStepX')"></div>
 <div class="control-row"><label>Y DIR</label><input type="range" id="extrudeStepY" min="-3" max="3" step="0.05" value="0" oninput="updateEffect('extrudeStepY');syncNumber('extrudeStepY')"><input type="number" id="extrudeStepYInput" value="0" min="-3" max="3" step="0.05" oninput="inputSyncSlider('extrudeStepY');updateEffectFromInput('extrudeStepY')"></div>
 <div class="control-row"><label>DARK</label><input type="color" id="extrudeColor1" value="#3a0b00" onchange="updateEffectColor('extrudeColor1')"></div>
 <div class="control-row"><label>LIGHT</label><input type="color" id="extrudeColor2" value="#a95000" onchange="updateEffectColor('extrudeColor2')"></div>
-<div class="control-row"><label>HI</label><input type="range" id="bevelLight" min="0" max="100" value="28" oninput="updateEffect('bevelLight');syncNumber('bevelLight')"><input type="number" id="bevelLightInput" value="28" min="0" max="100" oninput="inputSyncSlider('bevelLight');updateEffectFromInput('bevelLight')"><span class="unit">%</span></div>
-<div class="control-row"><label>DARK</label><input type="range" id="bevelDark" min="0" max="100" value="18" oninput="updateEffect('bevelDark');syncNumber('bevelDark')"><input type="number" id="bevelDarkInput" value="18" min="0" max="100" oninput="inputSyncSlider('bevelDark');updateEffectFromInput('bevelDark')"><span class="unit">%</span></div>
+<div class="control-row"><label>高光</label><input type="range" id="bevelLight" min="0" max="100" value="28" oninput="updateEffect('bevelLight');syncNumber('bevelLight')"><input type="number" id="bevelLightInput" value="28" min="0" max="100" oninput="inputSyncSlider('bevelLight');updateEffectFromInput('bevelLight')"><span class="unit">%</span></div>
+<div class="control-row"><label>暗部</label><input type="range" id="bevelDark" min="0" max="100" value="18" oninput="updateEffect('bevelDark');syncNumber('bevelDark')"><input type="number" id="bevelDarkInput" value="18" min="0" max="100" oninput="inputSyncSlider('bevelDark');updateEffectFromInput('bevelDark')"><span class="unit">%</span></div>
 </div>
 </div>
 <div class="txt-subsection">
@@ -223,7 +202,7 @@
 <div class="control-row"><label>OffsetX</label><input type="range" id="shadowOffsetX" min="-50" max="50" value="0" oninput="updateEffect('shadowOffsetX');syncNumber('shadowOffsetX')"><input type="number" id="shadowOffsetXInput" value="0" oninput="inputSyncSlider('shadowOffsetX');updateEffectFromInput('shadowOffsetX')"></div>
 <div class="control-row"><label>OffsetY</label><input type="range" id="shadowOffsetY" min="-50" max="50" value="0" oninput="updateEffect('shadowOffsetY');syncNumber('shadowOffsetY')"><input type="number" id="shadowOffsetYInput" value="0" oninput="inputSyncSlider('shadowOffsetY');updateEffectFromInput('shadowOffsetY')"></div>
 <div class="control-row"><label>扩展</label><input type="range" id="shadowSize" min="0" max="50" value="0" oninput="updateEffect('shadowSize');syncNumber('shadowSize')"><input type="number" id="shadowSizeInput" value="0" oninput="inputSyncSlider('shadowSize');updateEffectFromInput('shadowSize')"><span class="unit">px</span></div>
-<div class="control-row"><label>BLUR度</label><input type="range" id="shadowSpread" min="0" max="50" value="0" oninput="updateEffect('shadowSpread');syncNumber('shadowSpread')"><input type="number" id="shadowSpreadInput" value="0" oninput="inputSyncSlider('shadowSpread');updateEffectFromInput('shadowSpread')"><span class="unit">px</span></div>
+<div class="control-row"><label>BLUR度</label><input type="range" id="shadowSpread" min="0" max="200" value="0" oninput="updateEffect('shadowSpread');syncNumber('shadowSpread')"><input type="number" id="shadowSpreadInput" value="0" min="0" max="200" oninput="inputSyncSlider('shadowSpread');updateEffectFromInput('shadowSpread')"><span class="unit">px</span></div>
 <div class="control-row"><label>COLOR</label><input type="color" id="shadowColor" value="#000000" onchange="updateEffectColor('shadowColor')"></div>
 </div>
 </div>
@@ -312,14 +291,15 @@ const minutes=String(now.getMinutes()).padStart(2,'0');
 const seconds=String(now.getSeconds()).padStart(2,'0');
 return`${hours}:${minutes}:${seconds}`;
 }
-const textPresetConfig={normal:{useGradient:false,gradientColor1:'#D4AF37',gradientColor2:'#D4AF37',gradientSize:100,gradientX:0,gradientY:0},gold_basic:{gradientStops:[{pos:0,color:'#5A3A00'},{pos:0.25,color:'#D4AF37'},{pos:0.5,color:'#FFF8DC'},{pos:0.75,color:'#D4AF37'},{pos:1,color:'#5A3A00'}],gradientSize:100,gradientX:0,gradientY:0,outerStroke:[{color:'#8B6914',width:6},{color:'#FFD700',width:3}],glow:{color:'rgba(255,215,0,0.6)',blur:20},shadow:{offsetX:2,offsetY:2,size:5,spread:8}},vip_gold:{gradientStops:[{pos:0,color:'#8B4513'},{pos:0.2,color:'#D4AF37'},{pos:0.4,color:'#FFD700'},{pos:0.5,color:'#FFE44D'},{pos:0.6,color:'#FFD700'},{pos:0.8,color:'#D4AF37'},{pos:1,color:'#8B4513'}],gradientSize:100,gradientX:0,gradientY:0,outerStroke:[{color:'#FF8C00',width:8},{color:'#FFD700',width:4}],glow:{color:'rgba(255,180,0,0.8)',blur:25},shadow:{offsetX:3,offsetY:3,size:8,spread:12}},red_fire:{gradientStops:[{pos:0,color:'#5A1A00'},{pos:0.3,color:'#D4380D'},{pos:0.5,color:'#FF6B35'},{pos:0.7,color:'#D4380D'},{pos:1,color:'#5A1A00'}],gradientSize:100,gradientX:0,gradientY:0,outerStroke:[{color:'#8B2500',width:6},{color:'#FF4500',width:3}],glow:{color:'rgba(255,80,0,0.6)',blur:20},shadow:{offsetX:2,offsetY:2,size:4,spread:6}},blue_neon:{gradientStops:[{pos:0,color:'#003344'},{pos:0.3,color:'#006699'},{pos:0.5,color:'#00D4FF'},{pos:0.7,color:'#006699'},{pos:1,color:'#003344'}],gradientSize:120,gradientX:0,gradientY:0,outerStroke:[{color:'#005577',width:6},{color:'#00AACC',width:3}],glow:{color:'rgba(0,212,255,0.7)',blur:22},shadow:{offsetX:0,offsetY:0,size:10,spread:15}},purple_glow:{gradientStops:[{pos:0,color:'#33004D'},{pos:0.3,color:'#660099'},{pos:0.5,color:'#BF00FF'},{pos:0.7,color:'#660099'},{pos:1,color:'#33004D'}],gradientSize:150,gradientX:0,gradientY:-20,outerStroke:[{color:'#4A0070',width:6},{color:'#8B00CC',width:3}],glow:{color:'rgba(191,0,255,0.7)',blur:22},shadow:{offsetX:0,offsetY:0,size:12,spread:20}},white_glass:{gradientStops:[{pos:0,color:'#757575'},{pos:0.3,color:'#BDBDBD'},{pos:0.5,color:'#F5F5F5'},{pos:0.7,color:'#BDBDBD'},{pos:1,color:'#757575'}],gradientSize:80,gradientX:0,gradientY:0,outerStroke:[{color:'#9E9E9E',width:5},{color:'#E0E0E0',width:2}],glow:{color:'rgba(255,255,255,0.4)',blur:15},shadow:{offsetX:1,offsetY:1,size:3,spread:4}},huazi:{huazi3d:true,gradientStops:[{pos:0,color:'#FFF7B8'},{pos:0.18,color:'#FFD36A'},{pos:0.36,color:'#FF8A00'},{pos:0.55,color:'#FFF2A6'},{pos:0.75,color:'#E63700'},{pos:1,color:'#3A0B00'}],gradientSize:135,gradientX:0,gradientY:-8,outerStroke:[{color:'#2A0700',width:12},{color:'#FFCC52',width:6}],glow:{color:'rgba(255,132,0,0.50)',blur:18},shadow:{offsetX:5,offsetY:7,size:16,spread:14},extrude:{depth:18,stepX:.72,stepY:.96,from:'#4B0D00',to:'#A95000'}},
-huazi_gold_3d:{huazi3d:true,gradientStops:[{pos:0,color:'#FFFBE1'},{pos:.14,color:'#FFE58B'},{pos:.30,color:'#B87713'},{pos:.48,color:'#FFF4A8'},{pos:.68,color:'#D99C20'},{pos:1,color:'#2B1800'}],gradientSize:130,gradientX:0,gradientY:-5,outerStroke:[{color:'#211000',width:13},{color:'#FFE18A',width:6}],glow:{color:'rgba(255,198,70,0.46)',blur:17},shadow:{offsetX:6,offsetY:7,size:17,spread:13},extrude:{depth:20,stepX:.75,stepY:1.05,from:'#2E1800',to:'#B57712'}},
-huazi_ice_3d:{huazi3d:true,gradientStops:[{pos:0,color:'#FFFFFF'},{pos:.17,color:'#D8FDFF'},{pos:.35,color:'#72E8FF'},{pos:.52,color:'#F7FFFF'},{pos:.72,color:'#1AAED8'},{pos:1,color:'#012034'}],gradientSize:140,gradientX:0,gradientY:-5,outerStroke:[{color:'#00111D',width:12},{color:'#7AF1FF',width:6}],glow:{color:'rgba(93,232,255,0.58)',blur:19},shadow:{offsetX:5,offsetY:7,size:15,spread:12},extrude:{depth:18,stepX:.70,stepY:1.0,from:'#002035',to:'#0797C9'}},
-huazi_ruby_3d:{huazi3d:true,gradientStops:[{pos:0,color:'#FFE9EF'},{pos:.17,color:'#FF7E98'},{pos:.35,color:'#E40038'},{pos:.52,color:'#FFF0F5'},{pos:.72,color:'#B50026'},{pos:1,color:'#230005'}],gradientSize:132,gradientX:0,gradientY:-4,outerStroke:[{color:'#1E0005',width:12},{color:'#FF607D',width:6}],glow:{color:'rgba(255,42,88,0.50)',blur:18},shadow:{offsetX:6,offsetY:7,size:16,spread:12},extrude:{depth:19,stepX:.72,stepY:1.02,from:'#320008',to:'#A80024'}},
-huazi_black_gold_3d:{huazi3d:true,gradientStops:[{pos:0,color:'#FFF0A6'},{pos:.16,color:'#B37A17'},{pos:.32,color:'#181818'},{pos:.50,color:'#F7CE63'},{pos:.70,color:'#0B0B0B'},{pos:1,color:'#000000'}],gradientSize:130,gradientX:0,gradientY:-3,outerStroke:[{color:'#000000',width:14},{color:'#D2A43C',width:6}],glow:{color:'rgba(255,190,70,0.38)',blur:16},shadow:{offsetX:7,offsetY:8,size:18,spread:14},extrude:{depth:22,stepX:.78,stepY:1.08,from:'#020202',to:'#6A430B'}},
-huazi_silver_3d:{huazi3d:true,gradientStops:[{pos:0,color:'#FFFFFF'},{pos:.14,color:'#DDE7F0'},{pos:.30,color:'#7C8794'},{pos:.48,color:'#FFFFFF'},{pos:.68,color:'#B8C2CF'},{pos:1,color:'#151A21'}],gradientSize:126,gradientX:0,gradientY:-4,outerStroke:[{color:'#111820',width:12},{color:'#EAF4FF',width:6}],glow:{color:'rgba(215,236,255,0.40)',blur:15},shadow:{offsetX:5,offsetY:7,size:15,spread:11},extrude:{depth:18,stepX:.72,stepY:1.0,from:'#1D2530',to:'#84909E'}},
-huazi_purple_3d:{huazi3d:true,gradientStops:[{pos:0,color:'#FFF3FF'},{pos:.15,color:'#E09BFF'},{pos:.32,color:'#8A20F0'},{pos:.52,color:'#FFFFFF'},{pos:.72,color:'#6710B8'},{pos:1,color:'#0B0018'}],gradientSize:142,gradientX:0,gradientY:-5,outerStroke:[{color:'#0B0015',width:12},{color:'#D99AFF',width:6}],glow:{color:'rgba(180,65,255,0.52)',blur:19},shadow:{offsetX:5,offsetY:7,size:16,spread:13},extrude:{depth:19,stepX:.72,stepY:1.02,from:'#18002E',to:'#7816C9'}},
-empire_ornate_gold:{huazi3d:true,empireMetal:true,fontFamily:"'UnifrakturCook', 'Pirata One', 'Noto Sans SC', 'Microsoft YaHei', serif",fontWeight:'700',gradientStops:[{pos:0,color:'#fff9e8'},{pos:.12,color:'#f7df96'},{pos:.28,color:'#c4881e'},{pos:.46,color:'#fff4ca'},{pos:.66,color:'#dba03a'},{pos:.84,color:'#9d5d08'},{pos:1,color:'#f3cf73'}],gradientSize:126,gradientX:0,gradientY:-6,outlineStack:[{color:'#efe1bd',width:14},{color:'#090604',width:10},{color:'#b79052',width:4.4}],innerStroke:{color:'rgba(255,250,236,0.92)',width:1.8},glow:{color:'rgba(255,220,154,0.22)',blur:9},shadow:{offsetX:6,offsetY:8,size:14,spread:10},extrude:{depth:16,stepX:.72,stepY:.94,from:'#231303',to:'#82500d'},bevel:{lightAlpha:.34,darkAlpha:.22}}};
+const textPresetConfig={
+normal:{useGradient:false,gradientColor1:'#FFFFFF',gradientColor2:'#FFFFFF',gradientSize:100,gradientX:0,gradientY:0},
+gold_basic:{gradientStops:[{pos:0,color:'#5A3A00'},{pos:0.25,color:'#D4AF37'},{pos:0.5,color:'#FFF8DC'},{pos:0.75,color:'#D4AF37'},{pos:1,color:'#5A3A00'}],gradientSize:100,gradientX:0,gradientY:0,outerStroke:[{color:'#8B6914',width:6},{color:'#FFD700',width:3}],glow:{color:'rgba(255,215,0,0.6)',blur:20},shadow:{offsetX:2,offsetY:2,size:5,spread:8}},
+vip_gold:{gradientStops:[{pos:0,color:'#8B4513'},{pos:0.2,color:'#D4AF37'},{pos:0.4,color:'#FFD700'},{pos:0.5,color:'#FFE44D'},{pos:0.6,color:'#FFD700'},{pos:0.8,color:'#D4AF37'},{pos:1,color:'#8B4513'}],gradientSize:100,gradientX:0,gradientY:0,outerStroke:[{color:'#FF8C00',width:8},{color:'#FFD700',width:4}],glow:{color:'rgba(255,180,0,0.8)',blur:25},shadow:{offsetX:3,offsetY:3,size:8,spread:12}},
+red_fire:{gradientStops:[{pos:0,color:'#5A1A00'},{pos:0.3,color:'#D4380D'},{pos:0.5,color:'#FF6B35'},{pos:0.7,color:'#D4380D'},{pos:1,color:'#5A1A00'}],gradientSize:100,gradientX:0,gradientY:0,outerStroke:[{color:'#8B2500',width:6},{color:'#FF4500',width:3}],glow:{color:'rgba(255,80,0,0.6)',blur:20},shadow:{offsetX:2,offsetY:2,size:4,spread:6}},
+blue_neon:{gradientStops:[{pos:0,color:'#003344'},{pos:0.3,color:'#006699'},{pos:0.5,color:'#00D4FF'},{pos:0.7,color:'#006699'},{pos:1,color:'#003344'}],gradientSize:120,gradientX:0,gradientY:0,outerStroke:[{color:'#005577',width:6},{color:'#00AACC',width:3}],glow:{color:'rgba(0,212,255,0.7)',blur:22},shadow:{offsetX:0,offsetY:0,size:10,spread:15}},
+purple_glow:{gradientStops:[{pos:0,color:'#33004D'},{pos:0.3,color:'#660099'},{pos:0.5,color:'#BF00FF'},{pos:0.7,color:'#660099'},{pos:1,color:'#33004D'}],gradientSize:150,gradientX:0,gradientY:-20,outerStroke:[{color:'#4A0070',width:6},{color:'#8B00CC',width:3}],glow:{color:'rgba(191,0,255,0.7)',blur:22},shadow:{offsetX:0,offsetY:0,size:12,spread:20}},
+white_glass:{gradientStops:[{pos:0,color:'#757575'},{pos:0.3,color:'#BDBDBD'},{pos:0.5,color:'#F5F5F5'},{pos:0.7,color:'#BDBDBD'},{pos:1,color:'#757575'}],gradientSize:80,gradientX:0,gradientY:0,outerStroke:[{color:'#9E9E9E',width:5},{color:'#E0E0E0',width:2}],glow:{color:'rgba(255,255,255,0.4)',blur:15},shadow:{offsetX:1,offsetY:1,size:3,spread:4}}
+};
 const fontPresetConfig={
 bold_cn:{label:'黑体',family:"'Noto Sans SC', 'Microsoft YaHei', Arial, sans-serif",weight:'900'},
 poster:{label:'海报',family:"'Anton', 'Noto Sans SC', 'Microsoft YaHei', sans-serif",weight:'900'},
@@ -380,7 +360,7 @@ const LONG_PRESS_MOVE_TOLERANCE=10;
 let currentTemplateMode='default';
 let saveHistoryTimeout=null;
 // 默认模板配置 - 使用当前系统时间
-const defaultPresetConfig={date:{type:'text',name:'日期',text:getCurrentDateTime12(),x:144,y:649,scale:0.96,rotation:0,opacity:1,fontSize:24,align:'center',color:'#D4AF37',stylePreset:'normal',gradientColor1:'#4b3514',gradientColor2:'#927034',locked:true,visible:true,cache:null},amount:{type:'text',name:'金额',text:'MYR 10,000.00',x:572,y:651,scale:0.92,rotation:0,opacity:1,fontSize:27,align:'right',color:'#D4AF37',stylePreset:'normal',gradientColor1:'#453112',gradientColor2:'#977234',locked:true,visible:true,cache:null},title:{type:'text',name:'标题',text:'RM 10,000',x:583,y:535,scale:1.01,rotation:0,opacity:1,fontSize:60,align:'right',color:'#D4AF37',stylePreset:'gold_basic',gradientColor1:'#5A3A00',gradientColor2:'#FFF8DC',gradientColor3:null,gradientAngle:83,gradientSize:10,gradientX:-200,gradientY:3,shadowOffsetX:0,shadowOffsetY:0,shadowSize:15,shadowSpread:22,glowBlur:16,glowColor:'rgba(255,215,0,0.6)',strokeColor1:'#f2df78',strokeWidth1:3,strokeColor2:'#3c3116',strokeWidth2:8,locked:true,visible:true,cache:null}};
+const defaultPresetConfig={date:{type:'text',name:'日期',text:getCurrentDateTime12(),x:144,y:649,scale:0.96,rotation:0,opacity:1,fontSize:24,align:'center',color:'#D4AF37',stylePreset:'normal',gradientColor1:'#4b3514',gradientColor2:'#927034',locked:true,visible:true,cache:null},amount:{type:'text',name:'金额',text:'MYR 10,000.00',x:572,y:651,scale:0.92,rotation:0,opacity:1,fontSize:27,align:'right',color:'#D4AF37',stylePreset:'normal',gradientColor1:'#453112',gradientColor2:'#977234',locked:true,visible:true,cache:null},title:{"type":"text","name":"标题","text":"RM 10,000","x":583,"y":535,"scale":0.95,"rotation":0,"opacity":1,"fontSize":60,"align":"right","color":"#D4AF37","stylePreset":"gold_basic","gradientColor1":"#86874f","gradientColor2":"#feffe0","gradientColor3":"#858351","gradientAngle":90,"gradientSize":4,"gradientX":0,"gradientY":5,"shadowOffsetX":0,"shadowOffsetY":0,"shadowSize":32,"shadowSpread":19,"glowBlur":16,"glowColor":"rgba(255,215,0,0.6)","strokeColor1":"#f5f299","strokeWidth1":3,"strokeColor2":"#54522c","strokeWidth2":8,"locked":false,"visible":true,"extrudeDepth":8,"extrudeStrokeColor1":"#eff594","extrudeStrokeWidth1":3,"extrudeStrokeColor2":"#0c0c08","extrudeStrokeWidth2":8,"extrudeStepX":0,"extrudeStepY":0,"extrudeColor1":"#000000","fontPreset":"bold_cn","cache":null,"shadowColor":"#000000"}};
 // 自定义模板配置 - 使用当前系统时间（24小时制）
 const customPresetConfig={title:{type:'text',name:'标题',text:'RM 10,000',x:582.99,y:550.65,scale:1.35,rotation:0,opacity:1,fontSize:48,align:'right',color:'#D4AF37',stylePreset:'gold_basic',gradientColor1:'#5A3A00',gradientColor2:'#FFF8DC',gradientColor3:null,gradientAngle:0,gradientSize:100,gradientX:0,gradientY:0,shadowOffsetX:2,shadowOffsetY:2,shadowSize:5,shadowSpread:8,shadowColor:'#000000',glowBlur:20,glowColor:'rgba(255,215,0,0.6)',strokeColor1:'#FFD700',strokeWidth1:3,strokeColor2:'#8B6914',strokeWidth2:6,locked:true,visible:true,cache:null},date:{type:'text',name:'日期',text:getCurrentDateDMY(),x:77.6,y:635.06,scale:0.46,rotation:0,opacity:1,fontSize:48,align:'center',color:'#D4AF37',stylePreset:'normal',gradientColor1:'#ffffff',gradientColor2:'#ffffff',gradientColor3:'#ffffff',gradientAngle:0,gradientSize:100,gradientX:0,gradientY:0,shadowOffsetX:0,shadowOffsetY:0,shadowSize:0,shadowSpread:0,shadowColor:'#000000',glowBlur:0,glowColor:'#FFD700',strokeColor1:'#000000',strokeWidth1:0,strokeColor2:'#000000',strokeWidth2:0,locked:true,visible:true,cache:null},time:{type:'text',name:'时间',text:getCurrentTime24(),x:75.97,y:657.79,scale:0.4,rotation:0,opacity:1,fontSize:48,align:'center',color:'#D4AF37',stylePreset:'normal',gradientColor1:'#ffffff',gradientColor2:'#ffffff',gradientColor3:'#ffffff',gradientAngle:0,gradientSize:100,gradientX:0,gradientY:0,shadowOffsetX:0,shadowOffsetY:0,shadowSize:0,shadowSpread:0,shadowColor:'#000000',glowBlur:0,glowColor:'#FFD700',strokeColor1:'#000000',strokeWidth1:0,strokeColor2:'#000000',strokeWidth2:0,locked:true,visible:true,cache:null},amount:{type:'text',name:'金额',text:'10000.00',x:394.16,y:644.81,scale:0.46,rotation:0,opacity:1,fontSize:48,align:'center',color:'#D4AF37',stylePreset:'normal',gradientColor1:'#ffffff',gradientColor2:'#ffffff',gradientColor3:'#ffffff',gradientAngle:0,gradientSize:100,gradientX:0,gradientY:0,shadowOffsetX:0,shadowOffsetY:0,shadowSize:0,shadowSpread:0,shadowColor:'#000000',glowBlur:0,glowColor:'#FFD700',strokeColor1:'#000000',strokeWidth1:0,strokeColor2:'#000000',strokeWidth2:0,locked:true,visible:true,cache:null}};
 function to12HourFormat(hours,minutes){const h=hours%12;const h12=h===0?12:h;const ampm=hours<12?'AM':'PM';return`${String(h12).padStart(2,'0')}:${String(minutes).padStart(2,'0')} ${ampm}`;}
@@ -436,7 +416,7 @@ function copyLayer(){const el=getSelectedElement();if(!el)return;const data=JSON
 function pasteLayer(){const data=localStorage.getItem('layerClipboard');if(!data){showToast('剪贴板为空，请先复制图层','error');return;}const newLayer=JSON.parse(data);if(!newLayer.type){showToast('数据异常','error');return;}newLayer.isPreset=false;newLayer.locked=false;if(newLayer.type==='text'){newLayer.cache=null;}templateElements.unshift(newLayer);selectedType='template';selectedIndex=0;markDirty();updateObjectList();updateControls();saveState();showToast('已粘贴完整图层');}
 function editLayerName(e,index,type){e.stopPropagation();const span=e.target;const arr=type==='preset'?presetElements:templateElements;const el=arr[index];if(span.tagName==='INPUT')return;const input=document.createElement('input');input.type='text';input.value=el.name||el.text;input.className='layer-nameInput';span.replaceWith(input);input.focus();input.select();input.onblur=save;input.onkeydown=(ev)=>{if(ev.key==='Enter')save();if(ev.key==='Escape')updateObjectList();};function save(){const val=input.value.trim();if(val){el.name=val;}updateObjectList();saveState();}}
 function syncNumber(id){const val=document.getElementById(id).value;document.getElementById(id+'Input').value=val;}
-function updateEffectFromInput(type){const el=getSelectedElement();if(!el)return;if(el.type!=='text')return;let val=parseFloat(document.getElementById(type+'Input').value)||0;const limits={gradientAngle:[0,360],gradientSize:[0,500],gradientX:[-200,200],gradientY:[-200,200],glowBlur:[0,100],shadowOffsetX:[-50,50],shadowOffsetY:[-50,50],shadowSize:[0,50],shadowSpread:[0,50],extrudeDepth:[0,40],extrudeStepX:[-3,3],extrudeStepY:[-3,3],bevelLight:[0,100],bevelDark:[0,100]};if(limits[type]){val=Math.max(limits[type][0],Math.min(limits[type][1],val));}el[type]=val;const slider=document.getElementById(type);if(slider)slider.value=val;el.cache=null;markDirty();debouncedSaveState();}
+function updateEffectFromInput(type){const el=getSelectedElement();if(!el)return;if(el.type!=='text')return;let val=parseFloat(document.getElementById(type+'Input').value)||0;const limits={gradientAngle:[0,360],gradientSize:[0,500],gradientX:[-200,200],gradientY:[-200,200],glowBlur:[0,100],shadowOffsetX:[-50,50],shadowOffsetY:[-50,50],shadowSize:[0,80],shadowSpread:[0,120],extrudeDepth:[0,80],extrudeStepX:[-3,3],extrudeStepY:[-3,3],bevelLight:[0,100],bevelDark:[0,100]};if(limits[type]){val=Math.max(limits[type][0],Math.min(limits[type][1],val));}el[type]=val;const slider=document.getElementById(type);if(slider)slider.value=val;el.cache=null;markDirty();debouncedSaveState();}
 function toggleTextPanel(){const content=document.getElementById('textPanelContent');const icon=document.getElementById('textPanelToggle');if(content.style.display==='none'){content.style.display='block';icon.innerText='▼';}else{content.style.display='none';icon.innerText='▲';}}
 function toggleTxtGroup(id){const content=document.getElementById(id);const icon=document.getElementById(id+'Icon');if(!content)return;if(content.style.display==='none'){content.style.display='block';if(icon)icon.innerText='▼';}else{content.style.display='none';if(icon)icon.innerText='▲';}}
 function updateBatchPreview(){const startDate=new Date(document.getElementById('batchStartDate').value);const endDate=new Date(document.getElementById('batchEndDate').value);const count=parseInt(document.getElementById('batchCount').value)||1;if(startDate&&endDate&&!isNaN(startDate.getTime())&&!isNaN(endDate.getTime())){const days=Math.ceil((endDate-startDate)/(1000*60*60*24))+1;document.getElementById('batchPreview').textContent=`TOTAL ${days*count} 张 (${days}天)`;}}
@@ -516,7 +496,7 @@ const fontFamily=renderFont.family;
 const fontWeight=renderFont.weight;
 ctx.font=`${fontWeight} ${fontSize}px ${fontFamily}`;
 const w=getTextWidth(el);
-const isHuazi=el.stylePreset==='huazi'||!!activePreset.huazi3d;
+const isHuazi=false;
 if(isHuazi){
 const mix3D=(a,b,t)=>{a=(a||'#000000').replace('#','');b=(b||'#ffffff').replace('#','');if(a.length===3)a=a[0]+a[0]+a[1]+a[1]+a[2]+a[2];if(b.length===3)b=b[0]+b[0]+b[1]+b[1]+b[2]+b[2];t=Math.max(0,Math.min(1,t));const ar=parseInt(a.substr(0,2),16),ag=parseInt(a.substr(2,2),16),ab=parseInt(a.substr(4,2),16),br=parseInt(b.substr(0,2),16),bg=parseInt(b.substr(2,2),16),bb=parseInt(b.substr(4,2),16);return `rgb(${Math.round(ar+(br-ar)*t)},${Math.round(ag+(bg-ag)*t)},${Math.round(ab+(bb-ab)*t)})`;};
 const shadowCfg=activePreset.shadow||{};
@@ -1148,7 +1128,7 @@ document.getElementById('bevelLightInput').value=el.bevelLight ?? Math.round((be
 document.getElementById('bevelDark').value=el.bevelDark ?? Math.round((bevelNow.darkAlpha||0.18)*100);
 document.getElementById('bevelDarkInput').value=el.bevelDark ?? Math.round((bevelNow.darkAlpha||0.18)*100);
 ['gradientColor1','gradientColor2','gradientColor3','gradientAngle','gradientAngleInput','gradientSize','gradientSizeInput','gradientX','gradientXInput','gradientY','gradientYInput','shadowOffsetX','shadowOffsetXInput','shadowOffsetY','shadowOffsetYInput','shadowSize','shadowSizeInput','shadowSpread','shadowSpreadInput','shadowColor','glowBlur','glowBlurInput','glowColor','strokeColor1','strokeWidth1','strokeColor2','strokeWidth2','extrudeDepth','extrudeDepthInput','extrudeStepX','extrudeStepXInput','extrudeStepY','extrudeStepYInput','extrudeColor1','extrudeColor2','bevelLight','bevelLightInput','bevelDark','bevelDarkInput'].forEach(id=>{const node=document.getElementById(id);if(node)node.disabled=false;});
-['gold_basic','vip_gold','red_fire','blue_neon','purple_glow','white_glass','huazi','huazi_gold_3d','huazi_ice_3d','huazi_ruby_3d','huazi_black_gold_3d','huazi_silver_3d','huazi_purple_3d','empire_ornate_gold'].forEach(p=>{const btn=document.getElementById('preset_'+p);if(btn)btn.classList.toggle('active',el.stylePreset===p);});
+['gold_basic','vip_gold','red_fire','blue_neon','purple_glow','white_glass'].forEach(p=>{const btn=document.getElementById('preset_'+p);if(btn)btn.classList.toggle('active',el.stylePreset===p);});
 Object.keys(fontPresetConfig).forEach(p=>{const btn=document.getElementById('font_'+p);if(btn)btn.classList.toggle('active',el.fontPreset===p);});
 document.getElementById('align_left').classList.toggle('active',el.align==='left');
 document.getElementById('align_center').classList.toggle('active',el.align==='center');
@@ -2191,5 +2171,819 @@ function applyMosaicEditor(){
   newImg.src=data;
 }
 </script>
+
+<script id="clean-no-huazi-plain-title-patch">
+(function(){
+  'use strict';
+  const REMOVED_STYLE_PRESETS = new Set([
+    'huazi','huazi_gold_3d','huazi_ice_3d','huazi_ruby_3d','huazi_black_gold_3d','huazi_silver_3d','huazi_purple_3d','empire_ornate_gold',
+    'casino_gold_pro','black_diamond_pro','ruby_fire_pro','ice_glass_pro','emerald_pro','candy_lux_pro'
+  ]);
+  function isRemovedStyle(name){ return !!name && (REMOVED_STYLE_PRESETS.has(name) || /^huazi/i.test(String(name)) || /_pro$/i.test(String(name))); }
+  function makePlainTitle(){
+    return {
+      type:'text', text:'标题TXT', fontSize:48, color:'#FFFFFF', align:'center',
+      x:canvasConfig.width/2, y:200, rotation:0, opacity:1,
+      stylePreset:'normal', fontPreset:'bold_cn', fontFamily:"'Noto Sans SC','Microsoft YaHei',Arial,sans-serif", fontWeight:'900', name:'标题',
+      gradientColor1:'#FFFFFF', gradientColor2:'#FFFFFF', gradientColor3:'#FFFFFF',
+      gradientAngle:0, gradientSize:100, gradientX:0, gradientY:0,
+      shadowOffsetX:0, shadowOffsetY:0, shadowSize:0, shadowSpread:0, shadowColor:'#000000',
+      glowBlur:0, glowColor:'#FFFFFF',
+      strokeColor1:'#000000', strokeWidth1:0, strokeColor2:'#000000', strokeWidth2:0,
+      extrudeDepth:0, extrudeStepX:0, extrudeStepY:0, extrudeColor1:'#000000', extrudeColor2:'#000000',
+      bevelLight:0, bevelDark:0,
+      locked:false, visible:true, cache:null
+    };
+  }
+  function sanitizeTextElement(el){
+    if(!el || el.type!=='text') return el;
+    if(isRemovedStyle(el.stylePreset)) el.stylePreset='normal';
+    if(isRemovedStyle(el.psFxPreset)) delete el.psFxPreset;
+    // Remove generated PS/huazi-only fields without touching manual controls.
+    delete el.psPro; delete el.huazi3d; delete el.empireMetal; delete el.outlineStack; delete el.innerStroke; delete el.bevel; delete el.extrude;
+    if(!Number.isFinite(+el.extrudeDepth)) el.extrudeDepth=0;
+    return el;
+  }
+  function sanitizeAllTextLayers(){
+    try{
+      if(typeof templateElements!=='undefined' && Array.isArray(templateElements)) templateElements.forEach(sanitizeTextElement);
+      if(typeof presetElements!=='undefined' && Array.isArray(presetElements)) presetElements.forEach(sanitizeTextElement);
+    }catch(e){}
+  }
+  window.addTitle=function(){
+    const el=makePlainTitle();
+    templateElements.unshift(el);
+    selectedType='template'; selectedIndex=0;
+    markDirty(); updateObjectList(); updateControls(); saveState();
+    showToast('已添加纯色标题','success');
+  };
+  const originalSetStylePreset = window.setStylePreset;
+  window.setStylePreset=function(preset){
+    if(isRemovedStyle(preset)){
+      const el=getSelectedElement && getSelectedElement();
+      if(el && el.type==='text'){
+        sanitizeTextElement(el);
+        el.stylePreset='normal';
+        el.gradientColor1=el.gradientColor1||'#FFFFFF';
+        el.gradientColor2=el.gradientColor1;
+        el.gradientColor3=el.gradientColor1;
+        el.shadowOffsetX=0; el.shadowOffsetY=0; el.shadowSize=0; el.shadowSpread=0;
+        el.glowBlur=0; el.strokeWidth1=0; el.strokeWidth2=0; el.extrudeDepth=0; el.bevelLight=0; el.bevelDark=0;
+        el.cache=null; markDirty(); updateControls(); saveState();
+      }
+      showToast('效果预设已移除，请手动调整参数','success');
+      return;
+    }
+    if(typeof originalSetStylePreset==='function') return originalSetStylePreset.apply(this, arguments);
+  };
+  const originalRenderText = window.renderText;
+  if(typeof originalRenderText==='function'){
+    window.renderText=function(ctx,el){ sanitizeTextElement(el); return originalRenderText.call(this,ctx,el); };
+  }
+  // Hide any legacy/pro buttons left by browser cache or future merged files.
+  function removeLegacyPresetButtons(){
+    const ids=[...REMOVED_STYLE_PRESETS].map(x=>'preset_'+x);
+    ids.push('preset_huazi','preset_huazi_gold_3d','preset_huazi_ice_3d','preset_huazi_ruby_3d','preset_huazi_black_gold_3d','preset_huazi_silver_3d','preset_huazi_purple_3d','preset_empire_ornate_gold');
+    ids.forEach(id=>{ const btn=document.getElementById(id); if(btn) btn.remove(); });
+    document.querySelectorAll('[onclick*="huazi"],[id*="huazi"],[id$="_pro"]').forEach(el=>{
+      if(el.tagName==='BUTTON') el.remove();
+    });
+  }
+  sanitizeAllTextLayers();
+  removeLegacyPresetButtons();
+  markDirty();
+})();
+</script>
+
+
+
+<script id="manual-3d-shadow-realfix-patch">
+(function(){
+  'use strict';
+  function clamp(n,min,max){ n=Number(n); if(!Number.isFinite(n)) n=0; return Math.max(min,Math.min(max,n)); }
+  function normalizeHex(c){
+    if(!c) return '#000000';
+    c=String(c).trim();
+    if(c.startsWith('rgba')||c.startsWith('rgb')) return c;
+    if(!c.startsWith('#')) return c;
+    let h=c.slice(1);
+    if(h.length===3) h=h.split('').map(x=>x+x).join('');
+    if(h.length!==6) return c;
+    return '#'+h;
+  }
+  function hexToRgb(c){
+    c=normalizeHex(c);
+    if(!String(c).startsWith('#')) return {r:0,g:0,b:0};
+    const h=String(c).slice(1);
+    return {r:parseInt(h.slice(0,2),16)||0,g:parseInt(h.slice(2,4),16)||0,b:parseInt(h.slice(4,6),16)||0};
+  }
+  function mixColor(a,b,t){
+    const A=hexToRgb(a), B=hexToRgb(b); t=clamp(t,0,1);
+    return `rgb(${Math.round(A.r+(B.r-A.r)*t)},${Math.round(A.g+(B.g-A.g)*t)},${Math.round(A.b+(B.b-A.b)*t)})`;
+  }
+  function rgbaFromColor(c,a){
+    c=normalizeHex(c);
+    if(String(c).startsWith('rgb')) return c.replace(/rgba?\(([^)]+)\)/, function(_,inner){
+      const parts=inner.split(',').map(s=>s.trim()).slice(0,3);
+      return `rgba(${parts.join(',')},${a})`;
+    });
+    const r=hexToRgb(c); return `rgba(${r.r},${r.g},${r.b},${a})`;
+  }
+  function getFontFor(el,preset,fontSize){
+    let f={family:"'Noto Sans SC','Microsoft YaHei',Arial,sans-serif",weight:'900'};
+    try{
+      if(typeof getElementFont==='function') f=getElementFont(el,preset)||f;
+    }catch(e){}
+    return `${f.weight||'900'} ${fontSize}px ${f.family||"'Noto Sans SC','Microsoft YaHei',Arial,sans-serif"}`;
+  }
+  function getMetrics(ctx,el,fontSize){
+    const m=ctx.measureText(el.text||'');
+    return {w:m.width||((el.text||'').length*fontSize*.6), h:fontSize};
+  }
+  function makeFaceGradient(ctx,el,preset,w,fontSize){
+    const hasPresetStops=preset && Array.isArray(preset.gradientStops) && preset.gradientStops.length;
+    const g1=el.gradientColor1 || (hasPresetStops?preset.gradientStops[0].color:'#ffffff');
+    const g2=el.gradientColor2 || (hasPresetStops?preset.gradientStops[Math.floor(preset.gradientStops.length/2)].color:g1);
+    const g3=el.gradientColor3 || (hasPresetStops?preset.gradientStops[preset.gradientStops.length-1].color:g2);
+    const ang=(Number(el.gradientAngle)||0)*Math.PI/180;
+    const gS=(Number(el.gradientSize)||100)/100;
+    const gX=Number(el.gradientX)||0, gY=Number(el.gradientY)||0;
+    const rad=Math.max(w,fontSize)*1.55*gS;
+    const grad=ctx.createLinearGradient(-Math.cos(ang)*rad+gX,-Math.sin(ang)*rad+gY,Math.cos(ang)*rad+gX,Math.sin(ang)*rad+gY);
+    if(hasPresetStops && el.stylePreset!=='normal' && !(el.gradientColor1||el.gradientColor2||el.gradientColor3)){
+      preset.gradientStops.forEach(s=>grad.addColorStop(clamp(s.pos,0,1),s.color));
+    }else{
+      grad.addColorStop(0,g1);
+      grad.addColorStop(0.5,g2);
+      grad.addColorStop(1,g3);
+    }
+    return grad;
+  }
+  function drawStrongDropShadow(ctx,el,fontSize,scale){
+    const spread=Number(el.shadowSpread)||0;
+    const size=Number(el.shadowSize)||0;
+    let ox=Number(el.shadowOffsetX)||0, oy=Number(el.shadowOffsetY)||0;
+    if((spread>0||size>0) && ox===0 && oy===0) oy=Math.max(2,Math.round(fontSize*.045));
+    if(spread<=0 && size<=0 && ox===0 && oy===0) return;
+    const color=el.shadowColor||'#000000';
+    ctx.save();
+    // Soft wide blur pass. This makes BLUR visibly stronger than the old single shadowBlur pass.
+    if(spread>0){
+      const passes=[1.9,1.15,.58];
+      passes.forEach((mul,idx)=>{
+        ctx.save();
+        ctx.shadowColor=color;
+        ctx.shadowBlur=spread*mul*scale;
+        ctx.globalAlpha=[.36,.28,.22][idx];
+        ctx.fillStyle=rgbaFromColor(color,.72);
+        ctx.fillText(el.text,ox,oy);
+        ctx.restore();
+      });
+    }
+    // Dense offset layers for PS-like spread/solid shadow body.
+    if(size>0){
+      const layers=Math.max(4,Math.min(34,Math.round(size*scale)));
+      for(let i=layers;i>=1;i--){
+        const t=i/layers;
+        ctx.save();
+        ctx.globalAlpha=.10 + .18*t;
+        ctx.fillStyle=rgbaFromColor(color,.92);
+        ctx.translate(ox + t*size*.28*scale, oy + t*size*.28*scale);
+        ctx.fillText(el.text,0,0);
+        ctx.restore();
+      }
+    }
+    ctx.restore();
+  }
+  function drawManualExtrude(ctx,el,fontSize,scale){
+    let depth=Number(el.extrudeDepth)||0;
+    if(depth<=0) return;
+    depth=Math.max(1,Math.round(depth*scale));
+    let sx=Number(el.extrudeStepX)||0, sy=Number(el.extrudeStepY)||0;
+    // Important: DEPTH alone should visibly work. If both directions are zero, use a safe default side direction.
+    if(Math.abs(sx)<0.001 && Math.abs(sy)<0.001){ sx=.72; sy=.88; }
+    const c1=el.extrudeColor1||'#321000', c2=el.extrudeColor2||'#b46a16';
+    for(let i=depth;i>=1;i--){
+      const t=i/depth;
+      ctx.save();
+      ctx.translate(i*sx*scale,i*sy*scale);
+      ctx.globalAlpha=.66 + .30*t;
+      ctx.lineWidth=Math.max(1,1.8*scale);
+      ctx.strokeStyle=mixColor(c1,c2,1-t*.78);
+      ctx.fillStyle=mixColor(c1,c2,.18+t*.62);
+      ctx.strokeText(el.text,0,0);
+      ctx.fillText(el.text,0,0);
+      ctx.restore();
+    }
+  }
+  window.renderText=function(ctx,el){
+    if(!el||el.type!=='text'||el.visible===false) return;
+    try{ if(typeof sanitizeTextElement==='function') sanitizeTextElement(el); }catch(e){}
+    ctx.save();
+    ctx.translate(el.x,el.y);
+    ctx.rotate((el.rotation||0)*Math.PI/180);
+    ctx.textAlign=el.align||'center';
+    ctx.textBaseline='middle';
+    ctx.lineJoin='round';
+    ctx.lineCap='round';
+    const scale=Number(el.scale)||1;
+    const fontSize=(Number(el.fontSize)||48)*scale;
+    const preset=(typeof textPresetConfig!=='undefined' && textPresetConfig[el.stylePreset]) ? textPresetConfig[el.stylePreset] : (typeof textPresetConfig!=='undefined'?textPresetConfig.normal:{});
+    ctx.font=getFontFor(el,preset,fontSize);
+    const metrics=getMetrics(ctx,el,fontSize);
+    const sw1=(Number(el.strokeWidth1)||0)*scale;
+    const sw2=(Number(el.strokeWidth2)||0)*scale;
+
+    // PS-like order: Drop Shadow -> 3D side -> Glow -> Outer Stroke -> Inner Stroke -> Face -> Bevel -> Glow accent
+    drawStrongDropShadow(ctx,el,fontSize,scale);
+    drawManualExtrude(ctx,el,fontSize,scale);
+
+    const glowBlur=Number(el.glowBlur)||0;
+    if(glowBlur>0){
+      ctx.save();
+      ctx.shadowColor=el.glowColor||'#FFD700';
+      ctx.shadowBlur=glowBlur*1.35*scale;
+      ctx.globalAlpha=.42;
+      ctx.fillStyle=el.glowColor||'#FFD700';
+      ctx.fillText(el.text,0,0);
+      ctx.restore();
+    }
+
+    if(sw2>0){ ctx.save(); ctx.lineWidth=sw2; ctx.strokeStyle=el.strokeColor2||'#000000'; ctx.strokeText(el.text,0,0); ctx.restore(); }
+    if(sw1>0){ ctx.save(); ctx.lineWidth=sw1; ctx.strokeStyle=el.strokeColor1||'#000000'; ctx.strokeText(el.text,0,0); ctx.restore(); }
+
+    ctx.save();
+    ctx.fillStyle=makeFaceGradient(ctx,el,preset,metrics.w,fontSize);
+    ctx.fillText(el.text,0,0);
+    ctx.restore();
+
+    const bLight=Number(el.bevelLight)||0;
+    const bDark=Number(el.bevelDark)||0;
+    if(bLight>0){
+      ctx.save();
+      const gloss=ctx.createLinearGradient(0,-fontSize*.78,0,fontSize*.10);
+      gloss.addColorStop(0,`rgba(255,255,255,${clamp(bLight/100,0,1)})`);
+      gloss.addColorStop(.42,'rgba(255,255,255,0.10)');
+      gloss.addColorStop(1,'rgba(255,255,255,0)');
+      ctx.fillStyle=gloss; ctx.fillText(el.text,0,-fontSize*.035); ctx.restore();
+    }
+    if(bDark>0){
+      ctx.save();
+      const shade=ctx.createLinearGradient(-metrics.w*.25,-fontSize*.1,metrics.w*.5,fontSize*.7);
+      shade.addColorStop(0,'rgba(0,0,0,0)');
+      shade.addColorStop(1,`rgba(0,0,0,${clamp(bDark/100,0,.9)})`);
+      ctx.fillStyle=shade; ctx.fillText(el.text,0,fontSize*.02); ctx.restore();
+    }
+    if(glowBlur>0){
+      ctx.save(); ctx.shadowColor=el.glowColor||'#FFD700'; ctx.shadowBlur=glowBlur*.55*scale; ctx.globalAlpha=.24; ctx.fillStyle='#ffffff'; ctx.fillText(el.text,0,0); ctx.restore();
+    }
+    ctx.restore();
+  };
+  // Make numeric typing accept the stronger ranges added above.
+  if(typeof window.updateEffectFromInput==='function'){
+    const oldUpdateEffectFromInput=window.updateEffectFromInput;
+    window.updateEffectFromInput=function(type){
+      const el=(typeof getSelectedElement==='function')?getSelectedElement():null;
+      if(!el||el.type!=='text') return oldUpdateEffectFromInput.apply(this,arguments);
+      if(type==='shadowSpread'||type==='extrudeDepth'||type==='shadowSize'){
+        const input=document.getElementById(type+'Input');
+        let val=parseFloat(input&&input.value)||0;
+        const max= type==='shadowSpread'?120:(type==='extrudeDepth'?80:80);
+        val=clamp(val,0,max);
+        el[type]=val;
+        const slider=document.getElementById(type); if(slider) slider.value=val;
+        if(input) input.value=val;
+        el.cache=null; markDirty(); if(typeof debouncedSaveState==='function') debouncedSaveState();
+        return;
+      }
+      return oldUpdateEffectFromInput.apply(this,arguments);
+    };
+  }
+  try{ markDirty(); }catch(e){}
+})();
+</script>
+
+
+
+<script id="blur-bevel-real-visible-final-patch">
+(function(){
+  'use strict';
+  function clamp(n,min,max){ n=Number(n); if(!Number.isFinite(n)) n=0; return Math.max(min,Math.min(max,n)); }
+  function colorToRgb(c){
+    c=(c||'#000000').toString().trim();
+    if(c.startsWith('rgba')||c.startsWith('rgb')){
+      const m=c.match(/rgba?\(([^)]+)\)/i);
+      if(m){ const p=m[1].split(',').map(x=>parseFloat(x.trim())); return {r:p[0]||0,g:p[1]||0,b:p[2]||0}; }
+    }
+    if(c[0]==='#'){
+      let h=c.slice(1); if(h.length===3) h=h.split('').map(x=>x+x).join('');
+      return {r:parseInt(h.slice(0,2),16)||0,g:parseInt(h.slice(2,4),16)||0,b:parseInt(h.slice(4,6),16)||0};
+    }
+    return {r:0,g:0,b:0};
+  }
+  function rgba(c,a){ const r=colorToRgb(c); return `rgba(${r.r},${r.g},${r.b},${a})`; }
+  function mix(a,b,t){
+    const A=colorToRgb(a), B=colorToRgb(b); t=clamp(t,0,1);
+    return `rgb(${Math.round(A.r+(B.r-A.r)*t)},${Math.round(A.g+(B.g-A.g)*t)},${Math.round(A.b+(B.b-A.b)*t)})`;
+  }
+  function getFont(el,fontSize){
+    try{
+      if(typeof getElementFont==='function'){
+        const f=getElementFont(el,{})||{};
+        return `${f.weight||'900'} ${fontSize}px ${f.family||"'Noto Sans SC','Microsoft YaHei',Arial,sans-serif"}`;
+      }
+    }catch(e){}
+    return `${el.fontWeight||'900'} ${fontSize}px ${el.fontFamily||"'Noto Sans SC','Microsoft YaHei',Arial,sans-serif"}`;
+  }
+  function faceGradient(ctx,el,w,fontSize){
+    const g1=el.gradientColor1||el.color||'#ffffff';
+    const g2=el.gradientColor2||g1;
+    const g3=el.gradientColor3||g2;
+    const ang=(Number(el.gradientAngle)||0)*Math.PI/180;
+    const size=(Number(el.gradientSize)||100)/100;
+    const gx=Number(el.gradientX)||0, gy=Number(el.gradientY)||0;
+    const r=Math.max(w,fontSize)*1.55*size;
+    const gr=ctx.createLinearGradient(-Math.cos(ang)*r+gx,-Math.sin(ang)*r+gy,Math.cos(ang)*r+gx,Math.sin(ang)*r+gy);
+    gr.addColorStop(0,g1); gr.addColorStop(.5,g2); gr.addColorStop(1,g3);
+    return gr;
+  }
+  function drawTrueSoftShadow(ctx,el,fontSize,scale){
+    const blur=Number(el.shadowSpread)||0;
+    const size=Number(el.shadowSize)||0;
+    let ox=Number(el.shadowOffsetX)||0, oy=Number(el.shadowOffsetY)||0;
+    if((blur>0||size>0) && ox===0 && oy===0){ oy=Math.max(6,Math.round(fontSize*.10)); }
+    if(blur<=0 && size<=0 && ox===0 && oy===0) return;
+    const col=el.shadowColor||'#000000';
+    ctx.save();
+    ctx.fillStyle=rgba(col,.9);
+    // Real blur pass when supported. This gives the soft edge the user expects from PS blur.
+    if(blur>0 && 'filter' in ctx){
+      const b=blur*scale;
+      [1.15,.62,.28].forEach((mul,idx)=>{
+        ctx.save();
+        ctx.filter=`blur(${Math.max(0.5,b*mul)}px)`;
+        ctx.globalAlpha=[.55,.42,.30][idx];
+        ctx.fillText(el.text,ox,oy);
+        ctx.restore();
+      });
+    }
+    // Manual blur halo fallback/boost. It makes blur visible even when canvas filter is weak/unsupported.
+    if(blur>0){
+      const radius=blur*.55*scale;
+      const rings=Math.max(5,Math.min(18,Math.round(blur/9)));
+      const samples=Math.max(12,Math.min(28,Math.round(blur/5)));
+      for(let r=rings;r>=1;r--){
+        const rr=radius*(r/rings);
+        const alpha=(0.13*(1-r/(rings+1))+0.018)/Math.sqrt(samples/12);
+        ctx.fillStyle=rgba(col,alpha);
+        for(let i=0;i<samples;i++){
+          const a=(Math.PI*2*i)/samples;
+          ctx.fillText(el.text,ox+Math.cos(a)*rr,oy+Math.sin(a)*rr);
+        }
+      }
+    }
+    // Spread/body: this is separate from blur. It thickens the shadow core.
+    if(size>0){
+      const layers=Math.max(4,Math.min(38,Math.round(size*scale)));
+      for(let i=layers;i>=1;i--){
+        const t=i/layers;
+        ctx.fillStyle=rgba(col,.11+.22*t);
+        ctx.fillText(el.text,ox+t*size*.34*scale,oy+t*size*.34*scale);
+      }
+    }
+    ctx.restore();
+  }
+  function draw3D(ctx,el,fontSize,scale,bLight,bDark){
+    let depth=Number(el.extrudeDepth)||0;
+    if(depth<=0) return;
+    depth=Math.max(1,Math.round(depth*scale));
+    let sx=Number(el.extrudeStepX)||0, sy=Number(el.extrudeStepY)||0;
+    if(Math.abs(sx)<0.001 && Math.abs(sy)<0.001){ sx=.72; sy=.88; }
+    const c1=el.extrudeColor1||'#201008', c2=el.extrudeColor2||'#ad6717';
+    const darkBoost=clamp(bDark/100,0,1), lightBoost=clamp(bLight/100,0,1);
+    for(let i=depth;i>=1;i--){
+      const t=i/depth;
+      ctx.save();
+      ctx.translate(i*sx*scale,i*sy*scale);
+      ctx.globalAlpha=.72+.25*t;
+      ctx.lineWidth=Math.max(1,1.8*scale);
+      ctx.strokeStyle=mix('#000000',mix(c1,c2,1-t*.75),.15+darkBoost*.35);
+      ctx.fillStyle=mix(mix(c1,c2,.22+t*.62),'#ffffff',lightBoost*.10*(1-t));
+      ctx.strokeText(el.text,0,0);
+      ctx.fillText(el.text,0,0);
+      ctx.restore();
+    }
+  }
+  function drawVisibleBevel(ctx,el,w,fontSize,scale){
+    const hi=clamp(Number(el.bevelLight)||0,0,100)/100;
+    const dk=clamp(Number(el.bevelDark)||0,0,100)/100;
+    if(hi>0){
+      ctx.save();
+      ctx.globalAlpha=.25+.60*hi;
+      ctx.lineWidth=Math.max(1,2.2*scale+hi*2.2*scale);
+      ctx.strokeStyle='rgba(255,255,255,.72)';
+      ctx.strokeText(el.text,-1.2*scale,-1.5*scale);
+      const gloss=ctx.createLinearGradient(0,-fontSize*.85,0,fontSize*.22);
+      gloss.addColorStop(0,`rgba(255,255,255,${.35+.55*hi})`);
+      gloss.addColorStop(.36,`rgba(255,255,255,${.10+.16*hi})`);
+      gloss.addColorStop(1,'rgba(255,255,255,0)');
+      ctx.fillStyle=gloss;
+      ctx.fillText(el.text,0,-fontSize*.025);
+      ctx.restore();
+    }
+    if(dk>0){
+      ctx.save();
+      ctx.globalAlpha=.22+.55*dk;
+      ctx.lineWidth=Math.max(1,2.0*scale+dk*2.4*scale);
+      ctx.strokeStyle='rgba(0,0,0,.72)';
+      ctx.strokeText(el.text,1.2*scale,1.7*scale);
+      const shade=ctx.createLinearGradient(-w*.25,-fontSize*.10,w*.42,fontSize*.76);
+      shade.addColorStop(0,'rgba(0,0,0,0)');
+      shade.addColorStop(.55,`rgba(0,0,0,${.04+.14*dk})`);
+      shade.addColorStop(1,`rgba(0,0,0,${.20+.45*dk})`);
+      ctx.fillStyle=shade;
+      ctx.fillText(el.text,0,fontSize*.02);
+      ctx.restore();
+    }
+  }
+  window.renderText=function(ctx,el){
+    if(!el||el.type!=='text'||el.visible===false) return;
+    ctx.save();
+    ctx.translate(el.x,el.y);
+    ctx.rotate((el.rotation||0)*Math.PI/180);
+    ctx.textAlign=el.align||'center';
+    ctx.textBaseline='middle';
+    ctx.lineJoin='round';
+    ctx.lineCap='round';
+    const scale=Number(el.scale)||1;
+    const fontSize=(Number(el.fontSize)||48)*scale;
+    ctx.font=getFont(el,fontSize);
+    const m=ctx.measureText(el.text||'');
+    const w=m.width||fontSize*(String(el.text||'').length*.58);
+    const sw1=(Number(el.strokeWidth1)||0)*scale;
+    const sw2=(Number(el.strokeWidth2)||0)*scale;
+    const bLight=Number(el.bevelLight)||0;
+    const bDark=Number(el.bevelDark)||0;
+
+    // Photoshop-like order
+    drawTrueSoftShadow(ctx,el,fontSize,scale);
+    draw3D(ctx,el,fontSize,scale,bLight,bDark);
+
+    const glow=Number(el.glowBlur)||0;
+    if(glow>0){
+      ctx.save(); ctx.shadowColor=el.glowColor||'#FFD700'; ctx.shadowBlur=glow*1.4*scale; ctx.globalAlpha=.44; ctx.fillStyle=el.glowColor||'#FFD700'; ctx.fillText(el.text,0,0); ctx.restore();
+    }
+    if(sw2>0){ctx.save();ctx.lineWidth=sw2;ctx.strokeStyle=el.strokeColor2||'#000';ctx.strokeText(el.text,0,0);ctx.restore();}
+    if(sw1>0){ctx.save();ctx.lineWidth=sw1;ctx.strokeStyle=el.strokeColor1||'#000';ctx.strokeText(el.text,0,0);ctx.restore();}
+    ctx.fillStyle=faceGradient(ctx,el,w,fontSize);
+    ctx.fillText(el.text,0,0);
+    drawVisibleBevel(ctx,el,w,fontSize,scale);
+    ctx.restore();
+  };
+  // Accept stronger blur numeric values and keep slider/input synced.
+  const oldUpdateEffectFromInput=window.updateEffectFromInput;
+  window.updateEffectFromInput=function(type){
+    const el=(typeof getSelectedElement==='function')?getSelectedElement():null;
+    if(el&&el.type==='text'&&type==='shadowSpread'){
+      const input=document.getElementById(type+'Input'); let val=parseFloat(input&&input.value)||0; val=clamp(val,0,200);
+      el[type]=val; const slider=document.getElementById(type); if(slider) slider.value=val; if(input) input.value=val;
+      el.cache=null; markDirty(); if(typeof debouncedSaveState==='function') debouncedSaveState(); return;
+    }
+    if(typeof oldUpdateEffectFromInput==='function') return oldUpdateEffectFromInput.apply(this,arguments);
+  };
+  try{ markDirty(); }catch(e){}
+})();
+</script>
+
+
+
+<script id="overall-3d-stroke-after-extrude-patch">
+(function(){
+  'use strict';
+  function clamp(n,min,max){ n=Number(n); if(!Number.isFinite(n)) n=0; return Math.max(min,Math.min(max,n)); }
+  function colorToRgb(c){
+    c=(c||'#000000').toString().trim();
+    if(c.startsWith('rgba')||c.startsWith('rgb')){
+      const m=c.match(/rgba?\(([^)]+)\)/i);
+      if(m){ const p=m[1].split(',').map(x=>parseFloat(x.trim())); return {r:p[0]||0,g:p[1]||0,b:p[2]||0}; }
+    }
+    if(c[0]==='#'){
+      let h=c.slice(1); if(h.length===3) h=h.split('').map(x=>x+x).join('');
+      return {r:parseInt(h.slice(0,2),16)||0,g:parseInt(h.slice(2,4),16)||0,b:parseInt(h.slice(4,6),16)||0};
+    }
+    return {r:0,g:0,b:0};
+  }
+  function rgba(c,a){ const r=colorToRgb(c); return `rgba(${r.r},${r.g},${r.b},${a})`; }
+  function mix(a,b,t){
+    const A=colorToRgb(a), B=colorToRgb(b); t=clamp(t,0,1);
+    return `rgb(${Math.round(A.r+(B.r-A.r)*t)},${Math.round(A.g+(B.g-A.g)*t)},${Math.round(A.b+(B.b-A.b)*t)})`;
+  }
+  function getFont(el,fontSize){
+    try{
+      if(typeof getElementFont==='function'){
+        const f=getElementFont(el,{})||{};
+        return `${f.weight||'900'} ${fontSize}px ${f.family||"'Noto Sans SC','Microsoft YaHei',Arial,sans-serif"}`;
+      }
+    }catch(e){}
+    return `${el.fontWeight||'900'} ${fontSize}px ${el.fontFamily||"'Noto Sans SC','Microsoft YaHei',Arial,sans-serif"}`;
+  }
+  function faceGradient(ctx,el,w,fontSize){
+    const g1=el.gradientColor1||el.color||'#ffffff';
+    const g2=el.gradientColor2||g1;
+    const g3=el.gradientColor3||g2;
+    const ang=(Number(el.gradientAngle)||0)*Math.PI/180;
+    const size=(Number(el.gradientSize)||100)/100;
+    const gx=Number(el.gradientX)||0, gy=Number(el.gradientY)||0;
+    const r=Math.max(w,fontSize)*1.55*size;
+    const gr=ctx.createLinearGradient(-Math.cos(ang)*r+gx,-Math.sin(ang)*r+gy,Math.cos(ang)*r+gx,Math.sin(ang)*r+gy);
+    gr.addColorStop(0,g1); gr.addColorStop(.5,g2); gr.addColorStop(1,g3);
+    return gr;
+  }
+  function get3DSettings(el,scale){
+    let depth=Number(el.extrudeDepth)||0;
+    depth=Math.max(0,Math.round(depth*scale));
+    let sx=Number(el.extrudeStepX)||0, sy=Number(el.extrudeStepY)||0;
+    if(depth>0 && Math.abs(sx)<0.001 && Math.abs(sy)<0.001){ sx=.72; sy=.88; }
+    return {depth,sx,sy};
+  }
+  function drawTrueSoftShadow(ctx,el,fontSize,scale){
+    const blur=Number(el.shadowSpread)||0;
+    const size=Number(el.shadowSize)||0;
+    let ox=Number(el.shadowOffsetX)||0, oy=Number(el.shadowOffsetY)||0;
+    if((blur>0||size>0) && ox===0 && oy===0){ oy=Math.max(6,Math.round(fontSize*.10)); }
+    if(blur<=0 && size<=0 && ox===0 && oy===0) return;
+    const col=el.shadowColor||'#000000';
+    ctx.save();
+    ctx.fillStyle=rgba(col,.9);
+    if(blur>0 && 'filter' in ctx){
+      const b=blur*scale;
+      [1.15,.62,.28].forEach((mul,idx)=>{
+        ctx.save();
+        ctx.filter=`blur(${Math.max(0.5,b*mul)}px)`;
+        ctx.globalAlpha=[.55,.42,.30][idx];
+        ctx.fillText(el.text,ox,oy);
+        ctx.restore();
+      });
+    }
+    if(blur>0){
+      const radius=blur*.55*scale;
+      const rings=Math.max(5,Math.min(18,Math.round(blur/9)));
+      const samples=Math.max(12,Math.min(28,Math.round(blur/5)));
+      for(let r=rings;r>=1;r--){
+        const rr=radius*(r/rings);
+        const alpha=(0.13*(1-r/(rings+1))+0.018)/Math.sqrt(samples/12);
+        ctx.fillStyle=rgba(col,alpha);
+        for(let i=0;i<samples;i++){
+          const a=(Math.PI*2*i)/samples;
+          ctx.fillText(el.text,ox+Math.cos(a)*rr,oy+Math.sin(a)*rr);
+        }
+      }
+    }
+    if(size>0){
+      const layers=Math.max(4,Math.min(38,Math.round(size*scale)));
+      for(let i=layers;i>=1;i--){
+        const t=i/layers;
+        ctx.fillStyle=rgba(col,.11+.22*t);
+        ctx.fillText(el.text,ox+t*size*.34*scale,oy+t*size*.34*scale);
+      }
+    }
+    ctx.restore();
+  }
+  function draw3D(ctx,el,scale,bLight,bDark){
+    const st=get3DSettings(el,scale);
+    if(st.depth<=0) return;
+    const c1=el.extrudeColor1||'#201008', c2=el.extrudeColor2||'#ad6717';
+    const darkBoost=clamp(bDark/100,0,1), lightBoost=clamp(bLight/100,0,1);
+    for(let i=st.depth;i>=1;i--){
+      const t=i/st.depth;
+      ctx.save();
+      ctx.translate(i*st.sx*scale,i*st.sy*scale);
+      ctx.globalAlpha=.72+.25*t;
+      ctx.lineWidth=Math.max(1,1.8*scale);
+      ctx.strokeStyle=mix('#000000',mix(c1,c2,1-t*.75),.15+darkBoost*.35);
+      ctx.fillStyle=mix(mix(c1,c2,.22+t*.62),'#ffffff',lightBoost*.10*(1-t));
+      ctx.strokeText(el.text,0,0);
+      ctx.fillText(el.text,0,0);
+      ctx.restore();
+    }
+  }
+  function getOverallStrokeLayers(el,scale){
+    const legacyW=Number(el.extrudeStrokeWidth)||0;
+    const legacyC=el.extrudeStrokeColor||'#000000';
+    const l1={color:el.extrudeStrokeColor1||legacyC,width:(Number(el.extrudeStrokeWidth1)||legacyW)*scale,name:'outer'};
+    const l2={color:el.extrudeStrokeColor2||'#ffffff',width:(Number(el.extrudeStrokeWidth2)||0)*scale,name:'inner'};
+    return [l1,l2].filter(x=>x.width>0).sort((a,b)=>b.width-a.width);
+  }
+  function stroke3DVolume(ctx,el,scale,color,width){
+    if(width<=0) return;
+    const st=get3DSettings(el,scale);
+    ctx.save();
+    ctx.lineJoin='round';
+    ctx.lineCap='round';
+    ctx.strokeStyle=color;
+    ctx.lineWidth=width;
+    for(let i=st.depth;i>=1;i--){
+      ctx.save();
+      ctx.translate(i*st.sx*scale,i*st.sy*scale);
+      ctx.strokeText(el.text,0,0);
+      ctx.restore();
+    }
+    ctx.strokeText(el.text,0,0);
+    ctx.restore();
+  }
+  function draw3DOverallStroke(ctx,el,scale){
+    // Two-layer overall border. Bigger width draws first, smaller width draws after it,
+    // both stay BEHIND the 3D depth fill so the cut-face color will not be tinted.
+    const layers=getOverallStrokeLayers(el,scale);
+    layers.forEach(layer=>stroke3DVolume(ctx,el,scale,layer.color,layer.width));
+  }
+  function drawVisibleBevel(ctx,el,w,fontSize,scale){
+    const hi=clamp(Number(el.bevelLight)||0,0,100)/100;
+    const dk=clamp(Number(el.bevelDark)||0,0,100)/100;
+    if(hi>0){
+      ctx.save();
+      ctx.globalAlpha=.25+.60*hi;
+      ctx.lineWidth=Math.max(1,2.2*scale+hi*2.2*scale);
+      ctx.strokeStyle='rgba(255,255,255,.72)';
+      ctx.strokeText(el.text,-1.2*scale,-1.5*scale);
+      const gloss=ctx.createLinearGradient(0,-fontSize*.85,0,fontSize*.22);
+      gloss.addColorStop(0,`rgba(255,255,255,${.35+.55*hi})`);
+      gloss.addColorStop(.36,`rgba(255,255,255,${.10+.16*hi})`);
+      gloss.addColorStop(1,'rgba(255,255,255,0)');
+      ctx.fillStyle=gloss;
+      ctx.fillText(el.text,0,-fontSize*.025);
+      ctx.restore();
+    }
+    if(dk>0){
+      ctx.save();
+      ctx.globalAlpha=.22+.55*dk;
+      ctx.lineWidth=Math.max(1,2.0*scale+dk*2.4*scale);
+      ctx.strokeStyle='rgba(0,0,0,.72)';
+      ctx.strokeText(el.text,1.2*scale,1.7*scale);
+      const shade=ctx.createLinearGradient(-w*.25,-fontSize*.10,w*.42,fontSize*.76);
+      shade.addColorStop(0,'rgba(0,0,0,0)');
+      shade.addColorStop(.55,`rgba(0,0,0,${.04+.14*dk})`);
+      shade.addColorStop(1,`rgba(0,0,0,${.20+.45*dk})`);
+      ctx.fillStyle=shade;
+      ctx.fillText(el.text,0,fontSize*.02);
+      ctx.restore();
+    }
+  }
+  function injectOverall3DStrokeUI(){
+    const group=document.getElementById('txtGroup3D');
+    if(!group) return;
+    // Remove old one-layer controls if they exist from a cached DOM/session.
+    const oldW=document.getElementById('extrudeStrokeWidth');
+    if(oldW){ const section=oldW.closest('.overall-3d-stroke-block')||oldW.closest('div'); if(section) section.remove(); }
+    const oldC=document.getElementById('extrudeStrokeColor');
+    if(oldC){ const row=oldC.closest('.control-row'); if(row) row.remove(); }
+    if(document.getElementById('extrudeStrokeWidth1')) return;
+    const wrap=document.createElement('div');
+    wrap.className='overall-3d-stroke-block';
+    wrap.innerHTML=`
+      <div class="txt-tip" style="margin-top:7px;color:rgba(255,220,145,.78)">整体 3D 描边：两层颜色都画在切面后方，只包整体轮廓，不覆盖 depth 颜色。</div>
+      <div class="control-row"><label>描边1色</label><input type="color" id="extrudeStrokeColor1" value="#000000" onchange="updateEffectColor('extrudeStrokeColor1')"></div>
+      <div class="control-row"><label>描边1</label><input type="range" id="extrudeStrokeWidth1" min="0" max="80" value="0" oninput="updateEffect('extrudeStrokeWidth1');syncNumber('extrudeStrokeWidth1')"><input type="number" id="extrudeStrokeWidth1Input" value="0" min="0" max="80" oninput="inputSyncSlider('extrudeStrokeWidth1');updateEffectFromInput('extrudeStrokeWidth1')"><span class="unit">px</span></div>
+      <div class="control-row"><label>描边2色</label><input type="color" id="extrudeStrokeColor2" value="#ffffff" onchange="updateEffectColor('extrudeStrokeColor2')"></div>
+      <div class="control-row"><label>描边2</label><input type="range" id="extrudeStrokeWidth2" min="0" max="80" value="0" oninput="updateEffect('extrudeStrokeWidth2');syncNumber('extrudeStrokeWidth2')"><input type="number" id="extrudeStrokeWidth2Input" value="0" min="0" max="80" oninput="inputSyncSlider('extrudeStrokeWidth2');updateEffectFromInput('extrudeStrokeWidth2')"><span class="unit">px</span></div>`;
+    group.appendChild(wrap);
+  }
+  function ensurePlainDefaults(el){
+    if(el&&el.type==='text'){
+      const legacyW=Number(el.extrudeStrokeWidth)||0;
+      const legacyC=el.extrudeStrokeColor||'#000000';
+      if(el.extrudeStrokeColor1===undefined) el.extrudeStrokeColor1=legacyC;
+      if(el.extrudeStrokeWidth1===undefined) el.extrudeStrokeWidth1=legacyW;
+      if(el.extrudeStrokeColor2===undefined) el.extrudeStrokeColor2='#ffffff';
+      if(el.extrudeStrokeWidth2===undefined) el.extrudeStrokeWidth2=0;
+    }
+  }
+  function syncOverall3DStrokeControls(){
+    injectOverall3DStrokeUI();
+    const el=(typeof getSelectedElement==='function')?getSelectedElement():null;
+    if(!el||el.type!=='text') return;
+    ensurePlainDefaults(el);
+    ['1','2'].forEach(n=>{
+      const color=document.getElementById('extrudeStrokeColor'+n);
+      const range=document.getElementById('extrudeStrokeWidth'+n);
+      const input=document.getElementById('extrudeStrokeWidth'+n+'Input');
+      if(!color||!range||!input) return;
+      color.value=el['extrudeStrokeColor'+n]||(n==='1'?'#000000':'#ffffff');
+      const val=clamp(el['extrudeStrokeWidth'+n],0,80);
+      range.value=val; input.value=val;
+      color.disabled=false; range.disabled=false; input.disabled=false;
+    });
+  }
+  window.renderText=function(ctx,el){
+    if(!el||el.type!=='text'||el.visible===false) return;
+    ensurePlainDefaults(el);
+    ctx.save();
+    ctx.translate(el.x,el.y);
+    ctx.rotate((el.rotation||0)*Math.PI/180);
+    ctx.textAlign=el.align||'center';
+    ctx.textBaseline='middle';
+    ctx.lineJoin='round';
+    ctx.lineCap='round';
+    const scale=Number(el.scale)||1;
+    const fontSize=(Number(el.fontSize)||48)*scale;
+    ctx.font=getFont(el,fontSize);
+    const m=ctx.measureText(el.text||'');
+    const w=m.width||fontSize*(String(el.text||'').length*.58);
+    const sw1=(Number(el.strokeWidth1)||0)*scale;
+    const sw2=(Number(el.strokeWidth2)||0)*scale;
+    const bLight=Number(el.bevelLight)||0;
+    const bDark=Number(el.bevelDark)||0;
+
+    // Photoshop-like order: shadow -> two-layer overall 3D stroke BEHIND -> 3D fill -> glow -> front stroke -> face -> bevel.
+    drawTrueSoftShadow(ctx,el,fontSize,scale);
+    draw3DOverallStroke(ctx,el,scale);
+    draw3D(ctx,el,scale,bLight,bDark);
+
+    const glow=Number(el.glowBlur)||0;
+    if(glow>0){
+      ctx.save(); ctx.shadowColor=el.glowColor||'#FFD700'; ctx.shadowBlur=glow*1.4*scale; ctx.globalAlpha=.44; ctx.fillStyle=el.glowColor||'#FFD700'; ctx.fillText(el.text,0,0); ctx.restore();
+    }
+    if(sw2>0){ctx.save();ctx.lineWidth=sw2;ctx.strokeStyle=el.strokeColor2||'#000';ctx.strokeText(el.text,0,0);ctx.restore();}
+    if(sw1>0){ctx.save();ctx.lineWidth=sw1;ctx.strokeStyle=el.strokeColor1||'#000';ctx.strokeText(el.text,0,0);ctx.restore();}
+    ctx.fillStyle=faceGradient(ctx,el,w,fontSize);
+    ctx.fillText(el.text,0,0);
+    drawVisibleBevel(ctx,el,w,fontSize,scale);
+    ctx.restore();
+  };
+  const oldUpdateControls=window.updateControls;
+  if(typeof oldUpdateControls==='function'){
+    window.updateControls=function(){
+      const r=oldUpdateControls.apply(this,arguments);
+      syncOverall3DStrokeControls();
+      return r;
+    };
+  }
+  const oldUpdateEffectFromInput=window.updateEffectFromInput;
+  window.updateEffectFromInput=function(type){
+    if(type==='extrudeStrokeWidth1'||type==='extrudeStrokeWidth2'){
+      const el=(typeof getSelectedElement==='function')?getSelectedElement():null;
+      if(!el||el.type!=='text') return;
+      const input=document.getElementById(type+'Input'); let val=parseFloat(input&&input.value)||0; val=clamp(val,0,80);
+      el[type]=val; const slider=document.getElementById(type); if(slider) slider.value=val; if(input) input.value=val;
+      el.cache=null; markDirty(); if(typeof debouncedSaveState==='function') debouncedSaveState(); return;
+    }
+    if(typeof oldUpdateEffectFromInput==='function') return oldUpdateEffectFromInput.apply(this,arguments);
+  };
+  const oldUpdateEffect=window.updateEffect;
+  if(typeof oldUpdateEffect==='function'){
+    window.updateEffect=function(type){
+      if(type==='extrudeStrokeWidth1'||type==='extrudeStrokeWidth2'){
+        const el=(typeof getSelectedElement==='function')?getSelectedElement():null;
+        if(!el||el.type!=='text') return;
+        const slider=document.getElementById(type); const input=document.getElementById(type+'Input');
+        const val=clamp(parseFloat(slider&&slider.value)||0,0,80);
+        el[type]=val; if(input) input.value=val; el.cache=null; markDirty(); if(typeof debouncedSaveState==='function') debouncedSaveState(); return;
+      }
+      return oldUpdateEffect.apply(this,arguments);
+    };
+  }
+  const oldUpdateEffectColor=window.updateEffectColor;
+  if(typeof oldUpdateEffectColor==='function'){
+    window.updateEffectColor=function(type){
+      if(type==='extrudeStrokeColor1'||type==='extrudeStrokeColor2'){
+        const el=(typeof getSelectedElement==='function')?getSelectedElement():null;
+        if(!el||el.type!=='text') return;
+        const node=document.getElementById(type);
+        el[type]=(node&&node.value)||(type==='extrudeStrokeColor1'?'#000000':'#ffffff');
+        el.cache=null; markDirty(); if(typeof debouncedSaveState==='function') debouncedSaveState(); return;
+      }
+      return oldUpdateEffectColor.apply(this,arguments);
+    };
+  }
+  const oldCopyStyle=window.copyStyle;
+  window.copyStyle=function(){
+    const el=(typeof getSelectedElement==='function')?getSelectedElement():null;
+    if(!el||el.type!=='text'){
+      if(typeof oldCopyStyle==='function') return oldCopyStyle.apply(this,arguments);
+      if(typeof showToast==='function') showToast('仅支持TXT样式','error');
+      return;
+    }
+    ensurePlainDefaults(el);
+    const styleData={stylePreset:el.stylePreset,gradientColor1:el.gradientColor1,gradientColor2:el.gradientColor2,gradientColor3:el.gradientColor3,gradientAngle:el.gradientAngle,gradientSize:el.gradientSize,gradientX:el.gradientX,gradientY:el.gradientY,shadowOffsetX:el.shadowOffsetX,shadowOffsetY:el.shadowOffsetY,shadowSize:el.shadowSize,shadowSpread:el.shadowSpread,shadowColor:el.shadowColor,glowBlur:el.glowBlur,glowColor:el.glowColor,fontPreset:el.fontPreset,strokeColor1:el.strokeColor1,strokeWidth1:el.strokeWidth1,strokeColor2:el.strokeColor2,strokeWidth2:el.strokeWidth2,extrudeDepth:el.extrudeDepth,extrudeStepX:el.extrudeStepX,extrudeStepY:el.extrudeStepY,extrudeColor1:el.extrudeColor1,extrudeColor2:el.extrudeColor2,bevelLight:el.bevelLight,bevelDark:el.bevelDark,extrudeStrokeColor1:el.extrudeStrokeColor1,extrudeStrokeWidth1:Number(el.extrudeStrokeWidth1)||0,extrudeStrokeColor2:el.extrudeStrokeColor2,extrudeStrokeWidth2:Number(el.extrudeStrokeWidth2)||0};
+    localStorage.setItem('styleClipboard',JSON.stringify(styleData));
+    if(typeof showToast==='function') showToast('样式已复制');
+  };
+  const oldAddTitle=window.addTitle;
+  if(typeof oldAddTitle==='function'){
+    window.addTitle=function(){
+      const r=oldAddTitle.apply(this,arguments);
+      const el=(typeof getSelectedElement==='function')?getSelectedElement():null;
+      ensurePlainDefaults(el);
+      syncOverall3DStrokeControls();
+      return r;
+    };
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){injectOverall3DStrokeUI(); syncOverall3DStrokeControls();});
+  else {injectOverall3DStrokeUI(); syncOverall3DStrokeControls();}
+  try{ markDirty(); }catch(e){}
+})();
+</script>
+
+<!-- preset title style imported from template(1).json: title layer -->
 </body>
 </html>
