@@ -3187,5 +3187,29 @@ function applyMosaicEditor(){
 })();
 </script>
 
+
+
+<!-- compact bottom space fix: keep top preview locked, reduce wasted bottom gap -->
+<style id="mobile-compact-bottom-space-fix">
+@media (max-width:900px){
+  body{
+    padding-bottom:2px!important;
+  }
+  .workspace{
+    gap:4px!important;
+  }
+  .canvas-container{
+    padding-bottom:6px!important;
+  }
+  .controls-panel{
+    padding-bottom:calc(24px + env(safe-area-inset-bottom))!important;
+    margin-bottom:0!important;
+  }
+  .controls-panel::after{
+    bottom:auto!important;
+  }
+}
+</style>
+
 </body>
 </html>
