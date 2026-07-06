@@ -3110,7 +3110,7 @@ function applyMosaicEditor(){
   }
   function allowOwnTouchScroll(target){
     if(!target || !target.closest) return false;
-    return !!target.closest('#sidePanel, #mosaicEditor, .upload-panel, .upload-panel-inner, .batch-panel');
+    return !!target.closest('.controls-panel, #sidePanel, #mosaicEditor, .upload-panel, .upload-panel-inner, .batch-panel');
   }
   document.addEventListener('touchmove', function(e){
     if(!isMobileLayout()) return;
@@ -3123,6 +3123,66 @@ function applyMosaicEditor(){
     if(document.body.classList.contains('preview-fullscreen-open')) return;
     if(allowOwnTouchScroll(e.target)) return;
     e.preventDefault();
+  }, {passive:false});
+})();
+</script>
+
+
+<!-- REALFIX: allow only controls panel to scroll on mobile -->
+<style id="mobile-fixed-preview-scroll-controls-realfix">
+@media (max-width:900px){
+  html,body{
+    position:fixed!important;
+    inset:0!important;
+    width:100%!important;
+    height:100dvh!important;
+    overflow:hidden!important;
+  }
+  body{
+    box-sizing:border-box!important;
+  }
+  .toolbar,
+  .canvas-container{
+    flex-shrink:0!important;
+  }
+  .controls-panel{
+    flex:1 1 auto!important;
+    min-height:0!important;
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+    touch-action:pan-y!important;
+    overscroll-behavior:contain!important;
+    scrollbar-gutter:stable!important;
+  }
+}
+</style>
+<script id="mobile-fixed-preview-scroll-controls-realfix-js">
+(function(){
+  var lastY = 0;
+  function mobile(){ return window.matchMedia && window.matchMedia('(max-width: 900px)').matches; }
+  function isControlTarget(t){ return !!(t && t.closest && t.closest('.controls-panel')); }
+  document.addEventListener('touchstart', function(e){
+    if(!mobile()) return;
+    if(e.touches && e.touches.length) lastY = e.touches[0].clientY;
+  }, {passive:true});
+  document.addEventListener('touchmove', function(e){
+    if(!mobile()) return;
+    if(document.body.classList.contains('preview-fullscreen-open')) return;
+    var panel = e.target && e.target.closest ? e.target.closest('.controls-panel') : null;
+    if(!panel){
+      e.preventDefault();
+      return;
+    }
+    // Allow the blue controls panel to scroll, but stop page rubber-band at edges.
+    if(!e.touches || !e.touches.length) return;
+    var y = e.touches[0].clientY;
+    var dy = y - lastY;
+    lastY = y;
+    var atTop = panel.scrollTop <= 0;
+    var atBottom = Math.ceil(panel.scrollTop + panel.clientHeight) >= panel.scrollHeight;
+    if((atTop && dy > 0) || (atBottom && dy < 0)){
+      e.preventDefault();
+    }
   }, {passive:false});
 })();
 </script>
