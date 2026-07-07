@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<html lang="zh-CN" style="--stable-app-height: 657px;"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>图片制作工具 - ALPHA通道版</title>
@@ -81,7 +79,7 @@
 </head>
 <body>
 <canvas id="cosmicBg" aria-hidden="true"></canvas>
-<div id="liquidNebula" aria-hidden="true"></div>
+<div id="liquidNebula" aria-hidden="true" style="--mx: 0.00px; --my: 0.00px;"></div>
 <div class="toolbar">
 <div class="toolbar-row">
 <div class="toolbar-group"><span class="toolbar-label">ADD</span>
@@ -105,8 +103,8 @@
 </div>
 <div class="toolbar-row">
 <div class="toolbar-group"><span class="toolbar-label">HIS</span>
-<button class="btn" id="undoBtn" onclick="undo()" title="Undo">UNDO</button>
-<button class="btn" id="redoBtn" onclick="redo()" title="Redo">REDO</button>
+<button class="btn" id="undoBtn" onclick="undo()" title="Undo" disabled="">UNDO</button>
+<button class="btn" id="redoBtn" onclick="redo()" title="Redo" disabled="">REDO</button>
 </div>
 <div class="toolbar-group"><span class="toolbar-label">VIEW</span>
 <button class="btn" onclick="toggleLayout()">LAY</button>
@@ -135,8 +133,8 @@
 <div style="display:flex;gap:5px;margin-top:8px;"><button class="btn btn-sm" onclick="deleteSelected()" style="flex:1;color:#ff6b6b;">DEL</button></div>
 </div>
 <div class="control-section" id="textControls" style="display:none;">
-<h3 class="collapsible" onclick="toggleTextPanel()">TXT样式 <span class="toggle-icon" id="textPanelToggle">▼</span></h3>
-<div id="textPanelContent">
+<h3 class="collapsible" onclick="toggleTextPanel()">TXT样式 <span class="toggle-icon" id="textPanelToggle">▲</span></h3>
+<div id="textPanelContent" style="display: none;">
 
 <div class="txt-subsection">
 <div class="txt-subtitle" onclick="toggleTxtGroup('txtGroupBase')"><span>01 基础 / 字体</span><span id="txtGroupBaseIcon">▼</span></div>
@@ -191,7 +189,12 @@
 <div class="control-row"><label>LIGHT</label><input type="color" id="extrudeColor2" value="#a95000" onchange="updateEffectColor('extrudeColor2')"></div>
 <div class="control-row"><label>高光</label><input type="range" id="bevelLight" min="0" max="100" value="28" oninput="updateEffect('bevelLight');syncNumber('bevelLight')"><input type="number" id="bevelLightInput" value="28" min="0" max="100" oninput="inputSyncSlider('bevelLight');updateEffectFromInput('bevelLight')"><span class="unit">%</span></div>
 <div class="control-row"><label>暗部</label><input type="range" id="bevelDark" min="0" max="100" value="18" oninput="updateEffect('bevelDark');syncNumber('bevelDark')"><input type="number" id="bevelDarkInput" value="18" min="0" max="100" oninput="inputSyncSlider('bevelDark');updateEffectFromInput('bevelDark')"><span class="unit">%</span></div>
-</div>
+<div class="overall-3d-stroke-block">
+      <div class="txt-tip" style="margin-top:7px;color:rgba(255,220,145,.78)">整体 3D 描边：两层颜色都画在切面后方，只包整体轮廓，不覆盖 depth 颜色。</div>
+      <div class="control-row"><label>描边1色</label><input type="color" id="extrudeStrokeColor1" value="#000000" onchange="updateEffectColor('extrudeStrokeColor1')"></div>
+      <div class="control-row"><label>描边1</label><input type="range" id="extrudeStrokeWidth1" min="0" max="80" value="0" oninput="updateEffect('extrudeStrokeWidth1');syncNumber('extrudeStrokeWidth1')"><input type="number" id="extrudeStrokeWidth1Input" value="0" min="0" max="80" oninput="inputSyncSlider('extrudeStrokeWidth1');updateEffectFromInput('extrudeStrokeWidth1')"><span class="unit">px</span></div>
+      <div class="control-row"><label>描边2色</label><input type="color" id="extrudeStrokeColor2" value="#ffffff" onchange="updateEffectColor('extrudeStrokeColor2')"></div>
+      <div class="control-row"><label>描边2</label><input type="range" id="extrudeStrokeWidth2" min="0" max="80" value="0" oninput="updateEffect('extrudeStrokeWidth2');syncNumber('extrudeStrokeWidth2')"><input type="number" id="extrudeStrokeWidth2Input" value="0" min="0" max="80" oninput="inputSyncSlider('extrudeStrokeWidth2');updateEffectFromInput('extrudeStrokeWidth2')"><span class="unit">px</span></div></div></div>
 </div>
 <div class="txt-subsection">
 <div class="txt-subtitle" onclick="toggleTxtGroup('txtGroupShadow')"><span>06 阴影</span><span id="txtGroupShadowIcon">▼</span></div>
@@ -216,7 +219,7 @@
 <div class="control-section">
 <h3>LAYERS</h3>
 <div class="preset-header"><span class="preset-header-icon">⭐</span><span class="preset-header-text">PRESET</span></div>
-<div id="presetLayerList"></div>
+<div id="presetLayerList" style="max-height: none; height: auto; overflow: visible;"><div class="object-item preset-item  locked-item "><div class="object-info"><button class="eye-btn " onclick="event.stopPropagation();togglePresetVisibility(0);">👁</button><button class="lock-btn locked" onclick="event.stopPropagation();togglePresetLock(0);">🔒</button><span class="layer-name" ondblclick="editLayerName(event, 0, 'preset')">日期</span></div><button class="delete-btn" onclick="event.stopPropagation();deletePresetLayer(0);">×</button></div><div class="object-item preset-item  locked-item "><div class="object-info"><button class="eye-btn " onclick="event.stopPropagation();togglePresetVisibility(1);">👁</button><button class="lock-btn locked" onclick="event.stopPropagation();togglePresetLock(1);">🔒</button><span class="layer-name" ondblclick="editLayerName(event, 1, 'preset')">金额</span></div><button class="delete-btn" onclick="event.stopPropagation();deletePresetLayer(1);">×</button></div><div class="object-item preset-item  locked-item "><div class="object-info"><button class="eye-btn " onclick="event.stopPropagation();togglePresetVisibility(2);">👁</button><button class="lock-btn locked" onclick="event.stopPropagation();togglePresetLock(2);">🔒</button><span class="layer-name" ondblclick="editLayerName(event, 2, 'preset')">标题</span></div><button class="delete-btn" onclick="event.stopPropagation();deletePresetLayer(2);">×</button></div></div>
 <div style="display:flex; gap:6px; margin-bottom:8px; margin-top:12px;">
 <button class="btn btn-sm" style="flex:1" onclick="copyLayer()">COPY</button>
 <button class="btn btn-sm" style="flex:1" onclick="pasteLayer()">PASTE</button>
@@ -233,7 +236,7 @@
 <button class="btn btn-sm primary" style="flex:1" onclick="openMosaicEditor()">MOSAIC</button>
 </div>
 <h3 style="margin-top:15px;">TEMPLATE</h3>
-<div class="object-list" id="objectList"></div>
+<div class="object-list" id="objectList" style="max-height: none; height: auto; overflow: visible;"></div>
 </div>
 <div class="batch-panel">
 <h4>📦 批量生成（ALPHAPNG）</h4>
@@ -241,7 +244,7 @@
 <div class="batch-row"><label>END</label><input type="date" id="batchEndDate" value="2026-01-30"></div>
 <div class="batch-row"><label>DAY</label><input type="number" id="batchCount" value="4" min="1" max="100"></div>
 <div class="batch-row"><button class="btn btn-batch" id="batchGenerateBtn" onclick="batchGenerate()">RUN</button></div>
-<div class="batch-preview" id="batchPreview">TOTAL 120 张</div>
+<div class="batch-preview" id="batchPreview">TOTAL 4 张 (1天)</div>
 </div>
 </div>
 </div>
@@ -257,7 +260,7 @@
 <input type="file" id="imgUpload" accept="image/*" onchange="handleImgUpload(event)" style="display:none;">
 </div>
 </div>
-<div class="toast" id="toast">提示</div>
+<div class="toast" id="toast">预设已载入</div>
 <div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div><div class="loading-text">LOADING...</div><div class="loading-progress" id="loadingProgress"></div></div>
 <script>
 // 获取当前系统日期时间 - 12小时制
@@ -882,7 +885,65 @@ function getTouchCanvasPoint(touch){const rect=canvas.getBoundingClientRect();co
 function getTouchById(touchList,id){if(!touchList)return null;for(let i=0;i<touchList.length;i++){if(touchList[i].identifier===id)return touchList[i];}return null;}
 function getTouchDistance(e){if(!e.touches||e.touches.length<2)return 0;const p1=getTouchCanvasPoint(e.touches[0]);const p2=getTouchCanvasPoint(e.touches[1]);return Math.hypot(p2.x-p1.x,p2.y-p1.y);}
 function getTouchCenter(e){const p1=getTouchCanvasPoint(e.touches[0]);const p2=getTouchCanvasPoint(e.touches[1]);return{x:(p1.x+p2.x)/2,y:(p1.y+p2.y)/2};}
-function findTopElementAt(pos){for(let i=presetElements.length-1;i>=0;i--){const el=presetElements[i];if(el.visible===false)continue;let w=getTextWidth(el)*(el.scale||1),h=(el.cache?el.cache.textHeight:el.fontSize)*(el.scale||1);if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2)return{type:'preset',index:i,el};}for(let i=templateElements.length-1;i>=0;i--){const el=templateElements[i];if(el.visible===false)continue;let w,h;if(el.type==='image'||el.type==='imageSlot'){w=el.width*(el.scale||1);h=el.height*(el.scale||1);}else{w=getTextWidth(el)*(el.scale||1);h=(el.cache?el.cache.textHeight:el.fontSize)*(el.scale||1);}if(Math.abs(pos.x-el.x)<w/2&&Math.abs(pos.y-el.y)<h/2)return{type:'template',index:i,el};}return null;}
+function getLocalPointForElement(pos,el){
+const dx=pos.x-(el.x||0),dy=pos.y-(el.y||0);
+const r=-((el.rotation||0)*Math.PI/180);
+const c=Math.cos(r),s=Math.sin(r);
+return{x:dx*c-dy*s,y:dx*s+dy*c};
+}
+function isPointInsideBox(pos,el,w,h){
+const p=getLocalPointForElement(pos,el);
+return Math.abs(p.x)<=w/2&&Math.abs(p.y)<=h/2;
+}
+function imageAlphaHit(pos,el){
+const w=(el.width||0)*(el.scale||1),h=(el.height||0)*(el.scale||1);
+if(!w||!h)return false;
+const p=getLocalPointForElement(pos,el);
+if(Math.abs(p.x)>w/2||Math.abs(p.y)>h/2)return false;
+if(!el.img)return true;
+const iw=el.img.naturalWidth||el.img.width,ih=el.img.naturalHeight||el.img.height;
+if(!iw||!ih)return true;
+const px=Math.max(0,Math.min(iw-1,Math.floor((p.x+w/2)/w*iw)));
+const py=Math.max(0,Math.min(ih-1,Math.floor((p.y+h/2)/h*ih)));
+try{
+if(!el._alphaCanvas||el._alphaCanvas._src!==el.img.src){
+const ac=document.createElement('canvas');
+ac.width=iw;ac.height=ih;
+const actx=ac.getContext('2d',{willReadFrequently:true});
+actx.drawImage(el.img,0,0,iw,ih);
+ac._src=el.img.src;
+el._alphaCanvas=ac;
+}
+const a=el._alphaCanvas.getContext('2d',{willReadFrequently:true}).getImageData(px,py,1,1).data[3];
+return a>12;
+}catch(e){
+return true;
+}
+}
+function textBoxHit(pos,el){
+const w=getTextWidth(el)*(el.scale||1),h=(el.cache?el.cache.textHeight:el.fontSize)*(el.scale||1);
+return isPointInsideBox(pos,el,w,h);
+}
+function findTopElementAt(pos){
+for(let i=presetElements.length-1;i>=0;i--){
+const el=presetElements[i];
+if(el.visible===false)continue;
+if(el.type==='image'){
+if(imageAlphaHit(pos,el))return{type:'preset',index:i,el};
+}else if(textBoxHit(pos,el))return{type:'preset',index:i,el};
+}
+for(let i=templateElements.length-1;i>=0;i--){
+const el=templateElements[i];
+if(el.visible===false)continue;
+if(el.type==='image'){
+if(imageAlphaHit(pos,el))return{type:'template',index:i,el};
+}else if(el.type==='imageSlot'){
+const w=(el.width||0)*(el.scale||1),h=(el.height||0)*(el.scale||1);
+if(isPointInsideBox(pos,el,w,h))return{type:'template',index:i,el};
+}else if(textBoxHit(pos,el))return{type:'template',index:i,el};
+}
+return null;
+}
 function toggleAnchorZoomMode(e){
 if(e){e.preventDefault();e.stopPropagation();}
 anchorZoomMode=false;
@@ -4003,5 +4064,6 @@ function applyMosaicEditor(){
 })();
 </script>
 
-</body>
-</html>
+
+
+</body></html>
