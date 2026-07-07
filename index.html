@@ -270,7 +270,7 @@ const hours=now.getHours();
 const minutes=now.getMinutes();
 const h12=hours%12||12;
 const ampm=hours<12?'AM':'PM';
-return`${year}-${month}-${day} ${String(h12).padStart(2,'0')}:${minutes} ${ampm}`;
+return`${year}-${month}-${day} ${String(h12).padStart(2,'0')}:${String(minutes).padStart(2,'0')} ${ampm}`;
 }
 // 获取当前系统日期 - DD/MM/YYYY格式
 function getCurrentDateDMY(){
@@ -279,6 +279,32 @@ const day=String(now.getDate()).padStart(2,'0');
 const month=String(now.getMonth()+1).padStart(2,'0');
 const year=now.getFullYear();
 return`${day}/${month}/${year}`;
+}
+// 获取当前系统日期 - input[type=date] 需要的 YYYY-MM-DD 格式
+function getCurrentDateISO(){
+const now=new Date();
+const year=now.getFullYear();
+const month=String(now.getMonth()+1).padStart(2,'0');
+const day=String(now.getDate()).padStart(2,'0');
+return`${year}-${month}-${day}`;
+}
+// 刷新预设内的日期/时间文字，不改变其他图层设置
+function refreshPresetDateTime(list){
+if(!Array.isArray(list))return list;
+const hasSeparateTime=list.some(el=>el&&el.type==='text'&&el.name==='时间');
+list.forEach(el=>{
+if(!el||el.type!=='text')return;
+if(el.name==='日期'){el.text=hasSeparateTime?getCurrentDateDMY():getCurrentDateTime12();el.cache=null;}
+if(el.name==='时间'){el.text=getCurrentTime24();el.cache=null;}
+});
+return list;
+}
+function refreshBatchDateInputs(){
+const today=getCurrentDateISO();
+const start=document.getElementById('batchStartDate');
+const end=document.getElementById('batchEndDate');
+if(start)start.value=today;
+if(end)end.value=today;
 }
 // 获取当前系统时间 - 24小时制 HH:MM:SS
 function getCurrentTime24(){
@@ -383,14 +409,17 @@ saveState();
 },300);
 }
 function createPresetElements(){
-if(currentTemplateMode==='custom'){return JSON.parse(JSON.stringify([customPresetConfig.title,customPresetConfig.date,customPresetConfig.time,customPresetConfig.amount]));}
-return JSON.parse(JSON.stringify([defaultPresetConfig.date,defaultPresetConfig.amount,defaultPresetConfig.title]));
+let list;
+if(currentTemplateMode==='custom'){list=JSON.parse(JSON.stringify([customPresetConfig.title,customPresetConfig.date,customPresetConfig.time,customPresetConfig.amount]));}
+else{list=JSON.parse(JSON.stringify([defaultPresetConfig.date,defaultPresetConfig.amount,defaultPresetConfig.title]));}
+return refreshPresetDateTime(list);
 }
 function switchTemplate(){
 if(currentTemplateMode==='default'){currentTemplateMode='custom';document.getElementById('templateSwitchBtn').classList.add('active');showToast('已切换到自定义模板');}else{currentTemplateMode='default';document.getElementById('templateSwitchBtn').classList.remove('active');showToast('已切换到默认模板');}
 presetElements=createPresetElements();selectedIndex=-1;selectedType='';markDirty();updateObjectList();updateControls();saveState();
 }
 function init(){
+refreshBatchDateInputs();
 presetElements=createPresetElements();templateElements=[];render();updateObjectList();saveState();updateBatchPreview();
 document.addEventListener('paste',handlePaste);
 document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='z'){e.preventDefault();if(e.shiftKey)redo();else undo();}});
@@ -1667,16 +1696,15 @@ return el;
 }
 function exportProject(){
 const d={
-  version:'1.1',
-  preset:presetElements.map(serializeProjectElement),
+  version:'1.2-template-only',
   template:templateElements.map(serializeProjectElement)
 };
 const b=new Blob([JSON.stringify(d)],{type:'application/json'});
 const a=document.createElement('a');
-a.download='poster-project.json';
+a.download='poster-template.json';
 a.href=URL.createObjectURL(b);
 a.click();
-showToast('FILE已SAVE + PRESET');
+showToast('模板已SAVE（不含PRESET）');
 }
 async function importProject(evt){
 const f=evt.target.files[0];
@@ -1685,17 +1713,16 @@ const r=new FileReader();
 r.onload=async e=>{
 try{
 const data=JSON.parse(e.target.result);
+const incomingTemplate=Array.isArray(data.template)?data.template:(Array.isArray(data.elements)?data.elements:[]);
 templateElements=[];
-for(const ed of data.elements||data.template||[]){
+for(const ed of incomingTemplate){
   templateElements.push(await hydrateProjectElement(ed));
 }
-if(Array.isArray(data.preset)){
-  presetElements=[];
-  for(const ed of data.preset){
-    presetElements.push(await hydrateProjectElement(ed));
-  }
-}else{
+// 导入模板时忽略 JSON 里的 preset 三层（日期 / 金额 / 标题），保留当前页面的 PRESET。
+if(!Array.isArray(presetElements)||presetElements.length===0){
   presetElements=createPresetElements();
+}else{
+  refreshPresetDateTime(presetElements);
 }
 selectedIndex=-1;
 selectedType='';
@@ -1703,7 +1730,7 @@ markDirty();
 updateObjectList();
 updateControls();
 saveState();
-showToast('FILE导入成功 + PRESET');
+showToast('模板导入成功（PRESET已忽略）');
 }catch(err){
 console.error(err);
 showToast('导入失败');
@@ -3939,7 +3966,7 @@ function applyMosaicEditor(){
 <script id="empire4-default-preset-and-selection-box-v1">
 (function(){
   const EMPIRE4_PROJECT={"version":"1.1","preset":[{"type":"text","name":"日期","text":"2026-07-07 02:25 AM","x":144,"y":649,"scale":0.96,"rotation":0,"opacity":1,"fontSize":24,"align":"center","color":"#D4AF37","stylePreset":"normal","gradientColor1":"#4b3514","gradientColor2":"#927034","locked":true,"visible":true,"extrudeStrokeColor1":"#000000","extrudeStrokeWidth1":0,"extrudeStrokeColor2":"#ffffff","extrudeStrokeWidth2":0,"cache":null},{"type":"text","name":"金额","text":"MYR 10,000.00","x":572,"y":651,"scale":0.92,"rotation":0,"opacity":1,"fontSize":27,"align":"right","color":"#D4AF37","stylePreset":"normal","gradientColor1":"#453112","gradientColor2":"#977234","locked":true,"visible":true,"extrudeStrokeColor1":"#000000","extrudeStrokeWidth1":0,"extrudeStrokeColor2":"#ffffff","extrudeStrokeWidth2":0,"cache":null},{"type":"text","name":"标题","text":"RM 10,000","x":574,"y":520,"scale":1.14,"rotation":0,"opacity":1,"fontSize":60,"align":"right","color":"#D4AF37","stylePreset":"gold_basic","gradientColor1":"#86874f","gradientColor2":"#feffe0","gradientColor3":"#858351","gradientAngle":90,"gradientSize":4,"gradientX":0,"gradientY":5,"shadowOffsetX":0,"shadowOffsetY":0,"shadowSize":0,"shadowSpread":16,"glowBlur":16,"glowColor":"rgba(255,215,0,0.6)","strokeColor1":"#f5f299","strokeWidth1":3,"strokeColor2":"#54522c","strokeWidth2":8,"locked":true,"visible":true,"extrudeDepth":8,"extrudeStrokeColor1":"#eff594","extrudeStrokeWidth1":3,"extrudeStrokeColor2":"#0c0c08","extrudeStrokeWidth2":8,"extrudeStepX":0,"extrudeStepY":0,"extrudeColor1":"#000000","fontPreset":"condensed","shadowColor":"#000000","cache":null}],"template":[]};
-  function cloneProject(){return JSON.parse(JSON.stringify(EMPIRE4_PROJECT));}
+  function cloneProject(){const d=JSON.parse(JSON.stringify(EMPIRE4_PROJECT));refreshPresetDateTime(d.preset);return d;}
   async function hydrateList(list){
     const arr=[];
     for(const ed of (list||[])){
@@ -3965,7 +3992,7 @@ function applyMosaicEditor(){
     if(typeof showToast==='function')showToast('预设已载入');
   };
   try{
-    createPresetElements=function(){return JSON.parse(JSON.stringify(EMPIRE4_PROJECT.preset||[]));};
+    createPresetElements=function(){return cloneProject().preset||[];};
     switchTemplate=function(){window.loadEmpire4DefaultPreset();};
   }catch(e){console.warn('Preset override skipped',e);}
   if(document.readyState==='loading'){
