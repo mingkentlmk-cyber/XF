@@ -1,4 +1,6 @@
-<html lang="zh-CN" style="--stable-app-height: 657px;"><head>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>图片制作工具 - ALPHA通道版</title>
@@ -79,7 +81,7 @@
 </head>
 <body>
 <canvas id="cosmicBg" aria-hidden="true"></canvas>
-<div id="liquidNebula" aria-hidden="true" style="--mx: 0.00px; --my: 0.00px;"></div>
+<div id="liquidNebula" aria-hidden="true"></div>
 <div class="toolbar">
 <div class="toolbar-row">
 <div class="toolbar-group"><span class="toolbar-label">ADD</span>
@@ -103,8 +105,8 @@
 </div>
 <div class="toolbar-row">
 <div class="toolbar-group"><span class="toolbar-label">HIS</span>
-<button class="btn" id="undoBtn" onclick="undo()" title="Undo" disabled="">UNDO</button>
-<button class="btn" id="redoBtn" onclick="redo()" title="Redo" disabled="">REDO</button>
+<button class="btn" id="undoBtn" onclick="undo()" title="Undo">UNDO</button>
+<button class="btn" id="redoBtn" onclick="redo()" title="Redo">REDO</button>
 </div>
 <div class="toolbar-group"><span class="toolbar-label">VIEW</span>
 <button class="btn" onclick="toggleLayout()">LAY</button>
@@ -133,8 +135,8 @@
 <div style="display:flex;gap:5px;margin-top:8px;"><button class="btn btn-sm" onclick="deleteSelected()" style="flex:1;color:#ff6b6b;">DEL</button></div>
 </div>
 <div class="control-section" id="textControls" style="display:none;">
-<h3 class="collapsible" onclick="toggleTextPanel()">TXT样式 <span class="toggle-icon" id="textPanelToggle">▲</span></h3>
-<div id="textPanelContent" style="display: none;">
+<h3 class="collapsible" onclick="toggleTextPanel()">TXT样式 <span class="toggle-icon" id="textPanelToggle">▼</span></h3>
+<div id="textPanelContent">
 
 <div class="txt-subsection">
 <div class="txt-subtitle" onclick="toggleTxtGroup('txtGroupBase')"><span>01 基础 / 字体</span><span id="txtGroupBaseIcon">▼</span></div>
@@ -189,12 +191,7 @@
 <div class="control-row"><label>LIGHT</label><input type="color" id="extrudeColor2" value="#a95000" onchange="updateEffectColor('extrudeColor2')"></div>
 <div class="control-row"><label>高光</label><input type="range" id="bevelLight" min="0" max="100" value="28" oninput="updateEffect('bevelLight');syncNumber('bevelLight')"><input type="number" id="bevelLightInput" value="28" min="0" max="100" oninput="inputSyncSlider('bevelLight');updateEffectFromInput('bevelLight')"><span class="unit">%</span></div>
 <div class="control-row"><label>暗部</label><input type="range" id="bevelDark" min="0" max="100" value="18" oninput="updateEffect('bevelDark');syncNumber('bevelDark')"><input type="number" id="bevelDarkInput" value="18" min="0" max="100" oninput="inputSyncSlider('bevelDark');updateEffectFromInput('bevelDark')"><span class="unit">%</span></div>
-<div class="overall-3d-stroke-block">
-      <div class="txt-tip" style="margin-top:7px;color:rgba(255,220,145,.78)">整体 3D 描边：两层颜色都画在切面后方，只包整体轮廓，不覆盖 depth 颜色。</div>
-      <div class="control-row"><label>描边1色</label><input type="color" id="extrudeStrokeColor1" value="#000000" onchange="updateEffectColor('extrudeStrokeColor1')"></div>
-      <div class="control-row"><label>描边1</label><input type="range" id="extrudeStrokeWidth1" min="0" max="80" value="0" oninput="updateEffect('extrudeStrokeWidth1');syncNumber('extrudeStrokeWidth1')"><input type="number" id="extrudeStrokeWidth1Input" value="0" min="0" max="80" oninput="inputSyncSlider('extrudeStrokeWidth1');updateEffectFromInput('extrudeStrokeWidth1')"><span class="unit">px</span></div>
-      <div class="control-row"><label>描边2色</label><input type="color" id="extrudeStrokeColor2" value="#ffffff" onchange="updateEffectColor('extrudeStrokeColor2')"></div>
-      <div class="control-row"><label>描边2</label><input type="range" id="extrudeStrokeWidth2" min="0" max="80" value="0" oninput="updateEffect('extrudeStrokeWidth2');syncNumber('extrudeStrokeWidth2')"><input type="number" id="extrudeStrokeWidth2Input" value="0" min="0" max="80" oninput="inputSyncSlider('extrudeStrokeWidth2');updateEffectFromInput('extrudeStrokeWidth2')"><span class="unit">px</span></div></div></div>
+</div>
 </div>
 <div class="txt-subsection">
 <div class="txt-subtitle" onclick="toggleTxtGroup('txtGroupShadow')"><span>06 阴影</span><span id="txtGroupShadowIcon">▼</span></div>
@@ -219,7 +216,7 @@
 <div class="control-section">
 <h3>LAYERS</h3>
 <div class="preset-header"><span class="preset-header-icon">⭐</span><span class="preset-header-text">PRESET</span></div>
-<div id="presetLayerList" style="max-height: none; height: auto; overflow: visible;"><div class="object-item preset-item  locked-item "><div class="object-info"><button class="eye-btn " onclick="event.stopPropagation();togglePresetVisibility(0);">👁</button><button class="lock-btn locked" onclick="event.stopPropagation();togglePresetLock(0);">🔒</button><span class="layer-name" ondblclick="editLayerName(event, 0, 'preset')">日期</span></div><button class="delete-btn" onclick="event.stopPropagation();deletePresetLayer(0);">×</button></div><div class="object-item preset-item  locked-item "><div class="object-info"><button class="eye-btn " onclick="event.stopPropagation();togglePresetVisibility(1);">👁</button><button class="lock-btn locked" onclick="event.stopPropagation();togglePresetLock(1);">🔒</button><span class="layer-name" ondblclick="editLayerName(event, 1, 'preset')">金额</span></div><button class="delete-btn" onclick="event.stopPropagation();deletePresetLayer(1);">×</button></div><div class="object-item preset-item  locked-item "><div class="object-info"><button class="eye-btn " onclick="event.stopPropagation();togglePresetVisibility(2);">👁</button><button class="lock-btn locked" onclick="event.stopPropagation();togglePresetLock(2);">🔒</button><span class="layer-name" ondblclick="editLayerName(event, 2, 'preset')">标题</span></div><button class="delete-btn" onclick="event.stopPropagation();deletePresetLayer(2);">×</button></div></div>
+<div id="presetLayerList"></div>
 <div style="display:flex; gap:6px; margin-bottom:8px; margin-top:12px;">
 <button class="btn btn-sm" style="flex:1" onclick="copyLayer()">COPY</button>
 <button class="btn btn-sm" style="flex:1" onclick="pasteLayer()">PASTE</button>
@@ -236,7 +233,7 @@
 <button class="btn btn-sm primary" style="flex:1" onclick="openMosaicEditor()">MOSAIC</button>
 </div>
 <h3 style="margin-top:15px;">TEMPLATE</h3>
-<div class="object-list" id="objectList" style="max-height: none; height: auto; overflow: visible;"></div>
+<div class="object-list" id="objectList"></div>
 </div>
 <div class="batch-panel">
 <h4>📦 批量生成（ALPHAPNG）</h4>
@@ -244,7 +241,7 @@
 <div class="batch-row"><label>END</label><input type="date" id="batchEndDate" value="2026-01-30"></div>
 <div class="batch-row"><label>DAY</label><input type="number" id="batchCount" value="4" min="1" max="100"></div>
 <div class="batch-row"><button class="btn btn-batch" id="batchGenerateBtn" onclick="batchGenerate()">RUN</button></div>
-<div class="batch-preview" id="batchPreview">TOTAL 4 张 (1天)</div>
+<div class="batch-preview" id="batchPreview">TOTAL 120 张</div>
 </div>
 </div>
 </div>
@@ -260,7 +257,7 @@
 <input type="file" id="imgUpload" accept="image/*" onchange="handleImgUpload(event)" style="display:none;">
 </div>
 </div>
-<div class="toast" id="toast">预设已载入</div>
+<div class="toast" id="toast">提示</div>
 <div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div><div class="loading-text">LOADING...</div><div class="loading-progress" id="loadingProgress"></div></div>
 <script>
 // 获取当前系统日期时间 - 12小时制
@@ -900,9 +897,9 @@ const w=(el.width||0)*(el.scale||1),h=(el.height||0)*(el.scale||1);
 if(!w||!h)return false;
 const p=getLocalPointForElement(pos,el);
 if(Math.abs(p.x)>w/2||Math.abs(p.y)>h/2)return false;
-if(!el.img)return true;
+if(!el.img)return false;
 const iw=el.img.naturalWidth||el.img.width,ih=el.img.naturalHeight||el.img.height;
-if(!iw||!ih)return true;
+if(!iw||!ih)return false;
 const px=Math.max(0,Math.min(iw-1,Math.floor((p.x+w/2)/w*iw)));
 const py=Math.max(0,Math.min(ih-1,Math.floor((p.y+h/2)/h*ih)));
 try{
@@ -917,7 +914,7 @@ el._alphaCanvas=ac;
 const a=el._alphaCanvas.getContext('2d',{willReadFrequently:true}).getImageData(px,py,1,1).data[3];
 return a>12;
 }catch(e){
-return true;
+return false;
 }
 }
 function textBoxHit(pos,el){
@@ -938,8 +935,12 @@ if(el.visible===false)continue;
 if(el.type==='image'){
 if(imageAlphaHit(pos,el))return{type:'template',index:i,el};
 }else if(el.type==='imageSlot'){
+if(el.img){
+if(imageAlphaHit(pos,el))return{type:'template',index:i,el};
+}else{
 const w=(el.width||0)*(el.scale||1),h=(el.height||0)*(el.scale||1);
 if(isPointInsideBox(pos,el,w,h))return{type:'template',index:i,el};
+}
 }else if(textBoxHit(pos,el))return{type:'template',index:i,el};
 }
 return null;
@@ -1747,6 +1748,38 @@ if(b.img){
 if(b.cache)delete b.cache;
 return b;
 }
+function serializePresetStyleElement(e){
+const b=serializeProjectElement(e);
+// 模板可以保存 PRESET 的位置 / 颜色 / 花字样式，但不把文字内容写进模板，避免旧日期和旧金额覆盖。
+if(b&&b.type==='text')delete b.text;
+return b;
+}
+function getPresetMergeKey(el,index){
+return (el&&el.name)?String(el.name):String(index);
+}
+function mergePresetStyleOnly(incomingPreset, hasPresetField){
+const base=Array.isArray(presetElements)&&presetElements.length?presetElements:createPresetElements();
+const currentByName={};
+base.forEach((el,idx)=>{currentByName[getPresetMergeKey(el,idx)]=el;});
+// 有 preset 字段时，以导入文件的 preset 图层数量为准：文件里移除了日期/金额，本机也同步移除。
+// 只保留匹配图层当前的文字内容；位置、颜色、花字、描边、发光等样式读取导入文件。
+if(hasPresetField){
+  const merged=[];
+  (Array.isArray(incomingPreset)?incomingPreset:[]).forEach((src,idx)=>{
+    if(!src)return;
+    const key=getPresetMergeKey(src,idx);
+    const current=currentByName[key]||base[idx]||{};
+    const keepText=(typeof current.text!=='undefined')?current.text:((typeof src.text!=='undefined')?src.text:'');
+    const el={...src,text:keepText};
+    if(current.img&&!el.img)el.img=current.img;
+    if(current.imgData&&!el.imgData)el.imgData=current.imgData;
+    if(el.type==='text')el.cache=null;
+    merged.push(el);
+  });
+  return refreshPresetDateTime(merged);
+}
+return refreshPresetDateTime(base);
+}
 async function hydrateProjectElement(ed){
 const el={...ed};
 if(el.imgData){
@@ -1757,7 +1790,8 @@ return el;
 }
 function exportProject(){
 const d={
-  version:'1.2-template-only',
+  version:'1.3-template-preset-style-only',
+  preset:presetElements.map(serializePresetStyleElement),
   template:templateElements.map(serializeProjectElement)
 };
 const b=new Blob([JSON.stringify(d)],{type:'application/json'});
@@ -1765,7 +1799,7 @@ const a=document.createElement('a');
 a.download='poster-template.json';
 a.href=URL.createObjectURL(b);
 a.click();
-showToast('模板已SAVE（不含PRESET）');
+showToast('模板已SAVE（PRESET只存样式不存文字）');
 }
 async function importProject(evt){
 const f=evt.target.files[0];
@@ -1779,19 +1813,15 @@ templateElements=[];
 for(const ed of incomingTemplate){
   templateElements.push(await hydrateProjectElement(ed));
 }
-// 导入模板时忽略 JSON 里的 preset 三层（日期 / 金额 / 标题），保留当前页面的 PRESET。
-if(!Array.isArray(presetElements)||presetElements.length===0){
-  presetElements=createPresetElements();
-}else{
-  refreshPresetDateTime(presetElements);
-}
+// 导入模板时只忽略 PRESET 的文字内容；位置、大小、颜色、花字、描边、发光等样式照样读取。
+presetElements=mergePresetStyleOnly(Array.isArray(data.preset)?data.preset:[], Object.prototype.hasOwnProperty.call(data,'preset'));
 selectedIndex=-1;
 selectedType='';
 markDirty();
 updateObjectList();
 updateControls();
 saveState();
-showToast('模板导入成功（PRESET已忽略）');
+showToast('模板导入成功（文字保留，缺少的PRESET已移除）');
 }catch(err){
 console.error(err);
 showToast('导入失败');
@@ -4023,47 +4053,10 @@ function applyMosaicEditor(){
 </script>
 
 
-<!-- TEMP(1) DEFAULT PRESET + PS-LIKE SELECTED LAYER BOUNDING BOX -->
-<script id="empire4-default-preset-and-selection-box-v1">
-(function(){
-  const EMPIRE4_PROJECT={"version":"1.1","preset":[{"type":"text","name":"日期","text":"2026-07-07 02:25 AM","x":144,"y":649,"scale":0.96,"rotation":0,"opacity":1,"fontSize":24,"align":"center","color":"#D4AF37","stylePreset":"normal","gradientColor1":"#4b3514","gradientColor2":"#927034","locked":true,"visible":true,"extrudeStrokeColor1":"#000000","extrudeStrokeWidth1":0,"extrudeStrokeColor2":"#ffffff","extrudeStrokeWidth2":0,"cache":null},{"type":"text","name":"金额","text":"MYR 10,000.00","x":572,"y":651,"scale":0.92,"rotation":0,"opacity":1,"fontSize":27,"align":"right","color":"#D4AF37","stylePreset":"normal","gradientColor1":"#453112","gradientColor2":"#977234","locked":true,"visible":true,"extrudeStrokeColor1":"#000000","extrudeStrokeWidth1":0,"extrudeStrokeColor2":"#ffffff","extrudeStrokeWidth2":0,"cache":null},{"type":"text","name":"标题","text":"RM 10,000","x":574,"y":520,"scale":1.14,"rotation":0,"opacity":1,"fontSize":60,"align":"right","color":"#D4AF37","stylePreset":"gold_basic","gradientColor1":"#86874f","gradientColor2":"#feffe0","gradientColor3":"#858351","gradientAngle":90,"gradientSize":4,"gradientX":0,"gradientY":5,"shadowOffsetX":0,"shadowOffsetY":0,"shadowSize":0,"shadowSpread":16,"glowBlur":16,"glowColor":"rgba(255,215,0,0.6)","strokeColor1":"#f5f299","strokeWidth1":3,"strokeColor2":"#54522c","strokeWidth2":8,"locked":true,"visible":true,"extrudeDepth":8,"extrudeStrokeColor1":"#eff594","extrudeStrokeWidth1":3,"extrudeStrokeColor2":"#0c0c08","extrudeStrokeWidth2":8,"extrudeStepX":0,"extrudeStepY":0,"extrudeColor1":"#000000","fontPreset":"condensed","shadowColor":"#000000","cache":null}],"template":[]};
-  function cloneProject(){const d=JSON.parse(JSON.stringify(EMPIRE4_PROJECT));refreshPresetDateTime(d.preset);return d;}
-  async function hydrateList(list){
-    const arr=[];
-    for(const ed of (list||[])){
-      const el={...ed};
-      if(el.imgData){try{el.img=await dataURLToImage(el.imgData);}catch(e){console.warn('Image hydrate failed',e);}}
-      if(el.type==='text')el.cache=null;
-      arr.push(el);
-    }
-    return arr;
-  }
-  window.loadEmpire4DefaultPreset=async function(){
-    const d=cloneProject();
-    templateElements=await hydrateList(d.template);
-    presetElements=await hydrateList(d.preset);
-    selectedType='';
-    selectedIndex=-1;
-    history=[];
-    historyIndex=-1;
-    markDirty();
-    updateObjectList();
-    updateControls();
-    saveState();
-    if(typeof showToast==='function')showToast('预设已载入');
-  };
-  try{
-    createPresetElements=function(){return cloneProject().preset||[];};
-    switchTemplate=function(){window.loadEmpire4DefaultPreset();};
-  }catch(e){console.warn('Preset override skipped',e);}
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',function(){setTimeout(window.loadEmpire4DefaultPreset,30);},{once:true});
-  }else{
-    setTimeout(window.loadEmpire4DefaultPreset,30);
-  }
-})();
-</script>
+<!-- TPL fixed: removed old default-preset override so the original two-template switchTemplate works. -->
 
 
+</body>
+</html>
 
-</body></html>
+<!-- PATCH: imageSlot alpha hit test enabled; transparent PNG areas pass through to lower layers. -->
