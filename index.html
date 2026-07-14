@@ -110,7 +110,7 @@
 </div>
 <div class="toolbar-group"><span class="toolbar-label">VIEW</span>
 <button class="btn" onclick="toggleLayout()">LAY</button>
-<button class="btn" id="templateSwitchBtn" onclick="switchTemplate()">TPL</button>
+<button class="btn" id="templateSwitchBtn" onclick="switchTemplate()" title="依次切换：模板1 → 模板2 → 空白9:16">TPL 1</button>
 </div>
 </div>
 </div>
@@ -120,7 +120,7 @@
 <div id="snapLineH" class="snap-line snap-line-horizontal" style="top:50%;display:none;"></div>
 <div class="anchor-zoom-hint" id="anchorZoomHint">HOLD: anchor zoom · 2 fingers: pinch zoom</div>
 <button class="fullscreen-preview-btn" id="fullscreenPreviewBtn" onclick="togglePreviewFullscreen(event)" type="button" aria-label="Fullscreen Preview">FULL</button>
-<canvas id="mainCanvas" width="600" height="800"></canvas>
+<canvas id="mainCanvas" width="600" height="800" aria-label="海报编辑画布：模板1/2为3:4，模板3为空白9:16"></canvas>
 </div>
 <div class="controls-panel" id="sidePanel">
 <div class="control-section"><h3>SELECT</h3><div id="selectedInfo" style="font-size:11px;color:#999;padding:5px 0;word-break:break-all;">NONE</div></div>
@@ -336,11 +336,20 @@ return {family:p.fontFamily||fontPresetConfig.bold_cn.family,weight:p.fontWeight
 const canvas=document.getElementById('mainCanvas');
 const ctx=canvas.getContext('2d');
 const canvasConfig={width:600,height:800};
+const TEMPLATE_MODES=['default','custom','blank'];
+const TEMPLATE_SIZES={
+  default:{width:600,height:800,label:'模板 1 · 3:4'},
+  custom:{width:600,height:800,label:'模板 2 · 3:4'},
+  blank:{width:720,height:1280,label:'模板 3 · 空白 9:16'}
+};
 const SNAP_THRESHOLD=20;
-const CENTER_X=canvasConfig.width/2;
-const CENTER_Y=canvasConfig.height/2;
+let CENTER_X=canvasConfig.width/2;
+let CENTER_Y=canvasConfig.height/2;
 let presetElements=[];
 let templateElements=[];
+// 模板1与模板2沿用同一组设计图层；模板3使用独立空白图层，互不覆盖。
+let standardTemplateElements=templateElements;
+let blankTemplateElements=[];
 let selectedIndex=-1;
 let selectedType='';
 let isDragging=false;
@@ -410,17 +419,60 @@ saveState();
 }
 function createPresetElements(){
 let list;
+if(currentTemplateMode==='blank')return [];
 if(currentTemplateMode==='custom'){list=JSON.parse(JSON.stringify([customPresetConfig.title,customPresetConfig.date,customPresetConfig.time,customPresetConfig.amount]));}
 else{list=JSON.parse(JSON.stringify([defaultPresetConfig.date,defaultPresetConfig.amount,defaultPresetConfig.title]));}
 return refreshPresetDateTime(list);
 }
+function stashActiveTemplateElements(){
+if(currentTemplateMode==='blank')blankTemplateElements=templateElements;
+else standardTemplateElements=templateElements;
+}
+function loadTemplateElementsForMode(mode){
+templateElements=mode==='blank'?blankTemplateElements:standardTemplateElements;
+}
+function setCanvasSize(width,height){
+canvasConfig.width=Math.max(1,Math.round(width));
+canvasConfig.height=Math.max(1,Math.round(height));
+CENTER_X=canvasConfig.width/2;
+CENTER_Y=canvasConfig.height/2;
+canvas.width=canvasConfig.width;
+canvas.height=canvasConfig.height;
+const posX=document.getElementById('posX');
+const posY=document.getElementById('posY');
+if(posX)posX.max=String(canvasConfig.width);
+if(posY)posY.max=String(canvasConfig.height);
+markDirty();
+}
+function applyTemplateModeUI(){
+const size=TEMPLATE_SIZES[currentTemplateMode]||TEMPLATE_SIZES.default;
+setCanvasSize(size.width,size.height);
+const btn=document.getElementById('templateSwitchBtn');
+if(btn){
+  const index=TEMPLATE_MODES.indexOf(currentTemplateMode)+1;
+  btn.textContent='TPL '+index;
+  btn.classList.toggle('active',currentTemplateMode!=='default');
+  btn.title=size.label+'；点击切换下一个模板';
+}
+}
+function resetHistoryForCurrentTemplate(){
+history=[];historyIndex=-1;saveState();
+}
 function switchTemplate(){
-if(currentTemplateMode==='default'){currentTemplateMode='custom';document.getElementById('templateSwitchBtn').classList.add('active');showToast('已切换到自定义模板');}else{currentTemplateMode='default';document.getElementById('templateSwitchBtn').classList.remove('active');showToast('已切换到默认模板');}
-presetElements=createPresetElements();selectedIndex=-1;selectedType='';markDirty();updateObjectList();updateControls();saveState();
+stashActiveTemplateElements();
+const currentIndex=Math.max(0,TEMPLATE_MODES.indexOf(currentTemplateMode));
+currentTemplateMode=TEMPLATE_MODES[(currentIndex+1)%TEMPLATE_MODES.length];
+loadTemplateElementsForMode(currentTemplateMode);
+presetElements=createPresetElements();
+applyTemplateModeUI();
+selectedIndex=-1;selectedType='';
+markDirty();updateObjectList();updateControls();resetHistoryForCurrentTemplate();
+showToast((TEMPLATE_SIZES[currentTemplateMode]||TEMPLATE_SIZES.default).label);
 }
 function init(){
 refreshBatchDateInputs();
-presetElements=createPresetElements();templateElements=[];render();updateObjectList();saveState();updateBatchPreview();
+templateElements=[];standardTemplateElements=templateElements;blankTemplateElements=[];
+presetElements=createPresetElements();applyTemplateModeUI();render();updateObjectList();resetHistoryForCurrentTemplate();updateBatchPreview();
 document.addEventListener('paste',handlePaste);
 document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='z'){e.preventDefault();if(e.shiftKey)redo();else undo();}});
 document.getElementById('batchStartDate').addEventListener('change',updateBatchPreview);document.getElementById('batchEndDate').addEventListener('change',updateBatchPreview);document.getElementById('batchCount').addEventListener('input',updateBatchPreview);
@@ -1676,7 +1728,7 @@ break;
 }
 }
 function serializeElements(){
-return JSON.stringify({preset:presetElements.map(e=>{const o={...e};if(o.img){o.imgData=imageToDataURL(o.img);delete o.img;}return o;}),template:templateElements.map(e=>{const o={...e};if(o.img){o.imgData=imageToDataURL(o.img);delete o.img;}return o;})});
+return JSON.stringify({mode:currentTemplateMode,canvas:{width:canvasConfig.width,height:canvasConfig.height},preset:presetElements.map(e=>{const o={...e};if(o.img){o.imgData=imageToDataURL(o.img);delete o.img;}return o;}),template:templateElements.map(e=>{const o={...e};if(o.img){o.imgData=imageToDataURL(o.img);delete o.img;}return o;})});
 }
 async function deserializeElements(json){
 const data=JSON.parse(json);
@@ -1710,6 +1762,12 @@ async function undo(){if(historyIndex>0){historyIndex--;await restoreState(histo
 async function redo(){if(historyIndex<history.length-1){historyIndex++;await restoreState(history[historyIndex]);}}
 async function restoreState(json){
 const data=JSON.parse(json);
+if(data.mode&&TEMPLATE_MODES.includes(data.mode)&&data.mode!==currentTemplateMode){
+  stashActiveTemplateElements();
+  currentTemplateMode=data.mode;
+}
+const size=data.canvas&&Number.isFinite(+data.canvas.width)&&Number.isFinite(+data.canvas.height)?data.canvas:(TEMPLATE_SIZES[currentTemplateMode]||TEMPLATE_SIZES.default);
+setCanvasSize(size.width,size.height);
 templateElements=[];
 for(let el of data.template||[]){
 if(el.imgData){
@@ -1718,6 +1776,7 @@ el.img=await dataURLToImage(el.imgData);
 if(el.type==='text')el.cache=null;
 templateElements.push(el);
 }
+stashActiveTemplateElements();
 if(data.preset){
 presetElements=[];
 for(let el of data.preset||[]){
@@ -1734,6 +1793,7 @@ markDirty();
 updateObjectList();
 updateControls();
 updateUndoRedoButtons();
+applyTemplateModeUI();
 }
 function updateUndoRedoButtons(){
 document.getElementById('undoBtn').disabled=historyIndex<=0;
@@ -1790,7 +1850,9 @@ return el;
 }
 function exportProject(){
 const d={
-  version:'1.3-template-preset-style-only',
+  version:'1.4-three-template-dynamic-canvas',
+  templateMode:currentTemplateMode,
+  canvas:{width:canvasConfig.width,height:canvasConfig.height},
   preset:presetElements.map(serializePresetStyleElement),
   template:templateElements.map(serializeProjectElement)
 };
@@ -1808,20 +1870,27 @@ const r=new FileReader();
 r.onload=async e=>{
 try{
 const data=JSON.parse(e.target.result);
-const incomingTemplate=Array.isArray(data.template)?data.template:(Array.isArray(data.elements)?data.elements:[]);
+const importedMode=TEMPLATE_MODES.includes(data.templateMode)?data.templateMode:((data.canvas&&+data.canvas.height/+data.canvas.width>1.6)?'blank':currentTemplateMode);
+stashActiveTemplateElements();
+currentTemplateMode=importedMode;
 templateElements=[];
+const importedSize=data.canvas&&Number.isFinite(+data.canvas.width)&&Number.isFinite(+data.canvas.height)?data.canvas:(TEMPLATE_SIZES[currentTemplateMode]||TEMPLATE_SIZES.default);
+setCanvasSize(importedSize.width,importedSize.height);
+const incomingTemplate=Array.isArray(data.template)?data.template:(Array.isArray(data.elements)?data.elements:[]);
 for(const ed of incomingTemplate){
   templateElements.push(await hydrateProjectElement(ed));
 }
+stashActiveTemplateElements();
 // 导入模板时只忽略 PRESET 的文字内容；位置、大小、颜色、花字、描边、发光等样式照样读取。
 presetElements=mergePresetStyleOnly(Array.isArray(data.preset)?data.preset:[], Object.prototype.hasOwnProperty.call(data,'preset'));
 selectedIndex=-1;
 selectedType='';
+applyTemplateModeUI();
 markDirty();
 updateObjectList();
 updateControls();
-saveState();
-showToast('模板导入成功（文字保留，缺少的PRESET已移除）');
+resetHistoryForCurrentTemplate();
+showToast('模板导入成功（'+(TEMPLATE_SIZES[currentTemplateMode]||TEMPLATE_SIZES.default).label+'）');
 }catch(err){
 console.error(err);
 showToast('导入失败');
@@ -1831,10 +1900,10 @@ r.readAsText(f);
 }
 // 【修复】SAVE函数 - 与预览完全一致
 function exportCanvasToBase64(transparent){
-// 固定SAVE 600x800，不使用SCALE
+// 按当前模板的真实画布尺寸导出，不再固定为 600x800。
 const ec=document.createElement('canvas');
-ec.width=600;
-ec.height=800;
+ec.width=canvasConfig.width;
+ec.height=canvasConfig.height;
 const ectx=ec.getContext('2d');
 // 设置与主 canvas 相同的渲染参数
 ectx.imageSmoothingEnabled=true;
@@ -1842,10 +1911,10 @@ ectx.imageSmoothingQuality='high';
 // 关键：使用 'middle' 与预览一致
 ectx.textBaseline='middle';
 // 清除背景
-ectx.clearRect(0,0,600,800);
+ectx.clearRect(0,0,canvasConfig.width,canvasConfig.height);
 if(!transparent){
 ectx.fillStyle='#1a1a1a';
-ectx.fillRect(0,0,600,800);
+ectx.fillRect(0,0,canvasConfig.width,canvasConfig.height);
 }
 // 保存原始 glow 值
 const originalGlowValues=[];
@@ -1921,7 +1990,8 @@ return ec.toDataURL('image/png');
 function exportCanvas(transparent){
 const dataURL=exportCanvasToBase64(transparent);
 const a=document.createElement('a');
-a.download=transparent?'poster-t.png':'poster.png';
+const suffix=currentTemplateMode==='blank'?'9x16':'3x4';
+a.download=transparent?`poster-${suffix}-alpha.png`:`poster-${suffix}.png`;
 a.href=dataURL;
 a.click();
 showToast('已SAVEPNG');
