@@ -213,6 +213,79 @@
 
 </div>
 </div>
+<div class="control-section" id="imageEffectsControls" style="display:none;">
+<h3 class="collapsible" onclick="toggleImageEffectsPanel()">PNG EFFECTS <span class="toggle-icon" id="imageEffectsPanelToggle">▲</span></h3>
+<div id="imageEffectsPanelContent" style="display:none;">
+
+<div class="txt-subsection">
+<div class="txt-subtitle" onclick="toggleTxtGroup('imgFxShadow')"><span>01 简单阴影</span><span id="imgFxShadowIcon">▲</span></div>
+<div class="txt-subcontent" id="imgFxShadow" style="display:none;">
+<div class="txt-tip">阴影会跟随 PNG 的透明轮廓，不会变成矩形阴影。</div>
+<div class="control-row"><label>OPACITY</label><input type="range" id="imgShadowOpacity" min="0" max="100" value="0" oninput="updateImageEffect('imgShadowOpacity');syncImageFxNumber('imgShadowOpacity')"><input type="number" id="imgShadowOpacityInput" min="0" max="100" value="0" oninput="syncImageFxSlider('imgShadowOpacity');updateImageEffectFromInput('imgShadowOpacity')"><span class="unit">%</span></div>
+<div class="control-row"><label>BLUR</label><input type="range" id="imgShadowBlur" min="0" max="120" value="24" oninput="updateImageEffect('imgShadowBlur');syncImageFxNumber('imgShadowBlur')"><input type="number" id="imgShadowBlurInput" min="0" max="120" value="24" oninput="syncImageFxSlider('imgShadowBlur');updateImageEffectFromInput('imgShadowBlur')"><span class="unit">px</span></div>
+<div class="control-row"><label>X</label><input type="range" id="imgShadowX" min="-150" max="150" value="12" oninput="updateImageEffect('imgShadowX');syncImageFxNumber('imgShadowX')"><input type="number" id="imgShadowXInput" min="-150" max="150" value="12" oninput="syncImageFxSlider('imgShadowX');updateImageEffectFromInput('imgShadowX')"><span class="unit">px</span></div>
+<div class="control-row"><label>Y</label><input type="range" id="imgShadowY" min="-150" max="150" value="12" oninput="updateImageEffect('imgShadowY');syncImageFxNumber('imgShadowY')"><input type="number" id="imgShadowYInput" min="-150" max="150" value="12" oninput="syncImageFxSlider('imgShadowY');updateImageEffectFromInput('imgShadowY')"><span class="unit">px</span></div>
+<div class="control-row"><label>COLOR</label><input type="color" id="imgShadowColor" value="#000000" onchange="updateImageEffectColor('imgShadowColor')"></div>
+</div>
+</div>
+
+<div class="txt-subsection">
+<div class="txt-subtitle" onclick="toggleTxtGroup('imgFx3D')"><span>02 3D 立体</span><span id="imgFx3DIcon">▲</span></div>
+<div class="txt-subcontent" id="imgFx3D" style="display:none;">
+<div class="txt-tip">连续复制 PNG 透明轮廓形成侧面，DEPTH 为 0 时关闭。</div>
+<div class="control-row"><label>DEPTH</label><input type="range" id="img3DDepth" min="0" max="80" value="0" oninput="updateImageEffect('img3DDepth');syncImageFxNumber('img3DDepth')"><input type="number" id="img3DDepthInput" min="0" max="80" value="0" oninput="syncImageFxSlider('img3DDepth');updateImageEffectFromInput('img3DDepth')"><span class="unit">px</span></div>
+<div class="control-row"><label>X DIR</label><input type="range" id="img3DStepX" min="-4" max="4" step="0.1" value="1" oninput="updateImageEffect('img3DStepX');syncImageFxNumber('img3DStepX')"><input type="number" id="img3DStepXInput" min="-4" max="4" step="0.1" value="1" oninput="syncImageFxSlider('img3DStepX');updateImageEffectFromInput('img3DStepX')"></div>
+<div class="control-row"><label>Y DIR</label><input type="range" id="img3DStepY" min="-4" max="4" step="0.1" value="1" oninput="updateImageEffect('img3DStepY');syncImageFxNumber('img3DStepY')"><input type="number" id="img3DStepYInput" min="-4" max="4" step="0.1" value="1" oninput="syncImageFxSlider('img3DStepY');updateImageEffectFromInput('img3DStepY')"></div>
+<div class="control-row"><label>OPACITY</label><input type="range" id="img3DOpacity" min="0" max="100" value="85" oninput="updateImageEffect('img3DOpacity');syncImageFxNumber('img3DOpacity')"><input type="number" id="img3DOpacityInput" min="0" max="100" value="85" oninput="syncImageFxSlider('img3DOpacity');updateImageEffectFromInput('img3DOpacity')"><span class="unit">%</span></div>
+<div class="control-row"><label>COLOR</label><input type="color" id="img3DColor" value="#111111" onchange="updateImageEffectColor('img3DColor')"></div>
+</div>
+</div>
+
+<div class="txt-subsection">
+<div class="txt-subtitle" onclick="toggleTxtGroup('imgFxTexture')"><span>03 Texture</span><span id="imgFxTextureIcon">▲</span></div>
+<div class="txt-subcontent" id="imgFxTexture" style="display:none;">
+<div class="style-preset-row">
+<button class="btn btn-sm" id="imgTexture_noise" onclick="setImageTextureType('noise')">NOISE</button>
+<button class="btn btn-sm" id="imgTexture_lines" onclick="setImageTextureType('lines')">LINE</button>
+<button class="btn btn-sm" id="imgTexture_dots" onclick="setImageTextureType('dots')">DOT</button>
+</div>
+<div class="control-row"><label>AMOUNT</label><input type="range" id="imgTextureAmount" min="0" max="100" value="0" oninput="updateImageEffect('imgTextureAmount');syncImageFxNumber('imgTextureAmount')"><input type="number" id="imgTextureAmountInput" min="0" max="100" value="0" oninput="syncImageFxSlider('imgTextureAmount');updateImageEffectFromInput('imgTextureAmount')"><span class="unit">%</span></div>
+<div class="control-row"><label>SIZE</label><input type="range" id="imgTextureSize" min="2" max="64" value="12" oninput="updateImageEffect('imgTextureSize');syncImageFxNumber('imgTextureSize')"><input type="number" id="imgTextureSizeInput" min="2" max="64" value="12" oninput="syncImageFxSlider('imgTextureSize');updateImageEffectFromInput('imgTextureSize')"><span class="unit">px</span></div>
+<div class="control-row"><label>COLOR</label><input type="color" id="imgTextureColor" value="#ffffff" onchange="updateImageEffectColor('imgTextureColor')"></div>
+</div>
+</div>
+
+<div class="txt-subsection">
+<div class="txt-subtitle" onclick="toggleTxtGroup('imgFxBorder')"><span>04 边框 / 轮廓</span><span id="imgFxBorderIcon">▲</span></div>
+<div class="txt-subcontent" id="imgFxBorder" style="display:none;">
+<div class="txt-tip">沿 PNG 透明边缘向外扩展，不会绘制矩形边框。</div>
+<div class="control-row"><label>WIDTH</label><input type="range" id="imgBorderWidth" min="0" max="40" value="0" oninput="updateImageEffect('imgBorderWidth');syncImageFxNumber('imgBorderWidth')"><input type="number" id="imgBorderWidthInput" min="0" max="40" value="0" oninput="syncImageFxSlider('imgBorderWidth');updateImageEffectFromInput('imgBorderWidth')"><span class="unit">px</span></div>
+<div class="control-row"><label>OPACITY</label><input type="range" id="imgBorderOpacity" min="0" max="100" value="100" oninput="updateImageEffect('imgBorderOpacity');syncImageFxNumber('imgBorderOpacity')"><input type="number" id="imgBorderOpacityInput" min="0" max="100" value="100" oninput="syncImageFxSlider('imgBorderOpacity');updateImageEffectFromInput('imgBorderOpacity')"><span class="unit">%</span></div>
+<div class="control-row"><label>COLOR</label><input type="color" id="imgBorderColor" value="#ffffff" onchange="updateImageEffectColor('imgBorderColor')"></div>
+</div>
+</div>
+
+<div class="txt-subsection">
+<div class="txt-subtitle" onclick="toggleTxtGroup('imgFxColorOverlay')"><span>05 颜色 Overlay</span><span id="imgFxColorOverlayIcon">▲</span></div>
+<div class="txt-subcontent" id="imgFxColorOverlay" style="display:none;">
+<div class="control-row"><label>OPACITY</label><input type="range" id="imgColorOverlayOpacity" min="0" max="100" value="0" oninput="updateImageEffect('imgColorOverlayOpacity');syncImageFxNumber('imgColorOverlayOpacity')"><input type="number" id="imgColorOverlayOpacityInput" min="0" max="100" value="0" oninput="syncImageFxSlider('imgColorOverlayOpacity');updateImageEffectFromInput('imgColorOverlayOpacity')"><span class="unit">%</span></div>
+<div class="control-row"><label>COLOR</label><input type="color" id="imgColorOverlay" value="#ffffff" onchange="updateImageEffectColor('imgColorOverlay')"></div>
+</div>
+</div>
+
+<div class="txt-subsection">
+<div class="txt-subtitle" onclick="toggleTxtGroup('imgFxGradientOverlay')"><span>06 渐变 Overlay</span><span id="imgFxGradientOverlayIcon">▲</span></div>
+<div class="txt-subcontent" id="imgFxGradientOverlay" style="display:none;">
+<div class="control-row"><label>C1</label><input type="color" id="imgGradientColor1" value="#ffffff" onchange="updateImageEffectColor('imgGradientColor1')"></div>
+<div class="control-row"><label>C2</label><input type="color" id="imgGradientColor2" value="#000000" onchange="updateImageEffectColor('imgGradientColor2')"></div>
+<div class="control-row"><label>ANGLE</label><input type="range" id="imgGradientAngle" min="0" max="360" value="90" oninput="updateImageEffect('imgGradientAngle');syncImageFxNumber('imgGradientAngle')"><input type="number" id="imgGradientAngleInput" min="0" max="360" value="90" oninput="syncImageFxSlider('imgGradientAngle');updateImageEffectFromInput('imgGradientAngle')"><span class="unit">°</span></div>
+<div class="control-row"><label>OPACITY</label><input type="range" id="imgGradientOpacity" min="0" max="100" value="0" oninput="updateImageEffect('imgGradientOpacity');syncImageFxNumber('imgGradientOpacity')"><input type="number" id="imgGradientOpacityInput" min="0" max="100" value="0" oninput="syncImageFxSlider('imgGradientOpacity');updateImageEffectFromInput('imgGradientOpacity')"><span class="unit">%</span></div>
+</div>
+</div>
+
+<div style="display:flex;gap:6px;margin-top:7px;"><button class="btn btn-sm" style="flex:1;color:#ffc7df;" onclick="resetImageEffects()">RESET PNG FX</button></div>
+</div>
+</div>
 <div class="control-section">
 <h3>LAYERS</h3>
 <div class="preset-header"><span class="preset-header-icon">⭐</span><span class="preset-header-text">PRESET</span></div>
@@ -483,18 +556,58 @@ panel.addEventListener('dragleave',e=>{const rect=panel.getBoundingClientRect();
 panel.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();inner.classList.remove('drag-over');const dt=e.dataTransfer;if(dt.files&&dt.files.length){handleImageFile(dt.files[0]);hideUploadPanel();return;}if(dt.items){for(let item of dt.items){if(item.kind==='file'){const file=item.getAsFile();if(file&&file.type.startsWith('image/')){handleImageFile(file);hideUploadPanel();return;}}}}});
 window.addEventListener('drop',e=>{e.preventDefault();});window.addEventListener('dragover',e=>{e.preventDefault();});
 }
-function copyStyle(){const el=getSelectedElement();if(!el||el.type!=='text'){showToast('仅支持TXT样式','error');return;}const styleData={stylePreset:el.stylePreset,gradientColor1:el.gradientColor1,gradientColor2:el.gradientColor2,gradientColor3:el.gradientColor3,gradientAngle:el.gradientAngle,gradientSize:el.gradientSize,gradientX:el.gradientX,gradientY:el.gradientY,shadowOffsetX:el.shadowOffsetX,shadowOffsetY:el.shadowOffsetY,shadowSize:el.shadowSize,shadowSpread:el.shadowSpread,shadowColor:el.shadowColor,glowBlur:el.glowBlur,glowColor:el.glowColor,fontPreset:el.fontPreset,strokeColor1:el.strokeColor1,strokeWidth1:el.strokeWidth1,strokeColor2:el.strokeColor2,strokeWidth2:el.strokeWidth2,extrudeDepth:el.extrudeDepth,extrudeStepX:el.extrudeStepX,extrudeStepY:el.extrudeStepY,extrudeColor1:el.extrudeColor1,extrudeColor2:el.extrudeColor2,bevelLight:el.bevelLight,bevelDark:el.bevelDark};localStorage.setItem('styleClipboard',JSON.stringify(styleData));showToast('样式已复制');}
-function pasteStyle(){const el=getSelectedElement();if(!el||el.type!=='text'){showToast('仅支持TXT样式','error');return;}const data=localStorage.getItem('styleClipboard');if(!data){showToast('没有可粘贴的样式','error');return;}const styleData=JSON.parse(data);Object.keys(styleData).forEach(key=>{if(key==='rotation')return;el[key]=styleData[key];});el.cache=null;markDirty();updateControls();saveState();showToast('样式已应用');}
+function copyStyle(){const el=getSelectedElement();if(!el){showToast('请先选择图层','error');return;}if(el.type==='text'){const styleData={kind:'text',stylePreset:el.stylePreset,gradientColor1:el.gradientColor1,gradientColor2:el.gradientColor2,gradientColor3:el.gradientColor3,gradientAngle:el.gradientAngle,gradientSize:el.gradientSize,gradientX:el.gradientX,gradientY:el.gradientY,shadowOffsetX:el.shadowOffsetX,shadowOffsetY:el.shadowOffsetY,shadowSize:el.shadowSize,shadowSpread:el.shadowSpread,shadowColor:el.shadowColor,glowBlur:el.glowBlur,glowColor:el.glowColor,fontPreset:el.fontPreset,strokeColor1:el.strokeColor1,strokeWidth1:el.strokeWidth1,strokeColor2:el.strokeColor2,strokeWidth2:el.strokeWidth2,extrudeDepth:el.extrudeDepth,extrudeStepX:el.extrudeStepX,extrudeStepY:el.extrudeStepY,extrudeColor1:el.extrudeColor1,extrudeColor2:el.extrudeColor2,bevelLight:el.bevelLight,bevelDark:el.bevelDark};localStorage.setItem('styleClipboard',JSON.stringify(styleData));showToast('TXT样式已复制');return;}if(isImageFxElement(el)){ensureImageFxDefaults(el);const styleData={kind:'image'};IMAGE_FX_KEYS.forEach(k=>styleData[k]=el[k]);localStorage.setItem('styleClipboard',JSON.stringify(styleData));showToast('PNG效果已复制');return;}showToast('该图层没有可复制效果','error');}
+function pasteStyle(){const el=getSelectedElement();if(!el){showToast('请先选择图层','error');return;}const data=localStorage.getItem('styleClipboard');if(!data){showToast('没有可粘贴的样式','error');return;}const styleData=JSON.parse(data);const kind=styleData.kind||'text';if(el.type==='text'&&kind==='text'){Object.keys(styleData).forEach(key=>{if(key==='rotation'||key==='kind')return;el[key]=styleData[key];});el.cache=null;markDirty();updateControls();saveState();showToast('TXT样式已应用');return;}if(isImageFxElement(el)&&kind==='image'){IMAGE_FX_KEYS.forEach(k=>{if(styleData[k]!==undefined)el[k]=styleData[k];});invalidateImageFx(el);markDirty();updateControls();saveState();showToast('PNG效果已应用');return;}showToast('复制的效果类型与当前图层不一致','error');}
 async function pasteFromClipboard(){try{const clipboardItems=await navigator.clipboard.read();for(const item of clipboardItems){for(const type of item.types){if(type.startsWith('image/')){const blob=await item.getType(type);handleImageBlob(blob);hideUploadPanel();return;}}}showToast('剪贴板中没有图片','error');}catch(err){document.addEventListener('paste',function pasteHandler(e){document.removeEventListener('paste',pasteHandler);const items=(e.clipboardData||e.originalEvent.clipboardData).items;for(let item of items){if(item.type.indexOf('image')!==-1){handleImageFile(item.getAsFile());hideUploadPanel();return;}}showToast('剪贴板中没有图片','error');},{once:true});document.execCommand('paste');}}
 function handleImageBlob(blob){const file=new File([blob],'clipboard-image.png',{type:blob.type});handleImageFile(file);}
-function copyLayer(){const el=getSelectedElement();if(!el)return;const data=JSON.stringify(el);localStorage.setItem('layerClipboard',data);showToast('已复制完整图层');}
-function pasteLayer(){const data=localStorage.getItem('layerClipboard');if(!data){showToast('剪贴板为空，请先复制图层','error');return;}const newLayer=JSON.parse(data);if(!newLayer.type){showToast('数据异常','error');return;}newLayer.isPreset=false;newLayer.locked=false;if(newLayer.type==='text'){newLayer.cache=null;}templateElements.unshift(newLayer);selectedType='template';selectedIndex=0;markDirty();updateObjectList();updateControls();saveState();showToast('已粘贴完整图层');}
+function copyLayer(){const el=getSelectedElement();if(!el)return;const data=JSON.stringify(serializeProjectElement(el));localStorage.setItem('layerClipboard',data);showToast('已复制完整图层');}
+async function pasteLayer(){const data=localStorage.getItem('layerClipboard');if(!data){showToast('剪贴板为空，请先复制图层','error');return;}const newLayer=JSON.parse(data);if(!newLayer.type){showToast('数据异常','error');return;}newLayer.isPreset=false;newLayer.locked=false;if(newLayer.imgData)newLayer.img=await dataURLToImage(newLayer.imgData);if(newLayer.type==='text')newLayer.cache=null;ensureImageFxDefaults(newLayer);templateElements.unshift(newLayer);selectedType='template';selectedIndex=0;markDirty();updateObjectList();updateControls();saveState();showToast('已粘贴完整图层');}
 function editLayerName(e,index,type){e.stopPropagation();const span=e.target;const arr=type==='preset'?presetElements:templateElements;const el=arr[index];if(span.tagName==='INPUT')return;const input=document.createElement('input');input.type='text';input.value=el.name||el.text;input.className='layer-nameInput';span.replaceWith(input);input.focus();input.select();input.onblur=save;input.onkeydown=(ev)=>{if(ev.key==='Enter')save();if(ev.key==='Escape')updateObjectList();};function save(){const val=input.value.trim();if(val){el.name=val;}updateObjectList();saveState();}}
 function syncNumber(id){const val=document.getElementById(id).value;document.getElementById(id+'Input').value=val;}
 function updateEffectFromInput(type){const el=getSelectedElement();if(!el)return;if(el.type!=='text')return;let val=parseFloat(document.getElementById(type+'Input').value)||0;const limits={gradientAngle:[0,360],gradientSize:[0,500],gradientX:[-200,200],gradientY:[-200,200],glowBlur:[0,100],shadowOffsetX:[-50,50],shadowOffsetY:[-50,50],shadowSize:[0,80],shadowSpread:[0,120],extrudeDepth:[0,80],extrudeStepX:[-3,3],extrudeStepY:[-3,3],bevelLight:[0,100],bevelDark:[0,100]};if(limits[type]){val=Math.max(limits[type][0],Math.min(limits[type][1],val));}el[type]=val;const slider=document.getElementById(type);if(slider)slider.value=val;el.cache=null;markDirty();debouncedSaveState();}
 function toggleTextPanel(){const content=document.getElementById('textPanelContent');const icon=document.getElementById('textPanelToggle');if(content.style.display==='none'){content.style.display='block';icon.innerText='▼';}else{content.style.display='none';icon.innerText='▲';}}
 function toggleTxtGroup(id){const content=document.getElementById(id);const icon=document.getElementById(id+'Icon');if(!content)return;if(content.style.display==='none'){content.style.display='block';if(icon)icon.innerText='▼';}else{content.style.display='none';if(icon)icon.innerText='▲';}}
 function updateBatchPreview(){const startDate=new Date(document.getElementById('batchStartDate').value);const endDate=new Date(document.getElementById('batchEndDate').value);const count=parseInt(document.getElementById('batchCount').value)||1;if(startDate&&endDate&&!isNaN(startDate.getTime())&&!isNaN(endDate.getTime())){const days=Math.ceil((endDate-startDate)/(1000*60*60*24))+1;document.getElementById('batchPreview').textContent=`TOTAL ${days*count} 张 (${days}天)`;}}
+
+// PNG / image layer effects. All effects follow the source alpha channel.
+const IMAGE_FX_DEFAULTS=Object.freeze({
+imgShadowOpacity:0,imgShadowBlur:24,imgShadowX:12,imgShadowY:12,imgShadowColor:'#000000',
+img3DDepth:0,img3DStepX:1,img3DStepY:1,img3DOpacity:85,img3DColor:'#111111',
+imgTextureType:'noise',imgTextureAmount:0,imgTextureSize:12,imgTextureColor:'#ffffff',
+imgBorderWidth:0,imgBorderOpacity:100,imgBorderColor:'#ffffff',
+imgColorOverlayOpacity:0,imgColorOverlay:'#ffffff',
+imgGradientOpacity:0,imgGradientAngle:90,imgGradientColor1:'#ffffff',imgGradientColor2:'#000000'
+});
+const IMAGE_FX_KEYS=Object.keys(IMAGE_FX_DEFAULTS);
+const imageFxCache=new WeakMap();
+function isImageFxElement(el){return!!(el&&(el.type==='image'||el.type==='imageSlot')&&el.img);}
+function ensureImageFxDefaults(el){if(!el||(el.type!=='image'&&el.type!=='imageSlot'))return el;IMAGE_FX_KEYS.forEach(k=>{if(el[k]===undefined||el[k]===null)el[k]=IMAGE_FX_DEFAULTS[k];});return el;}
+function invalidateImageFx(el){if(el&&typeof el==='object')imageFxCache.delete(el);}
+function toggleImageEffectsPanel(){const content=document.getElementById('imageEffectsPanelContent');const icon=document.getElementById('imageEffectsPanelToggle');if(!content)return;if(content.style.display==='none'){content.style.display='block';if(icon)icon.innerText='▼';}else{content.style.display='none';if(icon)icon.innerText='▲';}}
+function syncImageFxNumber(id){const a=document.getElementById(id),b=document.getElementById(id+'Input');if(a&&b)b.value=a.value;}
+function syncImageFxSlider(id){const a=document.getElementById(id),b=document.getElementById(id+'Input');if(a&&b)a.value=b.value;}
+function clampToInput(node,value){if(!Number.isFinite(value))value=0;const min=node&&node.min!==''?parseFloat(node.min):null;const max=node&&node.max!==''?parseFloat(node.max):null;if(Number.isFinite(min))value=Math.max(min,value);if(Number.isFinite(max))value=Math.min(max,value);return value;}
+function updateImageEffect(prop){const el=getSelectedElement();if(!isImageFxElement(el)||el.locked)return;ensureImageFxDefaults(el);const node=document.getElementById(prop);if(!node)return;el[prop]=clampToInput(node,parseFloat(node.value));invalidateImageFx(el);markDirty();debouncedSaveState();}
+function updateImageEffectFromInput(prop){const el=getSelectedElement();if(!isImageFxElement(el)||el.locked)return;ensureImageFxDefaults(el);const input=document.getElementById(prop+'Input'),slider=document.getElementById(prop);if(!input)return;const val=clampToInput(input,parseFloat(input.value));input.value=val;if(slider)slider.value=val;el[prop]=val;invalidateImageFx(el);markDirty();debouncedSaveState();}
+function updateImageEffectColor(prop){const el=getSelectedElement();if(!isImageFxElement(el)||el.locked)return;const node=document.getElementById(prop);if(!node)return;ensureImageFxDefaults(el);el[prop]=node.value;invalidateImageFx(el);markDirty();saveState();}
+function setImageTextureType(type){const el=getSelectedElement();if(!isImageFxElement(el)||el.locked)return;if(!['noise','lines','dots'].includes(type))return;ensureImageFxDefaults(el);el.imgTextureType=type;invalidateImageFx(el);markDirty();updateImageFxButtons(el);saveState();}
+function updateImageFxButtons(el){['noise','lines','dots'].forEach(type=>{const b=document.getElementById('imgTexture_'+type);if(b)b.classList.toggle('active',!!el&&el.imgTextureType===type);});}
+function resetImageEffects(){const el=getSelectedElement();if(!isImageFxElement(el)||el.locked)return;Object.entries(IMAGE_FX_DEFAULTS).forEach(([k,v])=>{el[k]=v;});invalidateImageFx(el);markDirty();updateControls();saveState();showToast('PNG效果已重置');}
+function imageFxHasVisibleEffect(el){return(+el.imgShadowOpacity>0)||(+el.img3DDepth>0&&+el.img3DOpacity>0)||(+el.imgTextureAmount>0)||(+el.imgBorderWidth>0&&+el.imgBorderOpacity>0)||(+el.imgColorOverlayOpacity>0)||(+el.imgGradientOpacity>0);}
+function colorWithAlpha(color,alpha){alpha=Math.max(0,Math.min(1,+alpha||0));if(/^rgba?\(/i.test(color||'')){const nums=String(color).match(/[\d.]+/g)||[0,0,0];return`rgba(${nums[0]||0},${nums[1]||0},${nums[2]||0},${alpha})`;}let h=String(color||'#000000').replace('#','');if(h.length===3)h=h.split('').map(c=>c+c).join('');const n=parseInt(h,16);if(!Number.isFinite(n))return`rgba(0,0,0,${alpha})`;return`rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${alpha})`;}
+function makeTintedImageCanvas(img,w,h,color){const c=document.createElement('canvas');c.width=Math.max(1,w);c.height=Math.max(1,h);const g=c.getContext('2d');g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';g.drawImage(img,0,0,c.width,c.height);g.globalCompositeOperation='source-in';g.fillStyle=color;g.fillRect(0,0,c.width,c.height);g.globalCompositeOperation='source-over';return c;}
+function makeImageTextureTile(type,size,color){const d=Math.max(3,Math.round(size));const c=document.createElement('canvas');c.width=d;c.height=d;const g=c.getContext('2d');g.clearRect(0,0,d,d);g.fillStyle=color;g.strokeStyle=color;g.lineWidth=Math.max(1,d/9);if(type==='lines'){g.globalAlpha=.82;g.beginPath();g.moveTo(-d*.2,d*.85);g.lineTo(d*.85,-d*.2);g.moveTo(d*.15,d*1.2);g.lineTo(d*1.2,d*.15);g.stroke();}else if(type==='dots'){g.globalAlpha=.85;const r=Math.max(1,d*.12);g.beginPath();g.arc(d*.25,d*.25,r,0,Math.PI*2);g.arc(d*.75,d*.75,r,0,Math.PI*2);g.fill();}else{let seed=(d*2654435761)>>>0;const count=Math.max(16,Math.round(d*d*.22));for(let i=0;i<count;i++){seed=(seed*1664525+1013904223)>>>0;const x=seed%d;seed=(seed*1664525+1013904223)>>>0;const y=seed%d;seed=(seed*1664525+1013904223)>>>0;g.globalAlpha=.18+((seed%100)/100)*.72;const p=Math.max(1,Math.round(d/18));g.fillRect(x,y,p,p);}}g.globalAlpha=1;return c;}
+function getImageFxKey(el,w,h){return[Math.round(w*100)/100,Math.round(h*100)/100,...IMAGE_FX_KEYS.map(k=>el[k])].join('|');}
+function buildImageFxSurface(el,w,h){ensureImageFxDefaults(el);const logicalW=Math.max(1,Math.abs(w)),logicalH=Math.max(1,Math.abs(h));const shadowExtent=+el.imgShadowOpacity>0?Math.max(Math.abs(+el.imgShadowX||0),Math.abs(+el.imgShadowY||0))+(+el.imgShadowBlur||0)*2:0;const dExtent=(+el.img3DDepth>0&&+el.img3DOpacity>0)?Math.max(Math.abs((+el.img3DDepth||0)*(+el.img3DStepX||0)),Math.abs((+el.img3DDepth||0)*(+el.img3DStepY||0))):0;const margin=Math.ceil(Math.max(+el.imgBorderWidth||0,shadowExtent,dExtent)+6);const totalW=logicalW+margin*2,totalH=logicalH+margin*2;const ratio=Math.min(1,2200/Math.max(totalW,totalH));const pw=Math.max(1,Math.round(logicalW*ratio)),ph=Math.max(1,Math.round(logicalH*ratio)),pm=Math.max(1,Math.round(margin*ratio));const out=document.createElement('canvas');out.width=pw+pm*2;out.height=ph+pm*2;const g=out.getContext('2d');g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';const x=pm,y=pm;
+if(+el.imgShadowOpacity>0){g.save();g.shadowColor=colorWithAlpha(el.imgShadowColor,(+el.imgShadowOpacity||0)/100);g.shadowBlur=(+el.imgShadowBlur||0)*ratio;g.shadowOffsetX=(+el.imgShadowX||0)*ratio;g.shadowOffsetY=(+el.imgShadowY||0)*ratio;g.drawImage(el.img,x,y,pw,ph);g.restore();}
+if(+el.img3DDepth>0&&+el.img3DOpacity>0){const sil=makeTintedImageCanvas(el.img,pw,ph,el.img3DColor);const depth=Math.max(1,Math.round(+el.img3DDepth||0));g.save();g.globalAlpha=(+el.img3DOpacity||0)/100;for(let i=depth;i>=1;i--){g.drawImage(sil,x+(+el.img3DStepX||0)*i*ratio,y+(+el.img3DStepY||0)*i*ratio);}g.restore();}
+if(+el.imgBorderWidth>0&&+el.imgBorderOpacity>0){const sil=makeTintedImageCanvas(el.img,pw,ph,el.imgBorderColor);const radius=(+el.imgBorderWidth||0)*ratio;const rings=Math.max(1,Math.min(5,Math.ceil((+el.imgBorderWidth||0)/6)));g.save();g.globalAlpha=(+el.imgBorderOpacity||0)/100;for(let ring=1;ring<=rings;ring++){const rr=radius*ring/rings;const steps=24;for(let a=0;a<steps;a++){const ang=a/steps*Math.PI*2;g.drawImage(sil,x+Math.cos(ang)*rr,y+Math.sin(ang)*rr);}}g.restore();}
+g.drawImage(el.img,x,y,pw,ph);
+if(+el.imgColorOverlayOpacity>0){const tint=makeTintedImageCanvas(el.img,pw,ph,el.imgColorOverlay);g.save();g.globalAlpha=(+el.imgColorOverlayOpacity||0)/100;g.drawImage(tint,x,y);g.restore();}
+if(+el.imgGradientOpacity>0){const gradCanvas=document.createElement('canvas');gradCanvas.width=pw;gradCanvas.height=ph;const gg=gradCanvas.getContext('2d');gg.drawImage(el.img,0,0,pw,ph);gg.globalCompositeOperation='source-in';const ang=(+el.imgGradientAngle||0)*Math.PI/180;const ux=Math.cos(ang),uy=Math.sin(ang);const len=Math.abs(pw*ux)+Math.abs(ph*uy);const cx=pw/2,cy=ph/2;const grad=gg.createLinearGradient(cx-ux*len/2,cy-uy*len/2,cx+ux*len/2,cy+uy*len/2);grad.addColorStop(0,el.imgGradientColor1);grad.addColorStop(1,el.imgGradientColor2);gg.fillStyle=grad;gg.fillRect(0,0,pw,ph);g.save();g.globalAlpha=(+el.imgGradientOpacity||0)/100;g.drawImage(gradCanvas,x,y);g.restore();}
+if(+el.imgTextureAmount>0){const tex=document.createElement('canvas');tex.width=pw;tex.height=ph;const tg=tex.getContext('2d');tg.drawImage(el.img,0,0,pw,ph);tg.globalCompositeOperation='source-in';const tile=makeImageTextureTile(el.imgTextureType,Math.max(2,(+el.imgTextureSize||12)*ratio),el.imgTextureColor);const pattern=tg.createPattern(tile,'repeat');if(pattern){tg.fillStyle=pattern;tg.fillRect(0,0,pw,ph);}g.save();g.globalAlpha=(+el.imgTextureAmount||0)/100;g.globalCompositeOperation='overlay';g.drawImage(tex,x,y);g.restore();}
+return{canvas:out,drawX:-logicalW/2-margin,drawY:-logicalH/2-margin,drawW:totalW,drawH:totalH};}
+function renderImageElement(targetCtx,el){if(!el||!el.img)return;ensureImageFxDefaults(el);const w=el.width*(el.scale||1),h=el.height*(el.scale||1);if(!imageFxHasVisibleEffect(el)){targetCtx.drawImage(el.img,-w/2,-h/2,w,h);return;}const key=getImageFxKey(el,w,h);let cached=imageFxCache.get(el);if(!cached||cached.key!==key){cached={key,surface:buildImageFxSurface(el,w,h)};imageFxCache.set(el,cached);}const surf=cached.surface;targetCtx.drawImage(surf.canvas,surf.drawX,surf.drawY,surf.drawW,surf.drawH);}
 function renderLoop(){if(isDirty){render();isDirty=false;}requestAnimationFrame(renderLoop);}
 function markDirty(){isDirty=true;}
 function render(isTransparent=false){
@@ -514,16 +627,14 @@ renderText(ctx,el);
 }else if(el.type==='image'){
 ctx.translate(el.x,el.y);
 ctx.rotate(el.rotation*Math.PI/180);
-const w=el.width*(el.scale||1);
-const h=el.height*(el.scale||1);
-ctx.drawImage(el.img,-w/2,-h/2,w,h);
+renderImageElement(ctx,el);
 }else if(el.type==='imageSlot'){
 ctx.translate(el.x,el.y);
 ctx.rotate(el.rotation*Math.PI/180);
 const w=el.width*(el.scale||1);
 const h=el.height*(el.scale||1);
 if(el.img){
-    ctx.drawImage(el.img,-w/2,-h/2,w,h);
+    renderImageElement(ctx,el);
 }else{
 ctx.fillStyle='#ffffff';
 ctx.fillRect(-w/2,-h/2,w,h);
@@ -549,9 +660,7 @@ renderText(ctx,el);
 }else if(el.type==='image'){
 ctx.translate(el.x,el.y);
 ctx.rotate(el.rotation*Math.PI/180);
-const w=el.width*(el.scale||1);
-const h=el.height*(el.scale||1);
-ctx.drawImage(el.img,-w/2,-h/2,w,h);
+renderImageElement(ctx,el);
 }
 ctx.restore();
 });
@@ -1327,20 +1436,23 @@ const infoTxt=el?`${el.type==='text'?'📝':'🖼️'} ${el.name||el.text||el.ty
 document.getElementById('selectedInfo').textContent=infoTxt;
 const showTrans=!!el;
 document.getElementById('transformControls').style.display=showTrans?'block':'none';
-if(!el)return;
-const isLocked=el.locked,isImageSlot=el.type==='imageSlot';
+const textPanel=document.getElementById('textControls');
+const imagePanel=document.getElementById('imageEffectsControls');
 const lockHint=document.getElementById('lockedHint');
-lockHint.style.display=el?'block':'none';
+if(!el){if(textPanel)textPanel.style.display='none';if(imagePanel)imagePanel.style.display='none';if(lockHint)lockHint.style.display='none';return;}
+const isLocked=el.locked,isImageSlot=el.type==='imageSlot';
+lockHint.style.display='block';
 lockHint.textContent=isLocked?'🔒 LOCKED':'🔓 UNLOCKED';
 lockHint.classList.toggle('unlocked',!isLocked);
 document.querySelectorAll('#transformControls input').forEach(i=>i.disabled=isLocked||isImageSlot);
 document.querySelectorAll('#transformControls button').forEach(b=>b.disabled=isLocked||isImageSlot);
 document.getElementById('textContentInput').disabled=false;
 const isText=el.type==='text';
+const isImage=isImageFxElement(el);
 document.getElementById('textContentRow').style.display=isText?'block':'none';
 document.getElementById('textContentInput').value=el.text||'';
 if(isText){
-document.getElementById('textControls').style.display='block';
+textPanel.style.display='block';
 document.getElementById('fontSize').value=el.fontSize;
 document.getElementById('fontSizeInput').value=el.fontSize;
 document.getElementById('gradientColor1').value=el.gradientColor1||'#D4AF37';
@@ -1391,9 +1503,14 @@ Object.keys(fontPresetConfig).forEach(p=>{const btn=document.getElementById('fon
 document.getElementById('align_left').classList.toggle('active',el.align==='left');
 document.getElementById('align_center').classList.toggle('active',el.align==='center');
 document.getElementById('align_right').classList.toggle('active',el.align==='right');
-}else{
-document.getElementById('textControls').style.display='none';
-}
+}else{textPanel.style.display='none';}
+if(isImage){
+ensureImageFxDefaults(el);
+imagePanel.style.display='block';
+IMAGE_FX_KEYS.forEach(prop=>{const node=document.getElementById(prop);if(node)node.value=el[prop];const input=document.getElementById(prop+'Input');if(input)input.value=el[prop];});
+document.querySelectorAll('#imageEffectsControls input,#imageEffectsControls button').forEach(node=>node.disabled=isLocked);
+updateImageFxButtons(el);
+}else{imagePanel.style.display='none';}
 document.getElementById('posX').value=el.x;
 document.getElementById('posXInput').value=Math.round(el.x);
 document.getElementById('posY').value=el.y;
@@ -1695,6 +1812,8 @@ img.onload=()=>{
 if(selectedType==='template'&&selectedIndex>=0&&templateElements[selectedIndex].type==='imageSlot'){
 templateElements[selectedIndex].img=img;
 templateElements[selectedIndex].imgData=imageToDataURL(img);
+ensureImageFxDefaults(templateElements[selectedIndex]);
+invalidateImageFx(templateElements[selectedIndex]);
 markDirty();
 updateControls();
 saveState();
@@ -1702,7 +1821,7 @@ showToast('图片已替换');
 return;
 }
 const scale=Math.max(canvasConfig.width/img.width,canvasConfig.height/img.height);
-const el={type:'image',img:img,imgData:imageToDataURL(img),x:canvasConfig.width/2,y:canvasConfig.height/2,width:img.width*scale,height:img.height*scale,scale:1,rotation:0,opacity:1,name:file.name.replace(/\.[^/.]+$/,'').substring(0,15)||'图片',locked:false,visible:true};
+const el={type:'image',img:img,imgData:imageToDataURL(img),x:canvasConfig.width/2,y:canvasConfig.height/2,width:img.width*scale,height:img.height*scale,scale:1,rotation:0,opacity:1,name:file.name.replace(/\.[^/.]+$/,'').substring(0,15)||'图片',locked:false,visible:true,...IMAGE_FX_DEFAULTS};
 templateElements.unshift(el);
 selectedType='template';
 selectedIndex=0;
@@ -1738,6 +1857,7 @@ if(el.imgData){
 el.img=await dataURLToImage(el.imgData);
 }
 if(el.type==='text')el.cache=null;
+ensureImageFxDefaults(el);
 templateElements.push(el);
 }
 if(data.preset){
@@ -1774,6 +1894,7 @@ if(el.imgData){
 el.img=await dataURLToImage(el.imgData);
 }
 if(el.type==='text')el.cache=null;
+ensureImageFxDefaults(el);
 templateElements.push(el);
 }
 stashActiveTemplateElements();
@@ -1784,6 +1905,7 @@ if(el.imgData){
 el.img=await dataURLToImage(el.imgData);
 }
 if(el.type==='text')el.cache=null;
+ensureImageFxDefaults(el);
 presetElements.push(el);
 }
 }
@@ -1846,11 +1968,12 @@ if(el.imgData){
   el.img=await dataURLToImage(el.imgData);
 }
 if(el.type==='text')el.cache=null;
+ensureImageFxDefaults(el);
 return el;
 }
 function exportProject(){
 const d={
-  version:'1.4-three-template-dynamic-canvas',
+  version:'1.5-three-template-png-effects',
   templateMode:currentTemplateMode,
   canvas:{width:canvasConfig.width,height:canvasConfig.height},
   preset:presetElements.map(serializePresetStyleElement),
@@ -1933,9 +2056,7 @@ if(el.type==='text'){
 }else if(el.type==='image'){
     ectx.translate(el.x,el.y);
     ectx.rotate(el.rotation*Math.PI/180);
-    const w=el.width*(el.scale||1);
-    const h=el.height*(el.scale||1);
-    ectx.drawImage(el.img,-w/2,-h/2,w,h);
+    renderImageElement(ectx,el);
 }else if(el.type==='imageSlot'){
     // 渲染 imageSlot
     ectx.translate(el.x,el.y);
@@ -1943,7 +2064,7 @@ if(el.type==='text'){
     const w=el.width*(el.scale||1);
     const h=el.height*(el.scale||1);
     if(el.img){
-        ectx.drawImage(el.img,-w/2,-h/2,w,h);
+        renderImageElement(ectx,el);
     }else{
         // 渲染白色占位框（与预览完全一致）
         ectx.fillStyle='#ffffff';
@@ -1975,9 +2096,7 @@ if(el.type==='text'){
 }else if(el.type==='image'){
     ectx.translate(el.x,el.y);
     ectx.rotate(el.rotation*Math.PI/180);
-    const w=el.width*(el.scale||1);
-    const h=el.height*(el.scale||1);
-    ectx.drawImage(el.img,-w/2,-h/2,w,h);
+    renderImageElement(ectx,el);
 }
 ectx.restore();
 });
@@ -2223,7 +2342,7 @@ document.addEventListener('keydown',function(e){
   },{passive:false});
 });
 </script>
-<style>#presetLayerList,#objectList.object-list{max-height:none!important;height:auto!important;overflow:visible!important}#objectList.object-list .object-item,#presetLayerList .object-item{display:flex!important}#textControls{max-height:none!important}#textPanelContent{display:none}@media (max-height:820px){#presetLayerList,#objectList.object-list{max-height:none!important;height:auto!important;overflow:visible!important}}@media (min-width:901px){#presetLayerList,#objectList.object-list{max-height:none!important;height:auto!important;overflow:visible!important}}</style>
+<style>#presetLayerList,#objectList.object-list{max-height:none!important;height:auto!important;overflow:visible!important}#objectList.object-list .object-item,#presetLayerList .object-item{display:flex!important}#textControls,#imageEffectsControls{max-height:none!important}#textPanelContent{display:none}#imageEffectsPanelContent{display:none}@media (max-height:820px){#presetLayerList,#objectList.object-list{max-height:none!important;height:auto!important;overflow:visible!important}}@media (min-width:901px){#presetLayerList,#objectList.object-list{max-height:none!important;height:auto!important;overflow:visible!important}}</style>
 <script>
 // Keep all template layers visible; keep TXT style panel state controlled only by the TXT样式 header.
 (function(){
@@ -2470,7 +2589,7 @@ function applyMosaicEditor(){
   drawPixelMosaicOn(g,img,mosaicState.rect,mosaicState.block,1);
   const data=out.toDataURL('image/png');
   const newImg=new Image();
-  newImg.onload=()=>{el.img=newImg;el.imgData=data;markDirty();updateObjectList();updateControls();saveState();closeMosaicEditor();showToast('马赛克已应用','success');};
+  newImg.onload=()=>{el.img=newImg;el.imgData=data;ensureImageFxDefaults(el);invalidateImageFx(el);markDirty();updateObjectList();updateControls();saveState();closeMosaicEditor();showToast('马赛克已应用','success');};
   newImg.src=data;
 }
 </script>
