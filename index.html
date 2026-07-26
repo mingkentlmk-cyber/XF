@@ -223,8 +223,8 @@
 <div class="txt-tip">阴影会跟随 PNG 的透明轮廓，不会变成矩形阴影。</div>
 <div class="control-row"><label>OPACITY</label><input type="range" id="imgShadowOpacity" min="0" max="100" value="0" oninput="updateImageEffect('imgShadowOpacity');syncImageFxNumber('imgShadowOpacity')"><input type="number" id="imgShadowOpacityInput" min="0" max="100" value="0" oninput="syncImageFxSlider('imgShadowOpacity');updateImageEffectFromInput('imgShadowOpacity')"><span class="unit">%</span></div>
 <div class="control-row"><label>BLUR</label><input type="range" id="imgShadowBlur" min="0" max="120" value="24" oninput="updateImageEffect('imgShadowBlur');syncImageFxNumber('imgShadowBlur')"><input type="number" id="imgShadowBlurInput" min="0" max="120" value="24" oninput="syncImageFxSlider('imgShadowBlur');updateImageEffectFromInput('imgShadowBlur')"><span class="unit">px</span></div>
-<div class="control-row"><label>X</label><input type="range" id="imgShadowX" min="-150" max="150" value="12" oninput="updateImageEffect('imgShadowX');syncImageFxNumber('imgShadowX')"><input type="number" id="imgShadowXInput" min="-150" max="150" value="12" oninput="syncImageFxSlider('imgShadowX');updateImageEffectFromInput('imgShadowX')"><span class="unit">px</span></div>
-<div class="control-row"><label>Y</label><input type="range" id="imgShadowY" min="-150" max="150" value="12" oninput="updateImageEffect('imgShadowY');syncImageFxNumber('imgShadowY')"><input type="number" id="imgShadowYInput" min="-150" max="150" value="12" oninput="syncImageFxSlider('imgShadowY');updateImageEffectFromInput('imgShadowY')"><span class="unit">px</span></div>
+<div class="control-row"><label>X</label><input type="range" id="imgShadowX" min="-150" max="150" value="0" oninput="updateImageEffect('imgShadowX');syncImageFxNumber('imgShadowX')"><input type="number" id="imgShadowXInput" min="-150" max="150" value="0" oninput="syncImageFxSlider('imgShadowX');updateImageEffectFromInput('imgShadowX')"><span class="unit">px</span></div>
+<div class="control-row"><label>Y</label><input type="range" id="imgShadowY" min="-150" max="150" value="0" oninput="updateImageEffect('imgShadowY');syncImageFxNumber('imgShadowY')"><input type="number" id="imgShadowYInput" min="-150" max="150" value="0" oninput="syncImageFxSlider('imgShadowY');updateImageEffectFromInput('imgShadowY')"><span class="unit">px</span></div>
 <div class="control-row"><label>COLOR</label><input type="color" id="imgShadowColor" value="#000000" onchange="updateImageEffectColor('imgShadowColor')"></div>
 </div>
 </div>
@@ -571,7 +571,7 @@ function updateBatchPreview(){const startDate=new Date(document.getElementById('
 
 // PNG / image layer effects. All effects follow the source alpha channel.
 const IMAGE_FX_DEFAULTS=Object.freeze({
-imgShadowOpacity:0,imgShadowBlur:24,imgShadowX:12,imgShadowY:12,imgShadowColor:'#000000',
+imgShadowOpacity:0,imgShadowBlur:24,imgShadowX:0,imgShadowY:0,imgShadowColor:'#000000',
 img3DDepth:0,img3DStepX:1,img3DStepY:1,img3DOpacity:85,img3DColor:'#111111',
 imgTextureType:'noise',imgTextureAmount:0,imgTextureSize:12,imgTextureColor:'#ffffff',
 imgBorderWidth:0,imgBorderOpacity:100,imgBorderColor:'#ffffff',
