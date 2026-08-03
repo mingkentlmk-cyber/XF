@@ -6516,6 +6516,1685 @@ body #app .played.playingCardFace::before {
 }
 /* ===== end Balatro-inspired skin ===== */
 
+
+/* ===== Balatro heavy art update v2: stronger motion, chips, result showmanship ===== */
+:root {
+  --bt-heavy-gold: #ffd86e;
+  --bt-heavy-cyan: #8cf8ff;
+  --bt-heavy-magenta: #ff71b9;
+  --bt-heavy-violet: #9a6bff;
+  --bt-heavy-green: #8dffca;
+}
+#app {
+  isolation: isolate;
+}
+#app::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background:
+    radial-gradient(circle at 50% 52%, #8cf8ff18 0, transparent 14%),
+    radial-gradient(circle at 50% 20%, #ff71b911 0, transparent 18%),
+    radial-gradient(circle at 50% 82%, #ffd86e12 0, transparent 14%);
+  mix-blend-mode: screen;
+}
+#table,
+.controls,
+.topbar {
+  position: relative;
+  z-index: 2;
+}
+.title,
+.modeTitle,
+.lobbyTitle,
+.ceremonyTitle,
+.matchTitle,
+.playHistoryTitle,
+.waitingTitle,
+.startSeedTitle,
+.passwordGateTitle {
+  letter-spacing: 0.6px !important;
+}
+.modeTitle,
+.startSeedTitle,
+.waitingTitle,
+.passwordGateTitle,
+.playHistoryTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.modeTitle::before,
+.startSeedTitle::before,
+.waitingTitle::before,
+.passwordGateTitle::before,
+.playHistoryTitle::before {
+  content: "★";
+  color: var(--bt-heavy-gold);
+  text-shadow: 0 0 10px #ffd86e88;
+  font-size: 0.9em;
+}
+.smallbtn,
+.ctrl,
+.lobbyAction,
+.choice button,
+.big,
+.roomJoinSubmit,
+.playHistoryClose,
+.startSeedRow button,
+.joinRoomInputBox button,
+.seedDifficultyRow button,
+.aiLevelBtn,
+.multiplayerBtn,
+.randomMatchBtn,
+#preGameReadyBtn,
+.roomLeaveButton,
+.roomLinkButton {
+  transform-origin: center bottom;
+}
+.smallbtn:hover,
+.ctrl:hover,
+.lobbyAction:hover,
+.roomJoinSubmit:hover,
+.playHistoryClose:hover,
+.startSeedRow button:hover,
+.joinRoomInputBox button:hover,
+.aiLevelBtn:hover,
+.randomMatchBtn:hover,
+.multiplayerBtn:hover,
+#preGameReadyBtn:hover {
+  filter: brightness(1.06) saturate(1.08);
+}
+#turnBanner {
+  overflow: hidden;
+}
+#turnBanner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent 0%, #fff5 18%, transparent 34%, transparent 100%);
+  transform: translateX(-120%);
+  animation: btBannerSweep 3.4s linear infinite;
+  pointer-events: none;
+}
+#visibleTurnTimer {
+  position: relative;
+  overflow: hidden;
+}
+#visibleTurnTimer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at 50% 50%, #fff6 0, transparent 55%);
+  opacity: 0.55;
+  mix-blend-mode: screen;
+}
+#humanInfo,
+#centerPile,
+.seat,
+.createRoomBox,
+.startSeedBox,
+.profileCard,
+.roomPlayer,
+.playHistoryHand,
+.waitingHeader,
+.passwordGate,
+#preGameReadyPanel,
+.lobbyPanel,
+#lobbyScreen.roomOpen > .roomPanel,
+.playHistoryPanel,
+.modal,
+.ceremonyBox,
+.matchBox {
+  position: relative;
+  overflow: hidden;
+}
+#humanInfo::before,
+#centerPile::before,
+.seat::before,
+.createRoomBox::before,
+.startSeedBox::before,
+.profileCard::before,
+.roomPlayer::before,
+.playHistoryHand::before,
+.waitingHeader::before,
+.passwordGate::before,
+#preGameReadyPanel::before,
+.lobbyPanel::before,
+#lobbyScreen.roomOpen > .roomPanel::before,
+.playHistoryPanel::before,
+.modal::before,
+.ceremonyBox::before,
+.matchBox::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, #ffffff10, transparent 18%, transparent 82%, #00000018 100%);
+  pointer-events: none;
+}
+.seat {
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+.seat.active {
+  transform: translateY(-1px);
+}
+.seat .name,
+.roomPlayerName,
+.humanName,
+.roomCode,
+.mainBalance strong,
+#homeRandomBalanceValue,
+.humanCount,
+#visibleTurnTimer,
+.score {
+  text-transform: uppercase;
+}
+.mainBalance {
+  position: relative;
+  overflow: hidden;
+}
+.mainBalance::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, #ffd96d22 0, transparent 52%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+.mainBalance strong,
+#homeRandomBalanceValue,
+.humanCount {
+  font-size: clamp(18px, 4.1vw, 24px) !important;
+  letter-spacing: 0.8px;
+}
+#recentTransfer,
+.log {
+  min-height: 28px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 10px;
+}
+#recentTransfer,
+.log,
+#pileLabel,
+#status {
+  border-radius: 12px !important;
+}
+#pileLabel {
+  transition: transform 0.18s ease, filter 0.18s ease;
+}
+#pileLabel:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+.playHistoryCards {
+  gap: 6px !important;
+}
+body #app #playHistoryOverlay .played.playingCardFace {
+  filter: drop-shadow(0 4px 0 #02070b) drop-shadow(0 1px 8px #0006);
+}
+body #app #hand .card.playingCardFace,
+body #app .played.playingCardFace,
+body #ceremony .drawCard.playingCardFace,
+body #ceremony .cutPlayingCard.playingCardFace {
+  outline: 1px solid #fff6;
+}
+body #app #hand .card.playingCardFace {
+  will-change: transform;
+}
+body #app #hand .card.playingCardFace:hover {
+  transform: translateY(-8px) rotate(-0.6deg);
+}
+body #app #hand .card.playingCardFace.selected:hover {
+  transform: translateY(-14px) scale(1.03) rotate(-1deg) !important;
+}
+body #app #hand .playingCardFace > .cardFaceRank,
+body #app .played.playingCardFace > .cardFaceRank,
+body #ceremony .drawCard.playingCardFace > .cardFaceRank,
+body #ceremony .cutPlayingCard.playingCardFace > .cardFaceRank {
+  text-shadow: 0 1px 0 #fff8, 0 0 1px #0001;
+}
+.back,
+.dealDeck,
+.miniDeck,
+.drawCard:not(.reveal) {
+  border-radius: 8px !important;
+  background:
+    radial-gradient(circle at 50% 50%, #79d8ff20 0, transparent 30%),
+    linear-gradient(135deg, #6b2a63 0 14%, #23245d 14% 28%, #1f6b87 28% 42%, #6b2a63 42% 56%, #23245d 56% 70%, #1f6b87 70% 84%, #6b2a63 84% 100%) !important;
+  border: 2px solid #d2c2ff88 !important;
+  box-shadow: 0 4px 0 #28152d, 0 0 10px #8cf8ff22;
+}
+.drawCard.reveal,
+.cutCard {
+  animation: btRevealBounce 0.28s ease-out;
+}
+#ceremony {
+  background:
+    radial-gradient(circle at 50% 30%, #ff71b922 0, transparent 22%),
+    radial-gradient(circle at 50% 60%, #8cf8ff18 0, transparent 24%),
+    linear-gradient(180deg, #050913f2, #090d19f4) !important;
+}
+.ceremonyTitle,
+.matchTitle,
+.result h1 {
+  color: #ffe087 !important;
+  text-shadow: 0 2px 0 #492a08, 0 0 18px #ffd86e40 !important;
+}
+.result table {
+  overflow: hidden;
+  border-radius: 14px !important;
+  border: 2px solid #4e79a6;
+  background: linear-gradient(180deg, #10203a, #0a1427) !important;
+}
+.result th {
+  background: linear-gradient(180deg, #2b4470, #182946) !important;
+  color: #fff7e1 !important;
+}
+.result td {
+  background: linear-gradient(180deg, #0f1e34, #0b1426) !important;
+}
+#toast,
+.lobbyToast {
+  border-radius: 999px !important;
+  border: 2px solid #86f6ff !important;
+  background: linear-gradient(180deg, #18314d, #101e34) !important;
+  box-shadow: 0 6px 18px #0008, 0 0 14px #86f6ff22 !important;
+}
+body.bt-shake #app {
+  animation: btScreenShake 0.32s ease-in-out;
+}
+.bt-pop {
+  animation: btPop 0.58s cubic-bezier(.2,.85,.25,1);
+}
+.bt-glow-hit {
+  animation: btGlowHit 0.72s ease-out;
+}
+.bt-banner-hit {
+  animation: btBannerHit 0.72s ease-out;
+}
+.bt-win-show {
+  animation: btWinShow 0.85s cubic-bezier(.18,.92,.25,1);
+}
+.bt-chip,
+.bt-spark {
+  position: fixed;
+  pointer-events: none;
+  z-index: 999;
+}
+.bt-chip {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 35%, #fff8 0 16%, transparent 18%),
+    linear-gradient(180deg, #ffe48a, #d09118 58%, #8f5510);
+  border: 2px solid #fff4;
+  box-shadow: 0 0 10px #ffd86e55, 0 3px 0 #402406;
+  animation: btChipBurst 0.9s ease-out forwards;
+}
+.bt-spark {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #8cf8ff;
+  box-shadow: 0 0 10px #8cf8ff, 0 0 18px #8cf8ff88;
+  animation: btSparkBurst 0.7s ease-out forwards;
+}
+@keyframes btBannerSweep {
+  0%, 22% { transform: translateX(-120%); }
+  30% { transform: translateX(140%); }
+  100% { transform: translateX(140%); }
+}
+@keyframes btRevealBounce {
+  0% { transform: scale(0.88) translateY(10px); opacity: 0.5; }
+  65% { transform: scale(1.03) translateY(-2px); opacity: 1; }
+  100% { transform: scale(1) translateY(0); }
+}
+@keyframes btPop {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+@keyframes btGlowHit {
+  0% { filter: brightness(1) saturate(1); }
+  30% { filter: brightness(1.18) saturate(1.18); }
+  100% { filter: brightness(1) saturate(1); }
+}
+@keyframes btBannerHit {
+  0% { transform: translateY(0) scale(1); }
+  35% { transform: translateY(-2px) scale(1.015); }
+  100% { transform: translateY(0) scale(1); }
+}
+@keyframes btWinShow {
+  0% { transform: scale(0.92) translateY(12px); opacity: 0; }
+  55% { transform: scale(1.03) translateY(-2px); opacity: 1; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+@keyframes btScreenShake {
+  0%,100% { transform: translate(0,0); }
+  20% { transform: translate(-2px, 1px); }
+  40% { transform: translate(2px, -1px); }
+  60% { transform: translate(-1px, -1px); }
+  80% { transform: translate(1px, 1px); }
+}
+@keyframes btChipBurst {
+  0% { transform: translate(0,0) scale(0.6); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) scale(1); opacity: 0; }
+}
+@keyframes btSparkBurst {
+  0% { transform: translate(0,0) scale(0.4); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) scale(0.9); opacity: 0; }
+}
+@media (max-width: 420px) {
+  .bt-chip { width: 14px; height: 14px; }
+  .bt-spark { width: 7px; height: 7px; }
+}
+/* ===== end Balatro heavy art update v2 ===== */
+
+
+/* ===== Lobby tutorial and mobile position repair ===== */
+#lobbyScreen:not(.roomOpen) {
+  align-items: flex-start !important;
+  justify-content: center !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  padding:
+    max(12px, env(safe-area-inset-top))
+    10px
+    max(20px, env(safe-area-inset-bottom)) !important;
+}
+#lobbyScreen:not(.roomOpen) > .lobbyPanel {
+  width: min(100%, 520px) !important;
+  max-height: none !important;
+  margin: 0 auto !important;
+  overflow: visible !important;
+}
+.lobbyHeaderRow {
+  position: relative;
+  z-index: 30;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+.lobbyHeaderText {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.lobbyHeaderRow .lobbyTitle {
+  display: block !important;
+  width: auto !important;
+  margin: 0 0 4px !important;
+  padding: 0 !important;
+  color: #ffd56b !important;
+  font-size: clamp(22px, 6.2vw, 28px) !important;
+  font-weight: 1000 !important;
+  line-height: 1.08 !important;
+  letter-spacing: 0.3px !important;
+  word-spacing: 0 !important;
+  text-align: left !important;
+  white-space: nowrap !important;
+}
+.lobbyHeaderRow .lobbySub {
+  margin: 0 !important;
+  line-height: 1.35;
+  text-align: left !important;
+}
+.lobbyTutorial {
+  position: relative;
+  z-index: 50;
+  flex: none;
+}
+.lobbyTutorial > summary {
+  position: relative;
+  display: grid;
+  width: 54px;
+  min-height: 38px;
+  place-items: center;
+  overflow: hidden;
+  border: 2px solid #7aceff;
+  border-radius: 11px;
+  background: linear-gradient(180deg, #2b8ca2, #1d5f6f 58%, #123947);
+  box-shadow: 0 4px 0 #02070b, 0 0 14px #7ff1ff22;
+  color: #fff8ef;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 1000;
+  line-height: 1;
+  list-style: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.lobbyTutorial > summary::-webkit-details-marker {
+  display: none;
+}
+.lobbyTutorial > summary::before {
+  content: "?";
+  display: grid;
+  width: 16px;
+  height: 16px;
+  margin-right: 3px;
+  place-items: center;
+  border-radius: 50%;
+  background: #ffd56b;
+  color: #251404;
+  font-size: 11px;
+  box-shadow: 0 1px 0 #68400e;
+}
+.lobbyTutorial > summary {
+  grid-template-columns: auto auto;
+  gap: 1px;
+}
+.lobbyTutorial[open] > summary {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #02070b, 0 0 16px #7ff1ff33;
+  filter: brightness(1.08);
+}
+.tutorialPopover {
+  position: absolute;
+  top: calc(100% + 9px);
+  right: 0;
+  z-index: 100;
+  width: min(86vw, 360px);
+  max-height: min(72dvh, 520px);
+  overflow-y: auto;
+  padding: 11px;
+  border: 2px solid #74c9ff;
+  border-radius: 13px;
+  background:
+    radial-gradient(circle at 92% 4%, #ff71b918 0, transparent 25%),
+    linear-gradient(180deg, #173254, #0e1b34 65%, #0a1529);
+  box-shadow: 0 16px 36px #000c, inset 0 1px 0 #ffffff17;
+  color: #eef8ff;
+  text-align: left;
+  animation: tutorialOpen 0.18s ease-out;
+}
+.tutorialSection + .tutorialSection {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #6ec5ff3d;
+}
+.tutorialHeading {
+  margin-bottom: 7px;
+  color: #ffd56b;
+  font-size: 15px;
+  font-weight: 1000;
+  text-shadow: 0 2px 0 #000, 0 0 10px #ffd56b33;
+}
+.tutorialHeading::before {
+  content: "★ ";
+  color: #8cf8ff;
+}
+.tutorialPopover p {
+  position: relative;
+  margin: 0;
+  padding-left: 12px;
+  color: #dceeff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.55;
+}
+.tutorialPopover p + p {
+  margin-top: 6px;
+}
+.tutorialPopover p::before {
+  content: "•";
+  position: absolute;
+  left: 1px;
+  top: 0;
+  color: #8cf8ff;
+}
+.lobbyPanel .modeTitle {
+  display: flex !important;
+  width: 100% !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+.lobbyPanel .startSeedTitle {
+  display: flex !important;
+  width: 100% !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+@keyframes tutorialOpen {
+  from { opacity: 0; transform: translateY(-5px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@media (max-width: 390px) {
+  #lobbyScreen:not(.roomOpen) {
+    padding-left: 7px !important;
+    padding-right: 7px !important;
+  }
+  #lobbyScreen:not(.roomOpen) > .lobbyPanel {
+    padding: 12px !important;
+  }
+  .lobbyHeaderRow {
+    gap: 7px;
+  }
+  .lobbyTutorial > summary {
+    width: 52px;
+    min-height: 36px;
+    font-size: 12px;
+  }
+  .tutorialPopover {
+    width: min(89vw, 350px);
+    padding: 10px;
+  }
+}
+/* ===== end lobby tutorial and repair ===== */
+
+
+/* ===== lobby symmetry cleanup ===== */
+.lobbySections {
+  display: grid;
+  gap: 14px;
+  margin-top: 10px;
+}
+.lobbySection {
+  display: block;
+}
+.lobbyUnifiedCard,
+.aiLobbyBox {
+  margin: 0 !important;
+  padding: 14px !important;
+  border-radius: 18px !important;
+}
+.aiLobbyBox {
+  border: 1px solid #31576b;
+  background: #081923;
+}
+.lobbyUnifiedCard > .modeTitle {
+  margin: 0 0 12px !important;
+  min-height: 32px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.matchLobbyBox .randomMatchChoices,
+.aiLobbyBox .aiLevels,
+.createRoomBox .switchRow,
+.createRoomBox #passwordSetup,
+.createRoomBox .multiplayerBtn,
+.createRoomBox .roomJoinDivider,
+.createRoomBox .joinRoomInputBox,
+.createRoomBox .roomJoinSubmit {
+  margin-top: 0;
+}
+.aiLobbyBox .aiLevels {
+  margin-bottom: 10px;
+}
+.aiSeedSubCard,
+.createRoomBox .switchRow,
+.createRoomBox #passwordSetup,
+.createRoomBox .multiplayerBtn,
+.createRoomBox .joinRoomInputBox,
+.createRoomBox .roomJoinSubmit,
+.matchLobbyBox .homeRandomBalance {
+  position: relative;
+}
+.aiSeedSubCard {
+  margin-top: 10px !important;
+  padding: 12px !important;
+  border-radius: 16px !important;
+}
+.matchLobbyBox .homeRandomBalance {
+  margin-top: 10px !important;
+}
+.createRoomBox .multiplayerBtn {
+  margin-top: 10px !important;
+}
+.createRoomBox .roomJoinDivider {
+  margin-top: 14px !important;
+}
+.createRoomBox .joinRoomInputBox {
+  margin-top: 10px !important;
+}
+.createRoomBox .roomJoinSubmit {
+  margin-top: 10px !important;
+}
+.matchLobbyBox .randomMatchChoices,
+.aiLobbyBox .aiLevels,
+.aiSeedSubCard .startSeedRow,
+.aiSeedSubCard .seedDifficultyRow,
+.createRoomBox .joinRoomInputBox {
+  width: 100%;
+}
+@media (max-width: 420px) {
+  .lobbySections {
+    gap: 12px;
+  }
+  .lobbyUnifiedCard,
+  .aiLobbyBox {
+    padding: 12px !important;
+    border-radius: 16px !important;
+  }
+  .lobbyUnifiedCard > .modeTitle {
+    margin-bottom: 10px !important;
+  }
+}
+/* ===== end lobby symmetry cleanup ===== */
+
+
+/* ===== in-game grid alignment + SOS turn flash ===== */
+#table {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  grid-template-areas:
+    "turn turn turn"
+    "west north east"
+    "pile pile pile"
+    "transfer transfer transfer"
+    "log log log" !important;
+  gap: 6px !important;
+  align-items: stretch !important;
+}
+#turnBanner { grid-area: turn !important; }
+#west { grid-area: west !important; }
+#north { grid-area: north !important; }
+#east { grid-area: east !important; }
+#centerPile { grid-area: pile !important; }
+#recentTransfer { grid-area: transfer !important; }
+#log { grid-area: log !important; }
+#west,
+#north,
+#east,
+.seat,
+.seat#north {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 98px !important;
+  margin: 0 !important;
+}
+.seat {
+  display: grid !important;
+  grid-template-rows: auto auto 1fr !important;
+  align-content: start !important;
+  padding: 8px 8px 10px !important;
+  border-radius: 12px !important;
+}
+.seat .name {
+  min-height: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  margin: 0 0 4px !important;
+  line-height: 1.02 !important;
+}
+.seat .count {
+  min-height: 30px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 6px !important;
+  margin: 0 0 4px !important;
+}
+.seat .cardbacks {
+  min-height: 22px !important;
+  display: flex !important;
+  align-items: flex-end !important;
+}
+#centerPile {
+  min-height: 126px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(112px, 30%) !important;
+  align-items: stretch !important;
+  gap: 0 !important;
+}
+#pileCards {
+  min-height: 92px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  padding: 6px 8px !important;
+}
+#pileLabel {
+  min-height: 92px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+#recentTransfer,
+.log {
+  min-height: 36px !important;
+}
+#humanInfo {
+  min-height: 52px !important;
+  display: grid !important;
+  grid-template-columns: auto 1fr auto auto !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+.controls .quick {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 4px !important;
+}
+#visibleTurnTimer {
+  opacity: 0.12 !important;
+  filter: saturate(0.8) brightness(0.8) !important;
+}
+.turnCountdownActive {
+  position: relative !important;
+}
+.turnCountdownActive::after {
+  content: attr(data-turn-left) "s";
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  min-width: 44px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 1000;
+  letter-spacing: 0.5px;
+  color: #fff6df;
+  text-shadow: 0 1px 0 #2d1200, 0 0 8px #0008;
+  background: linear-gradient(180deg, #7b5b18, #4d3010) !important;
+  border: 2px solid #78eff0;
+  box-shadow: 0 3px 0 #07131c, 0 0 12px #6cf5ff44;
+  z-index: 4;
+  pointer-events: none;
+}
+.turnCountdownActive.turnFlashCyan {
+  border-color: #6ff6ef !important;
+  background:
+    linear-gradient(180deg, #12384d, #0e2440 60%, #0a1930) !important;
+  box-shadow:
+    inset 0 0 0 1px #b9ffff22,
+    0 0 0 2px #6ff6ef33,
+    0 0 22px #6ff6ef55 !important;
+}
+.turnCountdownActive.turnFlashCyan::before {
+  background: linear-gradient(180deg, #8afdf71e, transparent 22%, transparent 78%, #00000014) !important;
+}
+.turnCountdownActive.turnFlashRed {
+  border-color: #ff708c !important;
+  background:
+    linear-gradient(180deg, #4a1730, #31122a 60%, #1d0f24) !important;
+  box-shadow:
+    inset 0 0 0 1px #ffd0de18,
+    0 0 0 2px #ff708c2b,
+    0 0 22px #ff708c4d !important;
+}
+.turnCountdownActive.turnFlashRed::before {
+  background: linear-gradient(180deg, #ff9eb31a, transparent 22%, transparent 78%, #00000014) !important;
+}
+#humanInfo.turnCountdownActive.turnFlashCyan,
+#humanInfo.turnCountdownActive.turnFlashRed {
+  transform: none !important;
+}
+@media (max-width: 420px) {
+  #table {
+    gap: 5px !important;
+  }
+  #west,
+  #north,
+  #east,
+  .seat,
+  .seat#north {
+    min-height: 92px !important;
+  }
+  .seat {
+    padding: 7px 7px 9px !important;
+  }
+  .turnCountdownActive::after {
+    top: 5px;
+    right: 6px;
+    min-width: 40px;
+    height: 26px;
+    font-size: 18px;
+  }
+  #centerPile {
+    grid-template-columns: minmax(0, 1fr) minmax(96px, 34%) !important;
+    min-height: 118px !important;
+  }
+  #pileCards,
+  #pileLabel {
+    min-height: 84px !important;
+  }
+}
+/* ===== end in-game grid alignment + SOS turn flash ===== */
+
+
+/* ===== precision layout refinement: more pile space, safer hand space ===== */
+#app {
+  grid-template-rows:
+    clamp(48px, 6.4dvh, 54px)
+    clamp(34px, 4.8dvh, 40px)
+    minmax(146px, 1fr)
+    clamp(214px, 30dvh, 272px) !important;
+}
+#table {
+  gap: 7px !important;
+}
+#centerPile {
+  min-height: 142px !important;
+  grid-template-columns: minmax(0, 1fr) minmax(116px, 29%) !important;
+}
+#pileCards {
+  min-height: 104px !important;
+  padding: 8px 10px !important;
+}
+#pileLabel {
+  min-height: 104px !important;
+  padding: 8px !important;
+}
+#recentTransfer,
+.log {
+  min-height: 34px !important;
+}
+#app > .controls {
+  grid-template-rows:
+    clamp(28px, 4.1dvh, 34px)
+    clamp(40px, 5.7dvh, 46px)
+    minmax(0, 1fr)
+    clamp(44px, 6.3dvh, 52px) !important;
+  padding: 2px 2px max(2px, env(safe-area-inset-bottom, 0px)) !important;
+  gap: 2px !important;
+}
+#humanInfo {
+  min-height: 48px !important;
+}
+.controls .quick {
+  gap: 3px !important;
+}
+.handWrap {
+  min-height: 0 !important;
+  padding: 4px 0 !important;
+  overflow: hidden !important;
+}
+#hand {
+  width: 100% !important;
+  padding: 0 8px !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+}
+body #app #hand .card.playingCardFace.selected {
+  transform: translateY(-9px) scale(1.02) rotate(-0.8deg) !important;
+}
+body #app #hand .card.playingCardFace.selected:hover {
+  transform: translateY(-10px) scale(1.02) rotate(-0.8deg) !important;
+}
+body #app #hand .card.playingCardFace.hinted {
+  animation-duration: 1.05s !important;
+}
+body #app #hand .card.playingCardFace:hover {
+  transform: translateY(-6px) rotate(-0.45deg) !important;
+}
+body #app #pileCards .played.playingCardFace {
+  --playing-card-width: 48px;
+}
+body #app #pileCards:has(.played:nth-child(5)) .played.playingCardFace {
+  --playing-card-width: 42px;
+}
+@media (max-width: 420px) {
+  #app {
+    grid-template-rows:
+      clamp(46px, 6.2dvh, 52px)
+      clamp(32px, 4.6dvh, 38px)
+      minmax(158px, 1fr)
+      clamp(202px, 28dvh, 248px) !important;
+  }
+  #table {
+    gap: 5px !important;
+  }
+  #centerPile {
+    min-height: 132px !important;
+    grid-template-columns: minmax(0, 1fr) minmax(98px, 33%) !important;
+  }
+  #pileCards,
+  #pileLabel {
+    min-height: 96px !important;
+  }
+  #app > .controls {
+    grid-template-rows:
+      28px
+      40px
+      minmax(0, 1fr)
+      46px !important;
+  }
+  #humanInfo {
+    min-height: 44px !important;
+    gap: 6px !important;
+  }
+  .handWrap {
+    padding: 3px 0 !important;
+  }
+  #hand {
+    padding: 0 6px !important;
+  }
+  body #app #pileCards .played.playingCardFace {
+    --playing-card-width: 46px;
+  }
+  body #app #pileCards:has(.played:nth-child(5)) .played.playingCardFace {
+    --playing-card-width: 39px;
+  }
+}
+/* ===== end precision layout refinement ===== */
+
+
+/* 隐藏种子奖励反馈 */
+#homeRandomBalanceValue.seedRewardPop {
+  animation: seedRewardPop 0.7s cubic-bezier(.2,.9,.25,1);
+}
+@keyframes seedRewardPop {
+  0% { transform: scale(1); filter: brightness(1); }
+  35% { transform: scale(1.22); filter: brightness(1.45); text-shadow: 0 0 18px #ffd86e; }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+
+
+/* ===== final balanced gameplay layout ===== */
+#app {
+  grid-template-rows:
+    clamp(46px, 6.4dvh, 52px)
+    clamp(34px, 5.1dvh, 42px)
+    minmax(0, 0.53fr)
+    minmax(0, 0.47fr) !important;
+}
+#table {
+  height: 100% !important;
+  min-height: 0 !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  grid-template-rows:
+    clamp(38px, 5.5dvh, 44px)
+    clamp(82px, 12.5dvh, 96px)
+    minmax(106px, 1fr)
+    clamp(30px, 4.6dvh, 36px) !important;
+  grid-template-areas:
+    "turn turn turn"
+    "west north east"
+    "pile pile pile"
+    "transfer transfer transfer" !important;
+  gap: 5px !important;
+  padding: 3px !important;
+  overflow: hidden !important;
+}
+#table > .log {
+  display: none !important;
+}
+#west,
+#north,
+#east,
+.seat,
+.seat#north {
+  height: 100% !important;
+  min-height: 0 !important;
+  padding: 7px 7px 8px !important;
+}
+.seat .name {
+  min-height: 25px !important;
+  margin-bottom: 2px !important;
+}
+.seat .count {
+  min-height: 27px !important;
+  margin-bottom: 2px !important;
+}
+.seat .cardbacks {
+  min-height: 18px !important;
+}
+#centerPile {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  grid-template-columns: minmax(0, 1fr) minmax(104px, 31%) !important;
+  padding: 4px 5px !important;
+  overflow: hidden !important;
+}
+#pileCards,
+#pileLabel {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+}
+#pileCards {
+  padding: 5px 7px !important;
+  overflow: hidden !important;
+}
+#pileLabel {
+  padding: 5px 6px !important;
+}
+body #app #pileCards .played.playingCardFace {
+  --playing-card-width: clamp(43px, 6.7dvh, 50px);
+}
+body #app #pileCards:has(.played:nth-child(5)) .played.playingCardFace {
+  --playing-card-width: clamp(38px, 5.9dvh, 43px);
+}
+#recentTransfer {
+  height: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+}
+#app > .controls {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  grid-template-rows:
+    clamp(30px, 4.6dvh, 36px)
+    clamp(42px, 6.4dvh, 50px)
+    minmax(0, 1fr)
+    clamp(48px, 7.2dvh, 56px) !important;
+  gap: 3px !important;
+  padding: 3px 3px max(3px, env(safe-area-inset-bottom, 0px)) !important;
+  overflow: hidden !important;
+}
+#humanInfo {
+  height: 100% !important;
+  min-height: 0 !important;
+}
+.controls .quick,
+.actions {
+  height: 100% !important;
+  min-height: 0 !important;
+}
+.handWrap {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  padding: 6px 0 !important;
+  overflow: hidden !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+#hand {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  padding: 0 8px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+}
+body #app #hand .card.playingCardFace.selected {
+  transform: translateY(-8px) scale(1.018) rotate(-0.6deg) !important;
+}
+body #app #hand .card.playingCardFace.selected:hover {
+  transform: translateY(-9px) scale(1.018) rotate(-0.6deg) !important;
+}
+body #app #hand .card.playingCardFace:hover {
+  transform: translateY(-5px) rotate(-0.35deg) !important;
+}
+@media (max-width: 420px) {
+  #app {
+    grid-template-rows:
+      clamp(46px, 6.4dvh, 52px)
+      clamp(34px, 5.1dvh, 40px)
+      minmax(0, 0.53fr)
+      minmax(0, 0.47fr) !important;
+  }
+  #table {
+    grid-template-rows:
+      clamp(38px, 5.5dvh, 42px)
+      clamp(78px, 11.8dvh, 90px)
+      minmax(100px, 1fr)
+      clamp(30px, 4.5dvh, 34px) !important;
+    gap: 4px !important;
+  }
+  #centerPile {
+    grid-template-columns: minmax(0, 1fr) minmax(96px, 32%) !important;
+  }
+  #app > .controls {
+    grid-template-rows:
+      clamp(30px, 4.5dvh, 34px)
+      clamp(40px, 6.1dvh, 46px)
+      minmax(0, 1fr)
+      clamp(46px, 6.9dvh, 52px) !important;
+  }
+  .handWrap {
+    padding: 5px 0 !important;
+  }
+  #hand {
+    padding: 0 6px !important;
+  }
+}
+/* ===== end final balanced gameplay layout ===== */
+
+
+/* Extra guard for short mobile browser viewports. */
+@media (max-height: 620px) {
+  #app {
+    grid-template-rows:
+      44px
+      32px
+      minmax(0, 0.51fr)
+      minmax(0, 0.49fr) !important;
+  }
+  #table {
+    grid-template-rows:
+      36px
+      72px
+      minmax(84px, 1fr)
+      28px !important;
+    gap: 3px !important;
+  }
+  #app > .controls {
+    grid-template-rows:
+      28px
+      38px
+      minmax(0, 1fr)
+      44px !important;
+    gap: 2px !important;
+  }
+  .handWrap {
+    padding: 3px 0 !important;
+  }
+  body #app #hand .card.playingCardFace.selected {
+    transform: translateY(-6px) scale(1.012) !important;
+  }
+}
+
+
+/* ===== final precision pass + arrange combo shortcuts + clear settlement math ===== */
+#app {
+  grid-template-rows:
+    clamp(46px, 6.3dvh, 52px)
+    clamp(33px, 4.8dvh, 40px)
+    minmax(0, 0.515fr)
+    minmax(0, 0.485fr) !important;
+}
+#table {
+  grid-template-rows:
+    clamp(37px, 5.3dvh, 42px)
+    clamp(76px, 11.2dvh, 88px)
+    minmax(104px, 1fr)
+    clamp(28px, 4.2dvh, 33px) !important;
+  gap: 4px !important;
+  padding: 4px !important;
+}
+#west,#north,#east,.seat,.seat#north {
+  padding: 6px 7px 7px !important;
+}
+.seat .name { min-height: 23px !important; }
+.seat .count { min-height: 25px !important; }
+.seat .cardbacks { min-height: 16px !important; }
+#centerPile {
+  grid-template-columns: minmax(0, 1fr) minmax(102px, 30%) !important;
+  padding: 4px !important;
+}
+#app > .controls {
+  grid-template-rows:
+    clamp(29px, 4.3dvh, 34px)
+    clamp(40px, 5.9dvh, 47px)
+    minmax(0, 1fr)
+    clamp(46px, 6.8dvh, 53px) !important;
+  gap: 3px !important;
+  padding: 4px 4px max(4px, env(safe-area-inset-bottom, 0px)) !important;
+}
+.handWrap { padding: 5px 0 !important; }
+#hand { padding: 0 8px !important; }
+.preGameComboButtons {
+  display: none;
+}
+body.arrangeMode #app.preGameReadyActive > .controls {
+  grid-template-rows:
+    clamp(28px, 4.2dvh, 34px)
+    clamp(40px, 5.8dvh, 48px)
+    clamp(36px, 5.2dvh, 42px)
+    minmax(0, 1fr)
+    clamp(48px, 7dvh, 56px) !important;
+  gap: 4px !important;
+}
+body.arrangeMode #app.preGameReadyActive > .controls > #humanInfo { grid-row:1 !important; }
+body.arrangeMode #app.preGameReadyActive > .controls > .quick { grid-row:2 !important; }
+body.arrangeMode #app.preGameReadyActive > .controls > .preGameComboButtons {
+  grid-row:3 !important;
+  width:100%;
+  min-width:0;
+  height:100%;
+  display:flex !important;
+  align-items:stretch;
+  gap:5px;
+  overflow-x:auto;
+  overflow-y:hidden;
+  padding:1px 1px 4px;
+  scrollbar-width:none;
+}
+body.arrangeMode #app.preGameReadyActive > .controls > .preGameComboButtons::-webkit-scrollbar { display:none; }
+body.arrangeMode #app.preGameReadyActive > .controls > .handWrap {
+  grid-row:4 !important;
+  padding:5px 0 0 !important;
+}
+body.arrangeMode #app.preGameReadyActive > .controls > #preGameReadyBtn { grid-row:5 !important; }
+.preGameComboBtn {
+  flex:1 0 auto;
+  min-width:88px;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:0 10px;
+  border:2px solid #5d8bb6;
+  border-radius:11px;
+  background:linear-gradient(180deg,#213b63,#122541);
+  color:#fff7e9;
+  font-size:14px;
+  font-weight:1000;
+  box-shadow:0 3px 0 #02070b;
+  white-space:nowrap;
+}
+.preGameComboBtn small {
+  min-width:24px;
+  padding:2px 5px;
+  border-radius:999px;
+  background:#071523aa;
+  color:#9fefff;
+  font-size:10px;
+}
+.preGameComboBtn.fourKind,
+.preGameComboBtn.straightFlush {
+  border-color:#ff8abd;
+  background:linear-gradient(180deg,#8d416e,#51203f);
+}
+.preGameComboBtn.active {
+  border-color:#ffe289 !important;
+  background:linear-gradient(180deg,#e4b43e,#946014) !important;
+  color:#211100;
+  box-shadow:0 3px 0 #3e2505,0 0 16px #ffd86e55;
+}
+.preGameComboBtn.active small { color:#fff5cf; background:#4b2c0fcc; }
+.preGameComboEmpty {
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px dashed #456b86;
+  border-radius:10px;
+  color:#87a8b8;
+  font-size:12px;
+  font-weight:900;
+}
+.settlementRoundNet {
+  min-height:40px;
+  margin:7px 0;
+  padding:6px 10px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border:2px solid #4e7ca0;
+  border-radius:10px;
+  background:linear-gradient(180deg,#142b47,#0b192d);
+  color:#d9eaff;
+  font-size:13px;
+  font-weight:900;
+}
+.settlementRoundNet strong { font-size:21px; }
+.pairSettlementEquation {
+  margin-top:6px;
+  padding:7px 8px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  gap:5px;
+  border-top:1px solid #365a73;
+  color:#a9c5d4;
+  font-size:10px;
+}
+.pairSettlementEquation > i { color:#7899aa; font-style:normal; font-weight:1000; }
+.pairEquationPart,
+.pairEquationTotal {
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+}
+.pairEquationPart b,
+.pairEquationTotal b { color:#cfe3ec; font-size:9px; }
+.pairEquationPart strong,
+.pairEquationTotal strong { font-size:13px; font-weight:1000; }
+.pairEquationTotal {
+  padding:3px 6px;
+  border-radius:7px;
+  background:#071522;
+  border:1px solid #4c7185;
+}
+@media (max-width:420px) {
+  #app {
+    grid-template-rows:
+      clamp(45px,6.2dvh,51px)
+      clamp(32px,4.7dvh,38px)
+      minmax(0,0.51fr)
+      minmax(0,0.49fr) !important;
+  }
+  #table {
+    grid-template-rows:
+      clamp(36px,5.2dvh,41px)
+      clamp(73px,10.8dvh,84px)
+      minmax(98px,1fr)
+      clamp(27px,4dvh,31px) !important;
+  }
+  #app > .controls {
+    grid-template-rows:
+      clamp(28px,4.2dvh,33px)
+      clamp(39px,5.7dvh,45px)
+      minmax(0,1fr)
+      clamp(45px,6.6dvh,51px) !important;
+  }
+  .preGameComboBtn { min-width:82px; padding:0 8px; font-size:13px; }
+  .pairSettlementEquation { justify-content:flex-start; }
+}
+@media (max-height:620px) {
+  body.arrangeMode #app.preGameReadyActive > .controls {
+    grid-template-rows:28px 38px 34px minmax(0,1fr) 46px !important;
+    gap:3px !important;
+  }
+  .preGameComboBtn { min-width:78px; font-size:12px; }
+}
+/* ===== end final precision pass ===== */
+
+
+/* ===== four AI levels + real-match seed copy ===== */
+.aiLevels.fourLevels,
+.seedDifficultyRow.fourLevels {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 6px !important;
+}
+.aiLevelBtn.standard,
+.seedDifficultyRow .standard,
+.randomResultActions .copySeed {
+  border-color: #69e5d4 !important;
+  background: linear-gradient(180deg, #236c75, #174957 58%, #102f3b) !important;
+  color: #ecffff !important;
+}
+.aiLevelBtn.standard small {
+  color: #c9fbf5 !important;
+}
+.randomResultActions.seedCopyActions {
+  grid-template-columns: 1fr 1fr !important;
+}
+.randomResultActions.seedCopyActions button {
+  min-width: 0;
+}
+@media (max-width: 420px) {
+  .aiLevels.fourLevels,
+  .seedDifficultyRow.fourLevels {
+    gap: 4px !important;
+  }
+  .aiLevels.fourLevels .aiLevelBtn {
+    min-height: 58px !important;
+    padding: 6px 3px !important;
+    font-size: 15px !important;
+  }
+  .aiLevels.fourLevels .aiLevelBtn small {
+    font-size: 8px !important;
+    line-height: 1.15 !important;
+  }
+  .seedDifficultyRow.fourLevels button {
+    min-height: 42px !important;
+    padding: 4px 2px !important;
+    font-size: 11px !important;
+  }
+}
+/* ===== end four AI levels + real-match seed copy ===== */
+
+
+/* ===== arrange-stage five-card shortcut row refinement ===== */
+body.arrangeMode #app.preGameReadyActive > .controls {
+  grid-template-rows:
+    clamp(28px, 4.2dvh, 34px)
+    clamp(40px, 5.8dvh, 48px)
+    minmax(0, 1fr)
+    auto
+    clamp(48px, 7dvh, 56px) !important;
+  gap: 4px !important;
+}
+body.arrangeMode #app.preGameReadyActive > .controls > #humanInfo {
+  grid-row: 1 !important;
+}
+body.arrangeMode #app.preGameReadyActive > .controls > .quick {
+  grid-row: 2 !important;
+}
+body.arrangeMode #app.preGameReadyActive > .controls > .handWrap {
+  grid-row: 3 !important;
+  min-height: 0 !important;
+  padding: 5px 0 3px !important;
+}
+body.arrangeMode #app.preGameReadyActive > .controls > .preGameComboButtons {
+  grid-row: 4 !important;
+  display: none !important;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+}
+body.arrangeMode #app.preGameReadyActive > .controls > .preGameComboButtons.show {
+  display: grid !important;
+  grid-template-columns: repeat(var(--combo-type-count, 1), minmax(0, 1fr));
+  gap: 5px;
+  height: clamp(36px, 5.2dvh, 44px);
+  overflow: hidden;
+}
+body.arrangeMode #app.preGameReadyActive > .controls > #preGameReadyBtn {
+  grid-row: 5 !important;
+}
+.preGameComboBtn {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 100% !important;
+  padding: 0 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  overflow: hidden !important;
+  border-radius: 10px !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  font-size: 15px !important;
+  line-height: 1 !important;
+}
+.preGameComboButtons[data-count="1"] .preGameComboBtn {
+  font-size: 18px !important;
+}
+.preGameComboButtons[data-count="2"] .preGameComboBtn {
+  font-size: 17px !important;
+}
+.preGameComboButtons[data-count="3"] .preGameComboBtn {
+  font-size: 15px !important;
+}
+.preGameComboButtons[data-count="4"] .preGameComboBtn {
+  padding-inline: 5px !important;
+  font-size: 13px !important;
+}
+.preGameComboButtons[data-count="5"] .preGameComboBtn {
+  padding-inline: 3px !important;
+  gap: 2px !important;
+  font-size: 11px !important;
+}
+.preGameComboBtn small {
+  flex: 0 0 auto;
+  min-width: 20px !important;
+  padding: 2px 4px !important;
+  font-size: 9px !important;
+  line-height: 1 !important;
+}
+.preGameComboButtons[data-count="4"] .preGameComboBtn small,
+.preGameComboButtons[data-count="5"] .preGameComboBtn small {
+  min-width: 16px !important;
+  padding-inline: 3px !important;
+  font-size: 8px !important;
+}
+.preGameComboBtn.active {
+  transform: translateY(-1px);
+  box-shadow:
+    0 3px 0 #02070b,
+    0 0 0 2px #ffe28a55,
+    0 0 14px #ffd96d44 !important;
+}
+@media (max-width: 390px) {
+  body.arrangeMode #app.preGameReadyActive > .controls > .preGameComboButtons.show {
+    gap: 3px;
+    height: 38px;
+  }
+  .preGameComboButtons[data-count="4"] .preGameComboBtn {
+    font-size: 12px !important;
+  }
+  .preGameComboButtons[data-count="5"] .preGameComboBtn {
+    font-size: 10px !important;
+  }
+}
+/* ===== end arrange-stage five-card shortcut row refinement ===== */
+
+
+/* ===== precision UX updates: pair select, quick gate, bright SOS timer ===== */
+.seat .cardbacks {
+  display: none !important;
+  min-height: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.seat {
+  grid-template-rows: auto auto !important;
+}
+#visibleTurnTimer {
+  opacity: 0.44 !important;
+  color: #fff8d9 !important;
+  filter: saturate(1.1) brightness(1.08) !important;
+  text-shadow: 0 1px 0 #4b2c06, 0 0 10px #ffd66c88 !important;
+}
+.turnCountdownActive::after {
+  top: 5px;
+  right: 6px;
+  min-width: 48px;
+  height: 30px;
+  padding: 0 10px;
+  font-size: 22px;
+  font-weight: 1000;
+  letter-spacing: 0.4px;
+  color: #fffdf3;
+  text-shadow: 0 1px 0 #201003, 0 0 10px #ffffff44, 0 0 18px #ffd97966;
+  background: linear-gradient(180deg, #9d741c, #6f4511) !important;
+  border: 2px solid #b2ffff;
+  box-shadow: 0 3px 0 #07131c, 0 0 16px #7efbff88, inset 0 1px 0 #fff5;
+}
+.turnCountdownActive.turnFlashCyan {
+  border-color: #7efcff !important;
+  background: linear-gradient(180deg, #1d5b73, #143857 58%, #0c2239) !important;
+  box-shadow:
+    inset 0 0 0 1px #d6ffff28,
+    0 0 0 2px #8dfcff55,
+    0 0 24px #7efcff88 !important;
+}
+.turnCountdownActive.turnFlashCyan::before {
+  background: linear-gradient(180deg, #adffff22, transparent 24%, transparent 78%, #00000010) !important;
+}
+.turnCountdownActive.turnFlashRed {
+  border-color: #ff7f9a !important;
+  background: linear-gradient(180deg, #6a1e36, #45192f 58%, #271120) !important;
+  box-shadow:
+    inset 0 0 0 1px #ffe0e91f,
+    0 0 0 2px #ff8ba64d,
+    0 0 24px #ff7f9a7a !important;
+}
+.turnCountdownActive.turnFlashRed::before {
+  background: linear-gradient(180deg, #ffc0cf20, transparent 24%, transparent 78%, #00000010) !important;
+}
+#humanInfo.turnCountdownActive.turnFlashCyan,
+#humanInfo.turnCountdownActive.turnFlashRed,
+.seat.turnCountdownActive.turnFlashCyan,
+.seat.turnCountdownActive.turnFlashRed {
+  transform: none !important;
+}
+@media (max-width: 420px) {
+  .turnCountdownActive::after {
+    min-width: 44px;
+    height: 28px;
+    font-size: 20px;
+  }
+}
+/* ===== end precision UX updates ===== */
+
+
+/* ===== settlement/history precision refinement ===== */
+.pairSettlementLine.hasSpecial .pairBaseAmountCell,
+.pairSettlementLine.hasSpecial .pairBaseAmountCell .pairSettlementAmount,
+.pairSettlementLine.hasSpecial .pairBaseAmountCell i {
+  opacity: .48 !important;
+  filter: saturate(.72) brightness(.86);
+}
+.pairSettlementEquation {
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) auto !important;
+  align-items: center !important;
+  justify-content: stretch !important;
+  gap: 8px !important;
+}
+.pairEquationFlow {
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+}
+.pairEquationNetCell {
+  justify-self: end;
+  align-self: center;
+  gap: 4px !important;
+}
+.pairEquationNetCell b {
+  color: #cfe3ec;
+  font-size: 10px;
+  font-weight: 1000;
+}
+.pairEquationNetCell .pairSettlementAmount {
+  font-size: clamp(19px, 5.4vw, 24px) !important;
+  line-height: 1;
+}
+.playHistoryHand.pass {
+  border-style: dashed;
+}
+.playHistoryPass {
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 10px;
+  text-align: center;
+  color: #ffdba0;
+  font-size: 15px;
+  font-weight: 1000;
+  border: 1px dashed #3e6f92;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #0a1a2a, #091420);
+}
+@media (max-width:420px) {
+  .pairSettlementEquation {
+    grid-template-columns: minmax(0,1fr) auto !important;
+    gap: 6px !important;
+  }
+  .pairEquationFlow {
+    gap: 4px;
+  }
+  .playHistoryPass {
+    min-height: 52px;
+    font-size: 14px;
+  }
+}
+/* ===== end settlement/history precision refinement ===== */
+
 </style>
 </head>
 <body>
@@ -6523,7 +8202,30 @@ body #app .played.playingCardFace::before {
 
 
 <div id="lobbyScreen"><div class="lobbyPanel"><div id="startPanel" style="display: block;">
-<div id="profilePanel" style="display: block;"><div class="lobbyTitle">锄大D 大厅</div><div class="lobbySub">输入名称后选择游戏模式</div>
+<div id="profilePanel" style="display: block;">
+  <div class="lobbyHeaderRow">
+    <div class="lobbyHeaderText">
+      <div class="lobbyTitle">锄大D教学</div>
+      <div class="lobbySub">输入名称后选择游戏模式</div>
+    </div>
+    <details class="lobbyTutorial">
+      <summary aria-label="展开游戏玩法">玩法</summary>
+      <div class="tutorialPopover">
+        <div class="tutorialSection">
+          <div class="tutorialHeading">游戏玩法</div>
+          <p>4人各13张。首场持有方块3的玩家先出，第一手必须包含方块3；之后由上一场赢家先出。</p>
+          <p>可出单张、对子、三张；五张牌可出顺子、同花、葫芦、铁支和同花顺。</p>
+          <p>跟牌必须张数相同并且更大。连续三家过牌后，最后出牌者获得自由出牌。</p>
+        </div>
+        <div class="tutorialSection">
+          <div class="tutorialHeading">金额计算</div>
+          <p>赢家向每名输家收取：剩1–9张＝张数＋2；剩10–12张＝张数×2＋2；剩13张＝41。</p>
+          <p>输家之间对扣：剩牌差×倍率。最高剩牌1–9张×1、10–12张×2、13张×3。</p>
+          <p>铁支：其余每家付5；同花顺：其余每家付10。开局四张2或一条龙直接胜，其他每家付41。</p>
+        </div>
+      </div>
+    </details>
+  </div>
 <div class="profileCard">
         <div>
           <div class="fieldLabel">名称</div>
@@ -6531,51 +8233,63 @@ body #app .played.playingCardFace::before {
         </div>
       </div></div>
 
-<div class="modeTitle">随机匹配</div>
-<div class="matchLobbyBox">
-  <div class="randomMatchChoices">
-    <button type="button" class="randomMatchBtn" onclick="startSimulatedMatchmaking('standard')">随机匹配<small>60秒理牌 · 40秒出牌</small></button>
-    <button type="button" class="randomMatchBtn quickMatchBtn" onclick="startSimulatedMatchmaking('quick')">快速局<small>25秒理牌 · 15秒出牌</small></button>
-  </div>
-  <div class="homeRandomBalance"><span>随机匹配累计</span><strong id="homeRandomBalanceValue" class="neg">-391</strong></div>
-</div>
+<div class="lobbySections">
+  <section class="lobbySection">
+    <div class="matchLobbyBox lobbyUnifiedCard">
+      <div class="modeTitle">随机匹配</div>
+      <div class="randomMatchChoices">
+        <button type="button" class="randomMatchBtn" onclick="startSimulatedMatchmaking('standard')">随机匹配<small>60秒理牌 · 40秒出牌</small></button>
+        <button type="button" class="randomMatchBtn quickMatchBtn" onclick="startSimulatedMatchmaking('quick')">快速局<small>25秒理牌 · 15秒出牌</small></button>
+      </div>
+      <div class="homeRandomBalance"><span>随机匹配累计</span><strong id="homeRandomBalanceValue" class="pos">+267</strong></div>
+    </div>
+  </section>
 
-<div class="modeTitle">电脑对战</div>
-<div class="aiLevels">
-  <button type="button" class="aiLevelBtn easy" onclick="startAIGame('easy')">简单<small>较随意</small></button>
-  <button type="button" class="aiLevelBtn normal" onclick="startAIGame('normal')">普通<small>会保牌</small></button>
-  <button type="button" class="aiLevelBtn hard" onclick="startAIGame('hard')">困难<small>追求赢钱</small></button>
-</div>
-<div class="startSeedBox">
-  <div class="startSeedTitle">使用牌局种子</div>
-  <div class="startSeedRow">
-    <input type="text" id="startSeedInput" class="startSeedInput" maxlength="16" placeholder="粘贴种子" autocomplete="off" autocapitalize="characters" spellcheck="false" oninput="this.value=normalizeSeed(this.value)" onpaste="handleSeedPaste(event)">
-    <button type="button" id="pasteSeedBtn" onclick="pasteSeedFromClipboard()">粘贴</button>
-  </div>
-  <div class="seedDifficultyRow">
-    <button type="button" class="easy" onclick="startSeedAIGame('easy')">简单开局</button>
-    <button type="button" class="normal" onclick="startSeedAIGame('normal')">普通开局</button>
-    <button type="button" class="hard" onclick="startSeedAIGame('hard')">困难开局</button>
-  </div>
-</div>
+  <section class="lobbySection">
+    <div class="aiLobbyBox lobbyUnifiedCard">
+      <div class="modeTitle">电脑对战</div>
+      <div class="aiLevels fourLevels">
+        <button type="button" class="aiLevelBtn standard" onclick="startAIGame('standard')">标准<small>隐藏混合难度</small></button>
+        <button type="button" class="aiLevelBtn easy" onclick="startAIGame('easy')">简单<small>较随意</small></button>
+        <button type="button" class="aiLevelBtn normal" onclick="startAIGame('normal')">普通<small>会保牌</small></button>
+        <button type="button" class="aiLevelBtn hard" onclick="startAIGame('hard')">困难<small>追求赢钱</small></button>
+      </div>
+      <div class="startSeedBox aiSeedSubCard">
+        <div class="startSeedTitle">使用牌局种子</div>
+        <div class="startSeedRow">
+          <input type="text" id="startSeedInput" class="startSeedInput" maxlength="16" placeholder="粘贴种子" autocomplete="off" autocapitalize="characters" spellcheck="false" oninput="this.value=normalizeSeed(this.value)" onpaste="handleSeedPaste(event)">
+          <button type="button" id="pasteSeedBtn" onclick="pasteSeedFromClipboard()">粘贴</button>
+        </div>
+        <div class="seedDifficultyRow fourLevels">
+          <button type="button" class="standard" onclick="startSeedAIGame('standard')">标准开局</button>
+          <button type="button" class="easy" onclick="startSeedAIGame('easy')">简单开局</button>
+          <button type="button" class="normal" onclick="startSeedAIGame('normal')">普通开局</button>
+          <button type="button" class="hard" onclick="startSeedAIGame('hard')">困难开局</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<div class="modeTitle">开房间</div>
-<div class="createRoomBox">
-  <div class="switchRow">
-    <div class="switchLabel"><b>房间密码</b><small>可选，房主自行决定</small></div>
-    <div id="passwordSwitch" class="pixelSwitch" onclick="togglePasswordSetup()"></div>
-  </div>
-  <div id="passwordSetup">
-    <div class="fieldLabel passwordFieldLabel">密码（4–12位）</div>
-    <input id="createPasswordInput" class="lobbyInput" type="password" maxlength="12" placeholder="输入房间密码">
-  </div>
-  <button type="button" class="multiplayerBtn" onclick="createRoom()">创建多人房间</button>
-  <div class="roomJoinDivider">已有房间</div>
-  <div class="roomLinkBox joinRoomInputBox">
-    <input type="text" id="joinRoomInput" class="lobbyInput roomCodeJoinInput" maxlength="8" placeholder="输入房间号" autocomplete="off" autocapitalize="characters" spellcheck="false" oninput="this.value=normalizeRoomCode(this.value)" onpaste="handleRoomCodePaste(event)">
-    <button type="button" class="lobbyAction roomLinkButton" onclick="pasteRoomCodeFromClipboard()">粘贴</button>
-  </div>
-  <button type="button" class="lobbyAction gold roomJoinSubmit" onclick="joinRoomFromInput()">加入房间</button>
+  <section class="lobbySection">
+    <div class="createRoomBox lobbyUnifiedCard">
+      <div class="modeTitle">开房间</div>
+      <div class="switchRow">
+        <div class="switchLabel"><b>房间密码</b><small>可选，房主自行决定</small></div>
+        <div id="passwordSwitch" class="pixelSwitch" onclick="togglePasswordSetup()"></div>
+      </div>
+      <div id="passwordSetup">
+        <div class="fieldLabel passwordFieldLabel">密码（4–12位）</div>
+        <input id="createPasswordInput" class="lobbyInput" type="password" maxlength="12" placeholder="输入房间密码">
+      </div>
+      <button type="button" class="multiplayerBtn" onclick="createRoom()">创建多人房间</button>
+      <div class="roomJoinDivider">已有房间</div>
+      <div class="roomLinkBox joinRoomInputBox">
+        <input type="text" id="joinRoomInput" class="lobbyInput roomCodeJoinInput" maxlength="8" placeholder="输入房间号" autocomplete="off" autocapitalize="characters" spellcheck="false" oninput="this.value=normalizeRoomCode(this.value)" onpaste="handleRoomCodePaste(event)">
+        <button type="button" class="lobbyAction roomLinkButton" onclick="pasteRoomCodeFromClipboard()">粘贴</button>
+      </div>
+      <button type="button" class="lobbyAction gold roomJoinSubmit" onclick="joinRoomFromInput()">加入房间</button>
+    </div>
+  </section>
 </div></div></div>
 <div id="roomPanel" class="roomPanel" style="display: none;">
 <div id="passwordGate" class="passwordGate"><div class="passwordGateTitle">此房间需要密码</div><input id="joinPasswordInput" class="lobbyInput" type="password" maxlength="12" placeholder="输入房间密码"><div class="lobbyActions"><button type="button" class="lobbyAction" onclick="leaveRoom()">返回大厅</button><button type="button" class="lobbyAction primary" onclick="submitRoomPassword()">进入待机室</button></div></div>
@@ -6638,7 +8352,7 @@ body #app .played.playingCardFace::before {
   <div id="playHistoryOverlay" onclick="if(event.target===this)closeRecentPlayHistory()" aria-hidden="true">
     <div class="playHistoryPanel" role="dialog" aria-modal="true" aria-labelledby="playHistoryTitle">
       <div class="playHistoryHeader">
-        <div id="playHistoryTitle" class="playHistoryTitle">上两手出牌</div>
+        <div id="playHistoryTitle" class="playHistoryTitle">前三手记录</div>
         <button type="button" class="playHistoryClose" onclick="closeRecentPlayHistory()">关闭</button>
       </div>
       <div id="playHistoryList" class="playHistoryList"></div>
@@ -6655,7 +8369,7 @@ body #app .played.playingCardFace::before {
   </div>
 
   <div class="controls">
-    <div id="humanInfo"><span id="autoModeBadge">自动中</span><span class="humanName">手牌</span><span id="humanTurnText">等待开局</span><span class="humanCount" id="humanCount">0张</span></div>
+    <div id="humanInfo" class="turnCountdownActive turnFlashCyan" data-turn-left="40"><span id="autoModeBadge">自动中</span><span class="humanName">手牌</span><span id="humanTurnText">等待开局</span><span class="humanCount" id="humanCount">0张</span></div>
     <div class="quick">
       <button type="button" id="sortRank" class="ctrl sortCtrl active" onclick="setSortMode('rank')" aria-pressed="true"><span>大小</span></button>
       <button type="button" id="sortSuit" class="ctrl sortCtrl" onclick="setSortMode('suit')" aria-pressed="false"><span>花色</span></button>
@@ -6663,6 +8377,7 @@ body #app .played.playingCardFace::before {
     </div>
     <div class="actions"><button type="button" id="passBtn" class="ctrl danger" onclick="humanPass()">过</button><button type="button" id="playBtn" class="ctrl primary" onclick="humanPlay()">出牌</button></div>
     <div class="handWrap"><div id="hand"></div></div>
+    <div id="preGameComboButtons" class="preGameComboButtons" aria-label="五张牌型快速选择"></div>
     <button id="preGameReadyBtn" type="button" onclick="playerPreGameReady()">READY</button>
   </div>
 </div>
@@ -6710,7 +8425,23 @@ const players = [
   {id:'P2',seat:2,name:'电脑B',human:false,hand:[],score:0,round:0},
   {id:'P3',seat:3,name:'电脑C',human:false,hand:[],score:0,round:0},
 ];
-let direction = localStorage.getItem('cd_direction') || 'asc';
+function safeStorageGet(key,fallback=''){
+  try{
+    const value=window.localStorage.getItem(key);
+    return value===null?fallback:value;
+  }catch(e){
+    return fallback;
+  }
+}
+function safeStorageSet(key,value){
+  try{
+    window.localStorage.setItem(key,String(value));
+    return true;
+  }catch(e){
+    return false;
+  }
+}
+let direction = safeStorageGet('cd_direction','asc') || 'asc';
 let sortMode = 'rank';
 let selected = new Set();
 let currentPlayer = 0;
@@ -6739,7 +8470,7 @@ let dealerIndex = null;
 let mustDiamond3 = true;
 let ceremonyActive = false;
 let dealCounts = [0,0,0,0];
-let soundEnabled = localStorage.getItem('cd_sound') !== 'off';
+let soundEnabled = safeStorageGet('cd_sound','on') !== 'off';
 let audioCtx = null;
 function ensureAudio(){if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume()}
 function sfx(kind){
@@ -6751,7 +8482,7 @@ function sfx(kind){
   g.gain.setValueAtTime(0.0001,now);g.gain.exponentialRampToValueAtTime(cfg[2],now+.005);g.gain.exponentialRampToValueAtTime(.0001,now+cfg[1]);
   o.connect(g);g.connect(audioCtx.destination);o.start(now);o.stop(now+cfg[1]+.02);
 }
-function toggleSound(){soundEnabled=!soundEnabled;localStorage.setItem('cd_sound',soundEnabled?'on':'off');document.getElementById('soundBtn').textContent=soundEnabled?'♪':'×';if(soundEnabled){ensureAudio();sfx('tap')}}
+function toggleSound(){soundEnabled=!soundEnabled;safeStorageSet('cd_sound',soundEnabled?'on':'off');document.getElementById('soundBtn').textContent=soundEnabled?'♪':'×';if(soundEnabled){ensureAudio();sfx('tap')}}
 
 
 
@@ -7096,7 +8827,7 @@ function chooseDirection(d){
   direction=d;
   document.getElementById('ascBtn').classList.toggle('selected',d==='asc');
   document.getElementById('descBtn').classList.toggle('selected',d==='desc');
-  localStorage.setItem('cd_direction',d);
+  safeStorageSet('cd_direction',d);
   updateSortControls();
 }
 function startFromModal(){
@@ -7119,7 +8850,7 @@ function setSortMode(m){sfx('tap');
   const sameMode=sortMode===m;
   if(sameMode)direction=direction==='asc'?'desc':'asc';
   sortMode=m;
-  localStorage.setItem('cd_direction',direction);
+  safeStorageSet('cd_direction',direction);
   updateSortControls();
   selected.clear();resetHints();renderHand();updateButtons();
   const order=m==='rank'
@@ -7225,12 +8956,12 @@ function lobbyNotice(msg){
   setTimeout(()=>el.classList.remove('show'),1500);
 }
 function loadLobbyProfile(){
-  try{const s=JSON.parse(localStorage.getItem(LOBBY_STORAGE_KEY)||'null');if(s&&s.id)lobbyProfile={...lobbyProfile,...s,ready:false}}catch(e){}
+  try{const s=JSON.parse(safeStorageGet(LOBBY_STORAGE_KEY,'')||'null');if(s&&s.id)lobbyProfile={...lobbyProfile,...s,ready:false}}catch(e){}
   document.getElementById('profileNameInput').value=lobbyProfile.name||'';
 }
 function saveLobbyProfile(){
   lobbyProfile.name=(document.getElementById('profileNameInput').value||'').trim();
-  localStorage.setItem(LOBBY_STORAGE_KEY,JSON.stringify({...lobbyProfile,ready:false}));
+  safeStorageSet(LOBBY_STORAGE_KEY,JSON.stringify({...lobbyProfile,ready:false}));
 }
 function validateLobbyProfile(){saveLobbyProfile();if(!lobbyProfile.name){lobbyNotice('请先输入名称');return false}return true}
 function togglePasswordSetup(){
@@ -7241,8 +8972,8 @@ function togglePasswordSetup(){
 }
 function randomRoomCode(){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let o='';for(let i=0;i<6;i++)o+=c[Math.floor(Math.random()*c.length)];return o}
 function roomMetaKey(c){return ROOM_META_PREFIX+c}
-function saveRoomMeta(c,m){try{localStorage.setItem(roomMetaKey(c),JSON.stringify(m))}catch(e){}}
-function loadRoomMeta(c){try{return JSON.parse(localStorage.getItem(roomMetaKey(c))||'null')}catch(e){return null}}
+function saveRoomMeta(c,m){try{safeStorageSet(roomMetaKey(c),JSON.stringify(m))}catch(e){}}
+function loadRoomMeta(c){try{return JSON.parse(safeStorageGet(roomMetaKey(c),'')||'null')}catch(e){return null}}
 function currentRoomLink(){const u=new URL(location.href);u.searchParams.set('room',activeRoomCode);return u.toString()}
 function setLobbyRoomView(inRoom){
   const start=document.getElementById('startPanel');
@@ -7283,10 +9014,10 @@ function normalizeRoomCode(value){
 function rememberCopiedRoomCode(code){
   const normalized=normalizeRoomCode(code);
   if(!normalized)return;
-  try{localStorage.setItem(LAST_COPIED_ROOM_CODE_KEY,normalized)}catch(e){}
+  try{safeStorageSet(LAST_COPIED_ROOM_CODE_KEY,normalized)}catch(e){}
 }
 function getRememberedRoomCode(){
-  try{return normalizeRoomCode(localStorage.getItem(LAST_COPIED_ROOM_CODE_KEY)||'')}catch(e){return ''}
+  try{return normalizeRoomCode(safeStorageGet(LAST_COPIED_ROOM_CODE_KEY,'')||'')}catch(e){return ''}
 }
 function applyRoomCodeToJoinInput(value,message='房间号已粘贴'){
   const input=document.getElementById('joinRoomInput');
@@ -7483,6 +9214,8 @@ function finishPreGameReady(){
   document.body.classList.remove('arrangeMode');
   document.getElementById('preGameReadyPanel')?.classList.remove('show');
   document.getElementById('app')?.classList.remove('preGameReadyActive');
+  resetPreGameComboSelection();
+  selected.clear();
   const resolve=preGameReadyResolve;
   preGameReadyResolve=null;
   updateButtons();
@@ -8075,14 +9808,17 @@ let playerAIDifficulties=['human','normal','normal','normal'];
 function randomMatchClock(kind){return RANDOM_MATCH_CLOCKS[randomMatchSpeed]?.[kind]??RANDOM_MATCH_CLOCKS.standard[kind]}
 
 function setAIDifficulty(level){
-  aiDifficulty=['easy','normal','hard'].includes(level)?level:'normal';
+  aiDifficulty=['standard','easy','normal','hard'].includes(level)?level:'normal';
   const badge=document.getElementById('difficultyBadge');
   if(badge){
     badge.classList.remove('pending');
     badge.style.display='inline-grid';
-    badge.textContent=aiDifficulty==='easy'?'简单':aiDifficulty==='hard'?'困难':'普通';
-    badge.style.borderColor=aiDifficulty==='easy'?'#67b784':aiDifficulty==='hard'?'#d66a72':'#f2ca6c';
+    const labelMap={standard:'标准',easy:'简单',normal:'普通',hard:'困难'};
+    const colorMap={standard:'#69e5d4',easy:'#67b784',normal:'#f2ca6c',hard:'#d66a72'};
+    badge.textContent=labelMap[aiDifficulty]||'普通';
+    badge.style.borderColor=colorMap[aiDifficulty]||'#f2ca6c';
     badge.style.color=badge.style.borderColor;
+    badge.title=aiDifficulty==='standard'?'三名电脑使用隐藏混合难度':'当前人机难度';
   }
 }
 
@@ -8090,10 +9826,10 @@ const LAST_COPIED_SEED_KEY='chodai_last_copied_seed_v1';
 function rememberCopiedSeed(seed){
   const normalized=normalizeSeed(seed);
   if(!normalized)return;
-  try{localStorage.setItem(LAST_COPIED_SEED_KEY,normalized)}catch(e){}
+  try{safeStorageSet(LAST_COPIED_SEED_KEY,normalized)}catch(e){}
 }
 function getRememberedSeed(){
-  try{return normalizeSeed(localStorage.getItem(LAST_COPIED_SEED_KEY)||'')}catch(e){return ''}
+  try{return normalizeSeed(safeStorageGet(LAST_COPIED_SEED_KEY,'')||'')}catch(e){return ''}
 }
 function applySeedToStartInput(seed,message='种子已粘贴'){
   const input=document.getElementById('startSeedInput');
@@ -8146,12 +9882,30 @@ async function pasteSeedFromClipboard(){
   lobbyNotice('系统限制自动读取，请直接在输入框长按粘贴');
 }
 function startSeedAIGame(level){
+  const input=document.getElementById('startSeedInput');
+  const seed=normalizeSeed(input?.value||'');
+
+  // 隐藏主页奖励：输入 giveme1000 后点击“简单开局”，只领取金额，不进入游戏。
+  if(level==='easy'&&seed==='GIVEME1000'){
+    const rewardedBalance=loadRandomMatchBalance()+1000;
+    saveRandomMatchBalance(rewardedBalance);
+    if(input)input.value='';
+    safeStorageSet(LAST_COPIED_SEED_KEY,'');
+    lobbyNotice('已获得 +1000');
+    const balanceEl=document.getElementById('homeRandomBalanceValue');
+    if(balanceEl){
+      balanceEl.classList.remove('seedRewardPop');
+      void balanceEl.offsetWidth;
+      balanceEl.classList.add('seedRewardPop');
+      setTimeout(()=>balanceEl.classList.remove('seedRewardPop'),700);
+    }
+    return;
+  }
+
   finishPreGameReady();
   if(!validateLobbyProfile())return;
   setRandomMatchGameMode(false);
 
-  const input=document.getElementById('startSeedInput');
-  const seed=normalizeSeed(input?.value||'');
   if(seed.length<4){
     lobbyNotice('请输入至少4位种子');
     input?.focus();
@@ -8166,7 +9920,7 @@ function startSeedAIGame(level){
   dealerIndex=null;
 
   setAIDifficulty(level);
-  playerAIDifficulties=['human',level,level,level];
+  playerAIDifficulties=configuredAIDifficulties(level);
   document.getElementById('lobbyScreen').style.display='none';
   players[0].name=lobbyProfile.name||'你';
   players[1].name='电脑A';
@@ -8370,11 +10124,11 @@ function personalityThinkDelay(i){
   return Math.max(4500,Math.min(Math.round(delay),36000));
 }
 function loadRandomMatchBalance(){
-  const n=parseInt(localStorage.getItem(RANDOM_MATCH_BALANCE_KEY)||'0',10);
+  const n=parseInt(safeStorageGet(RANDOM_MATCH_BALANCE_KEY,'0')||'0',10);
   return Number.isFinite(n)?n:0;
 }
 function saveRandomMatchBalance(n){
-  localStorage.setItem(RANDOM_MATCH_BALANCE_KEY,String(n));
+  safeStorageSet(RANDOM_MATCH_BALANCE_KEY,String(n));
   renderHomeRandomBalance();
 }
 function renderHomeRandomBalance(){
@@ -8464,7 +10218,12 @@ function renderMatchSlots(joined){
 }
 function startSimulatedMatchmaking(speed='standard'){
   if(!validateLobbyProfile())return;
-  randomMatchSpeed=speed==='quick'?'quick':'standard';
+  const requestedSpeed=speed==='quick'?'quick':'standard';
+  if(requestedSpeed==='quick'&&loadRandomMatchBalance()<100){
+    lobbyNotice('快速局需主金额至少 100');
+    return;
+  }
+  randomMatchSpeed=requestedSpeed;
   clearSimulatedTimers();
   simulatedMatchActive=true;
   simulatedAliases=pickUniqueAliases(3);
@@ -8544,8 +10303,23 @@ function randomMixedDifficulties(){
   }
   return result;
 }
+function standardMixedDifficulties(){
+  // 标准模式：简单、普通、困难各一名，随机分配给三台电脑。
+  // 实际分配只保存在逻辑层，界面不会显示给玩家。
+  const shuffled=['easy','normal','hard'];
+  for(let i=shuffled.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];
+  }
+  return ['human',...shuffled];
+}
+function configuredAIDifficulties(level){
+  return level==='standard'
+    ? standardMixedDifficulties()
+    : ['human',level,level,level];
+}
 function currentAIDifficultyFor(playerIndex){
-  if(randomMatchGameMode){
+  if(randomMatchGameMode||aiDifficulty==='standard'){
     return playerAIDifficulties[playerIndex]||'normal';
   }
   return aiDifficulty;
@@ -8578,7 +10352,7 @@ function startAIGame(level){
   dealerIndex=null;
 
   setAIDifficulty(level);
-  playerAIDifficulties=['human',level,level,level];
+  playerAIDifficulties=configuredAIDifficulties(level);
   document.getElementById('lobbyScreen').style.display='none';
   players[0].name=lobbyProfile.name||'你';
   players[1].name='电脑A';
@@ -8802,33 +10576,40 @@ function roundSettlementHtml(){
   const records=currentRoundTransactions();
   const opponentRows=[1,2,3].map(opponentIndex=>{
     const result=pairSettlementBreakdown(opponentIndex,records);
-    const specialRow=result.specialParts.length?`
-      <div class="pairSpecialSummaryLine">
-        <div class="pairSpecialLabels">${result.specialParts.map(item=>
-          `<b>${escapeLobbyHtml(item.label)}</b>`
-        ).join('<i>＋</i>')}</div>
-        <div class="pairSpecialChanges">${result.specialParts.map(item=>
-          `<strong class="${moneyClass(item.amount)}">${signed(item.amount)}</strong>`
-        ).join('<i>＋</i>')}</div>
-        <span class="pairSpecialTotalCell"><i>＝</i><strong class="pairSpecialTotal ${moneyClass(result.total)}">${signed(result.total)}</strong></span>
+    const hasSpecial=result.specialParts.length>0;
+    const specialRow=hasSpecial?`
+      <div class="pairSettlementEquation" aria-label="完整净额计算">
+        <div class="pairEquationFlow">
+          <span class="pairEquationPart"><b>基础</b><strong class="${moneyClass(result.baseAmount)}">${signed(result.baseAmount)}</strong></span>
+          ${result.specialParts.map(item=>`
+            <i>${item.amount>=0?'＋':'－'}</i>
+            <span class="pairEquationPart"><b>${escapeLobbyHtml(item.label)}</b><strong class="${moneyClass(item.amount)}">${Math.abs(item.amount)}</strong></span>
+          `).join('')}
+        </div>
+        <span class="pairAmountCell pairEquationNetCell"><b>净额</b><i>＝</i><strong class="pairSettlementAmount ${moneyClass(result.total)}">${signed(result.total)}</strong></span>
       </div>`:'';
 
-    return `<div class="pairSettlementLine">
+    return `<div class="pairSettlementLine ${hasSpecial?'hasSpecial':''}">
       <div class="pairSettlementMain">
         <span class="pairOpponentName">${escapeLobbyHtml(players[opponentIndex].name)}</span>
         <span class="pairOpponentRemain">剩 ${players[opponentIndex].hand.length} 张</span>
-        <span class="pairAmountCell"><i>＝</i><strong class="pairSettlementAmount ${moneyClass(result.baseAmount)}">${signed(result.baseAmount)}</strong></span>
+        <span class="pairAmountCell pairBaseAmountCell"><i>＝</i><strong class="pairSettlementAmount ${moneyClass(result.baseAmount)}">${signed(result.baseAmount)}</strong></span>
       </div>
       ${specialRow}
     </div>`;
   });
 
+  const userRoundNet=records.reduce((sum,t)=>sum+transactionNetForPlayer(t,0),0);
   return `<div class="selfSettlementCard">
     <div class="settlementSelfRemaining">
       <span>${escapeLobbyHtml(players[0].name)}</span>
       <strong>剩 ${players[0].hand.length} 张</strong>
     </div>
-    <div class="pairSettlementLegend"><span>玩家</span><span>剩牌</span><span>金额</span></div>
+    <div class="settlementRoundNet">
+      <span>本局总变化</span>
+      <strong class="${moneyClass(userRoundNet)}">${signed(userRoundNet)}</strong>
+    </div>
+    <div class="pairSettlementLegend"><span>玩家</span><span>剩牌</span><span>基础</span></div>
     <div class="pairSettlementRows">${opponentRows.join('')}</div>
   </div>`;
 }
@@ -8870,7 +10651,7 @@ function renderBalanceBar(){
   if(!randomMatchGameMode){
     const main=document.getElementById('mainBalanceValue');
     if(main){
-      const persistent=parseInt(localStorage.getItem(RANDOM_MATCH_BALANCE_KEY)||'0',10)||0;
+      const persistent=parseInt(safeStorageGet(RANDOM_MATCH_BALANCE_KEY,'0')||'0',10)||0;
       main.textContent=(persistent>0?'+':'')+persistent;
     }
   }
@@ -9050,7 +10831,8 @@ function showRandomMatchResults(title){
       <button type="button" id="readyNextBtn" class="readyNextBtn" onclick="playerReadyNextRound()">准备下一场</button>
     </div>
 
-    <div class="randomResultActions single">
+    <div class="randomResultActions seedCopyActions">
+      <button type="button" class="copySeed" onclick="copyRoundSeedAndStay()">复制本局种子</button>
       <button type="button" class="exit" onclick="exitRandomMatchSession()">退出匹配</button>
     </div>
   </div>`;
@@ -9273,8 +11055,8 @@ function renderCard(c,classes=''){
   return playingCardHtml(c,classes);
 }
 
-const HAND_WIDTHS=[148,132,118,106,95,85,77,71,66,61,57,53,50];
-const HAND_STEPS=[86,76,67,60,53,47,43,39,36,33,31,29,27];
+const HAND_WIDTHS=[100,96,92,88,83,78,73,69,65,61,57,53,49];
+const HAND_STEPS=[72,68,63,58,53,48,44,40,37,34,31,29,27];
 function handVisualMetrics(count){
   const index=clamp(count||1,1,13)-1;
   return {w:HAND_WIDTHS[index],minStep:HAND_STEPS[index]};
@@ -9289,6 +11071,127 @@ function applyHandVisualState(count){
 
 }
 
+
+const PRE_GAME_COMBO_TYPES=['straightFlush','fourKind','fullHouse','flush','straight'];
+const PRE_GAME_COMBO_LABELS={
+  straight:'顺子',
+  flush:'同花',
+  fullHouse:'葫芦',
+  fourKind:'铁支',
+  straightFlush:'同花顺'
+};
+let preGameComboGroups={};
+let preGameComboCycle={};
+let preGameComboCurrentType='';
+function buildPreGameComboGroups(){
+  const groups={};
+  PRE_GAME_COMBO_TYPES.forEach(type=>groups[type]=[]);
+  if(!players[0]||!Array.isArray(players[0].hand))return groups;
+  for(const combo of allFiveCombos(players[0].hand)){
+    if(groups[combo.type])groups[combo.type].push(combo);
+  }
+  PRE_GAME_COMBO_TYPES.forEach(type=>groups[type].sort(compareComboAscending));
+  return groups;
+}
+function selectedMatchesCombo(combo){
+  if(!combo||selected.size!==combo.cards.length)return false;
+  return combo.cards.every(card=>selected.has(card.id));
+}
+function renderPreGameComboButtons(){
+  const root=document.getElementById('preGameComboButtons');
+  if(!root)return;
+  if(!preGameReadyActive){
+    root.innerHTML='';
+    root.classList.remove('show');
+    root.removeAttribute('data-count');
+    root.style.removeProperty('--combo-type-count');
+    return;
+  }
+  preGameComboGroups=buildPreGameComboGroups();
+  const available=PRE_GAME_COMBO_TYPES.filter(type=>preGameComboGroups[type].length);
+  if(!available.length){
+    root.innerHTML='';
+    root.classList.remove('show');
+    root.removeAttribute('data-count');
+    root.style.removeProperty('--combo-type-count');
+    return;
+  }
+  root.dataset.count=String(available.length);
+  root.style.setProperty('--combo-type-count',String(available.length));
+  root.innerHTML=available.map(type=>{
+    const combos=preGameComboGroups[type];
+    const active=type===preGameComboCurrentType&&combos.some(selectedMatchesCombo);
+    const index=Math.min(preGameComboCycle[type]||0,Math.max(0,combos.length-1));
+    const progress=combos.length>1
+      ? `<small>${active?`${index+1}/${combos.length}`:combos.length}</small>`
+      : '';
+    const label=PRE_GAME_COMBO_LABELS[type];
+    return `<button type="button" class="preGameComboBtn ${type} ${active?'active':''}"
+      onclick="selectPreGameComboType('${type}')"
+      aria-label="${label}，共${combos.length}组"
+      title="点击选中${label}${combos.length>1?'，再次点击切换下一组':''}">
+      <span>${label}</span>${progress}
+    </button>`;
+  }).join('');
+  root.classList.add('show');
+}
+function selectPreGameComboType(type){
+  if(!preGameReadyActive)return;
+  preGameComboGroups=buildPreGameComboGroups();
+  const combos=preGameComboGroups[type]||[];
+  if(!combos.length){toast(`手牌里没有${PRE_GAME_COMBO_LABELS[type]||'该牌型'}`);return}
+  let index=preGameComboCycle[type]||0;
+  if(preGameComboCurrentType===type&&selectedMatchesCombo(combos[index])){
+    index=(index+1)%combos.length;
+  }else{
+    index=Math.min(index,combos.length-1);
+  }
+  preGameComboCycle[type]=index;
+  preGameComboCurrentType=type;
+  selected.clear();
+  combos[index].cards.forEach(card=>selected.add(card.id));
+  resetHints();
+  renderHand();
+  updateButtons();
+  toast(`${PRE_GAME_COMBO_LABELS[type]} ${index+1}/${combos.length} · 已选中`);
+}
+function resetPreGameComboSelection(){
+  preGameComboGroups={};
+  preGameComboCycle={};
+  preGameComboCurrentType='';
+  const root=document.getElementById('preGameComboButtons');
+  if(root){
+    root.innerHTML='';
+    root.classList.remove('show');
+    root.removeAttribute('data-count');
+    root.style.removeProperty('--combo-type-count');
+  }
+}
+
+function isPairResponseMode(){
+  return !preGameReadyActive&&!gameOver&&currentPlayer===0&&!!lastPlay&&lastPlay.type==='pair'&&Array.isArray(lastPlay.cards)&&lastPlay.cards.length===2;
+}
+function resolveAutoPairIds(clickedId){
+  const hand=sortedHand(players[0].hand);
+  const clicked=hand.find(card=>card.id===clickedId);
+  if(!clicked)return null;
+  const sameRank=hand.filter(card=>card.rank===clicked.rank);
+  if(sameRank.length<2)return null;
+  const idx=sameRank.findIndex(card=>card.id===clickedId);
+  const mate=sameRank[idx<sameRank.length-1?idx+1:idx-1];
+  if(!mate)return null;
+  return [clicked.id,mate.id];
+}
+function toggleAutoPairSelection(clickedId){
+  if(!isPairResponseMode())return false;
+  const pairIds=resolveAutoPairIds(clickedId);
+  if(!pairIds)return false;
+  const already=pairIds.every(id=>selected.has(id))&&selected.size===2;
+  selected.clear();
+  if(!already)pairIds.forEach(id=>selected.add(id));
+  return true;
+}
+
 function renderHand(fromHint=false){
   const hand=sortedHand(players[0].hand);
   applyHandVisualState(hand.length);
@@ -9297,13 +11200,16 @@ function renderHand(fromHint=false){
     const cls=`card ${selected.has(c.id)?'selected':''} ${hintIds.has(c.id)?'hinted':''}`;
     return renderCard(c,cls);
   }).join('');
+  renderPreGameComboButtons();
   requestAnimationFrame(fitHandCards);
 }
 function handleHandClick(event){
   const card=event.target.closest('#hand .card');
   if(!card)return;
   const id=card.dataset.id;
-  if(selected.has(id))selected.delete(id);else selected.add(id);
+  if(!toggleAutoPairSelection(id)){
+    if(selected.has(id))selected.delete(id);else selected.add(id);
+  }
   resetHints();renderHand();updateButtons();
 }
 function fitHandCards(){
@@ -9313,16 +11219,18 @@ function fitHandCards(){
   if(!wrap||!handEl||!cards.length)return;
 
   const count=cards.length;
-  const available=wrap.clientWidth>0?Math.max(1,wrap.clientWidth-14):260;
+  const available=wrap.clientWidth>0?Math.max(1,wrap.clientWidth-22):260;
   const wrapStyle=getComputedStyle(wrap);
   const verticalPadding=(parseFloat(wrapStyle.paddingTop)||0)+(parseFloat(wrapStyle.paddingBottom)||0);
-  const usableHeight=wrap.clientHeight>0?Math.max(1,wrap.clientHeight-verticalPadding-12):Infinity;
-  const preferredWidth=parseFloat(handEl.dataset.preferredWidth||'50');
-  // 重叠时至少露出牌宽的一半，确保左侧号码与花色不会被下一张牌盖住。
-  const visibleColumnRatio=.5;
-  const overlapSafeWidth=count>1?available/(1+(count-1)*visibleColumnRatio):Infinity;
-  const cardWidth=Math.max(32,Math.min(preferredWidth,usableHeight*9/13,overlapSafeWidth));
-  const desiredStep=parseFloat(handEl.dataset.minStep||'27');
+  const usableHeight=wrap.clientHeight>0?Math.max(1,wrap.clientHeight-verticalPadding-18):Infinity;
+  const preferredWidth=parseFloat(handEl.dataset.preferredWidth||'47');
+  // 维持至少约 52% 的可见宽度，兼顾可读性与不出格。
+  const visibleColumnRatio=.52;
+  const overlapSafeWidth=count>1?(available-8)/(1+(count-1)*visibleColumnRatio):available-8;
+  const safeMaxByCount=count<=2?92:count<=4?88:count<=6?80:count<=9?72:64;
+  const safeMaxByHeight=usableHeight/1.56;
+  const cardWidth=Math.max(28,Math.min(preferredWidth,safeMaxByCount,safeMaxByHeight,overlapSafeWidth));
+  const desiredStep=parseFloat(handEl.dataset.minStep||'25');
   handEl.style.setProperty('--hand-card-width',`${cardWidth}px`);
 
   if(count===1){
@@ -9331,8 +11239,8 @@ function fitHandCards(){
     return;
   }
 
-  const maximumStep=(available-cardWidth)/(count-1);
-  const step=Math.max(1,Math.min(desiredStep,maximumStep));
+  const maximumStep=Math.max(1,(available-cardWidth)/(count-1));
+  const step=Math.max(1,Math.min(desiredStep,maximumStep,cardWidth*0.92));
   const overlap=Math.max(0,cardWidth-step);
 
   cards.forEach((card,index)=>{
@@ -9346,23 +11254,26 @@ function openRecentPlayHistory(){
   const list=document.getElementById('playHistoryList');
   if(!overlay||!list)return;
 
-  const playedHands=recentPlayHistory.filter(item=>Array.isArray(item.cards)&&item.cards.length);
-  // 桌面仍有当前牌时，最新一手已直接显示在左侧，因此弹窗展示它之前的两手。
-  // 桌面已经重获自由时没有当前牌，则展示最近两手实际出牌。
-  const hands=(lastPlay?playedHands.slice(1,3):playedHands.slice(0,2));
+  const hands=recentPlayHistory.slice(0,3);
 
   if(!hands.length){
-    list.innerHTML='<div class="playHistoryEmpty">目前还没有可查看的上两手牌</div>';
+    list.innerHTML='<div class="playHistoryEmpty">目前还没有可查看的前三手记录</div>';
   }else{
-    list.innerHTML=hands.map((item,index)=>`
-      <div class="playHistoryHand">
+    list.innerHTML=hands.map((item,index)=>{
+      const step=index===0?'最新一手':index===1?'前二手':'前三手';
+      const isPass=!!item.pass;
+      const cardsHtml=Array.isArray(item.cards)&&item.cards.length
+        ? `<div class="playHistoryCards">${item.cards.map(c=>renderCard(c,'played historyPlayingCard')).join('')}</div>`
+        : `<div class="playHistoryPass">${escapeLobbyHtml(item.player)} 本手过牌</div>`;
+      return `
+      <div class="playHistoryHand ${isPass?'pass':''}">
         <div class="playHistoryMeta">
-          <span class="playHistoryStep">${index===0?'上一手':'上两手'}</span>
+          <span class="playHistoryStep">${step}</span>
           <span class="playHistoryWho">${escapeLobbyHtml(item.player)} · ${escapeLobbyHtml(item.type)}</span>
         </div>
-        <div class="playHistoryCards">${item.cards.map(c=>renderCard(c,'played historyPlayingCard')).join('')}</div>
-      </div>
-    `).join('');
+        ${cardsHtml}
+      </div>`;
+    }).join('');
   }
 
   overlay.classList.add('show');
@@ -9421,8 +11332,7 @@ function renderSeats(){
 
     const backs=el.querySelector('.cardbacks');
     if(backs){
-      const n=Math.min(shown,8);
-      backs.innerHTML=Array.from({length:n},()=>'<span class="back"></span>').join('');
+      backs.innerHTML='';
     }
   }
 }
@@ -9519,6 +11429,63 @@ document.querySelectorAll('button,.ctrl').forEach(el=>{
   el.addEventListener('contextmenu',e=>e.preventDefault());
   el.addEventListener('selectstart',e=>e.preventDefault());
 });renderCardTracker();
+
+
+
+
+/* ===== turn SOS flash hooks ===== */
+(function(){
+  const seatMap={1:'west',2:'north',3:'east'};
+  let sosTick=0;
+  function clearTurnFlashClasses(el){
+    if(!el)return;
+    el.classList.remove('turnCountdownActive','turnFlashCyan','turnFlashRed');
+    el.removeAttribute('data-turn-left');
+  }
+  function getTurnFlashTarget(){
+    if(typeof ceremonyActive!=='undefined' && ceremonyActive) return null;
+    if(typeof gameOver!=='undefined' && gameOver) return null;
+    if(typeof preGameReadyActive!=='undefined' && preGameReadyActive) return null;
+    if(typeof currentPlayer==='undefined') return null;
+    if(currentPlayer===0) return document.getElementById('humanInfo');
+    return document.getElementById(seatMap[currentPlayer]);
+  }
+  function getShownSeconds(){
+    if(typeof turnSecondsLeft==='number' && Number.isFinite(turnSecondsLeft)) return Math.max(0, turnSecondsLeft);
+    return 0;
+  }
+  function applyTurnFlash(){
+    const all=[document.getElementById('humanInfo'), document.getElementById('west'), document.getElementById('north'), document.getElementById('east')];
+    all.forEach(clearTurnFlashClasses);
+    const target=getTurnFlashTarget();
+    if(!target) return;
+    target.classList.add('turnCountdownActive');
+    target.setAttribute('data-turn-left', String(getShownSeconds()));
+    target.classList.add((sosTick % 2===0)?'turnFlashCyan':'turnFlashRed');
+  }
+  const originalUpdateVisibleTurnTimer = typeof updateVisibleTurnTimer==='function' ? updateVisibleTurnTimer : null;
+  if(originalUpdateVisibleTurnTimer){
+    updateVisibleTurnTimer = function(){
+      const result = originalUpdateVisibleTurnTimer.apply(this, arguments);
+      applyTurnFlash();
+      return result;
+    };
+  }
+  const originalRenderAll = typeof renderAll==='function' ? renderAll : null;
+  if(originalRenderAll){
+    renderAll = function(){
+      const result = originalRenderAll.apply(this, arguments);
+      applyTurnFlash();
+      return result;
+    };
+  }
+  setInterval(()=>{
+    sosTick=(sosTick+1)%100000;
+    applyTurnFlash();
+  }, 250);
+})();
+/* ===== end turn SOS flash hooks ===== */
+
 </script>
 
 
