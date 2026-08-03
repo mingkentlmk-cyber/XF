@@ -10505,6 +10505,16 @@ body.arrangeMode #app.preGameReadyActive #hand {
 }
 /* ===== end center the three recent-play rows ===== */
 
+
+/* ===== stable Safari/GitHub Pages hint interaction ===== */
+#hintBtn {
+  touch-action: manipulation !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
+}
+/* ===== end stable Safari/GitHub Pages hint interaction ===== */
+
 </style>
 </head>
 <body>
@@ -10715,12 +10725,12 @@ body.arrangeMode #app.preGameReadyActive #hand {
     <div id="preGameReadyList" class="preReadyList"></div>
   </div>
 
-  <div class="controls turnCountdownActive turnFlashCyan" data-turn-left="40">
+  <div class="controls turnCountdownActive turnFlashRed" data-turn-left="40">
     <div id="humanInfo"><span id="autoModeBadge">自动中</span><span class="humanName">手牌</span><span id="humanTurnText">等待开局</span><span class="humanCount" id="humanCount">0张</span></div>
     <div class="quick">
       <button type="button" id="sortRank" class="ctrl sortCtrl active is-unavailable" onclick="setSortMode('rank')" aria-pressed="true" disabled="" aria-disabled="true" title="当前没有可整理的手牌"><span>大小</span></button>
       <button type="button" id="sortSuit" class="ctrl sortCtrl is-unavailable" onclick="setSortMode('suit')" aria-pressed="false" disabled="" aria-disabled="true" title="当前没有可整理的手牌"><span>花色</span></button>
-      <button id="hintBtn" class="ctrl hint is-unavailable" type="button" data-long-ready="1" data-hint-pointer-active="0" data-last-pointer-hint-at="0" data-hint-pointer-id="" data-captured-pointer-id="" disabled="" aria-disabled="true" title="当前阶段不能提示">提示</button>
+      <button id="hintBtn" class="ctrl hint is-unavailable" type="button" data-stable-hint-ready="1" data-hint-pressing="0" data-hint-suppress-click-until="0" data-hint-pointer-id="" aria-disabled="true" title="当前阶段不能提示">提示</button>
     </div>
     <div class="actions"><button type="button" id="passBtn" class="ctrl danger is-unavailable" onclick="humanPass()" disabled="" aria-disabled="true" title="仅自己回合且需要压牌时可过牌">过</button><button type="button" id="playBtn" class="ctrl primary is-unavailable" onclick="humanPlay()" disabled="" aria-disabled="true" title="选择当前可出的牌后才能操作">出牌</button></div>
     <div class="handWrap" onclick="handleHandAreaBlankClick(event)"><div id="hand"></div></div>
@@ -14114,80 +14124,70 @@ function resetHintPressState(){
   const btn=document.getElementById('hintBtn');
   if(!btn)return;
   btn.classList.remove('longPressActive');
-  btn.dataset.hintPointerActive='0';
+  btn.dataset.hintPressing='0';
   btn.dataset.hintPointerId='';
-  try{
-    const captured=Number(btn.dataset.capturedPointerId||'');
-    if(Number.isFinite(captured)&&btn.hasPointerCapture?.(captured))btn.releasePointerCapture(captured);
-  }catch(e){}
-  btn.dataset.capturedPointerId='';
 }
 function setupHintLongPress(){
   const btn=document.getElementById('hintBtn');
   if(!btn)return;
-  if(btn.dataset.longReady==='1'){
+  if(btn.dataset.stableHintReady==='1'){
     resetHintPressState();
     return;
   }
-  btn.dataset.longReady='1';
-  btn.dataset.hintPointerActive='0';
-  btn.dataset.lastPointerHintAt='0';
+  btn.dataset.stableHintReady='1';
+  btn.dataset.hintPressing='0';
+  btn.dataset.hintSuppressClickUntil='0';
 
-  const cancelLongPress=()=>resetHintPressState();
+  const cancelPress=()=>resetHintPressState();
 
-  btn.addEventListener('pointerdown',e=>{
-    if(e.pointerType==='mouse'&&e.button!==0)return;
+  // 原生 click 是短按的唯一入口；不再依赖 Pointer Capture。
+  btn.addEventListener('click',()=>{
+    const suppressUntil=Number(btn.dataset.hintSuppressClickUntil||0);
+    if(Date.now()<suppressUntil)return;
     resetHintPressState();
-    e.preventDefault();
-    hintLongPressed=false;
-    btn.dataset.hintPointerActive='1';
-    btn.dataset.hintPointerId=String(e.pointerId);
-    btn.dataset.capturedPointerId=String(e.pointerId);
-    try{btn.setPointerCapture?.(e.pointerId)}catch(err){}
-    btn.classList.add('longPressActive');
-
-    hintPressTimer=setTimeout(()=>{
-      hintLongPressed=true;
-      btn.dataset.lastPointerHintAt=String(Date.now());
-      setAutoPlay(!autoPlayEnabled);
-      btn.classList.remove('longPressActive');
-      navigator.vibrate?.(35);
-    },650);
-  },{passive:false});
-
-  btn.addEventListener('pointerup',e=>{
-    const active=btn.dataset.hintPointerActive==='1';
-    const samePointer=btn.dataset.hintPointerId===String(e.pointerId);
-    if(!active||!samePointer)return;
-    e.preventDefault();
-    const wasLong=hintLongPressed;
-    btn.dataset.lastPointerHintAt=String(Date.now());
-    resetHintPressState();
-    if(!wasLong)showHint();
-  },{passive:false});
-
-  // Safari 恢复页面后可能只派发 click，不再派发完整 pointerup。
-  btn.addEventListener('click',e=>{
-    const last=Number(btn.dataset.lastPointerHintAt||0);
-    if(Date.now()-last<550){e.preventDefault();return;}
-    resetHintPressState();
-    btn.dataset.lastPointerHintAt=String(Date.now());
     showHint();
   });
 
-  btn.addEventListener('pointercancel',cancelLongPress);
-  btn.addEventListener('lostpointercapture',cancelLongPress);
-  btn.addEventListener('contextmenu',e=>e.preventDefault());
-  btn.addEventListener('selectstart',e=>e.preventDefault());
-  btn.addEventListener('dragstart',e=>e.preventDefault());
+  // pointerdown 只启动长按计时，不 preventDefault，也不 setPointerCapture。
+  btn.addEventListener('pointerdown',event=>{
+    if(event.pointerType==='mouse'&&event.button!==0)return;
+    resetHintPressState();
+    btn.dataset.hintPressing='1';
+    btn.dataset.hintPointerId=String(event.pointerId);
+    btn.classList.add('longPressActive');
+    hintPressTimer=setTimeout(()=>{
+      if(btn.dataset.hintPressing!=='1')return;
+      hintLongPressed=true;
+      btn.dataset.hintSuppressClickUntil=String(Date.now()+900);
+      btn.classList.remove('longPressActive');
+      setAutoPlay(!autoPlayEnabled);
+      navigator.vibrate?.(35);
+    },650);
+  },{passive:true});
+
+  btn.addEventListener('pointerup',event=>{
+    if(btn.dataset.hintPointerId&&btn.dataset.hintPointerId!==String(event.pointerId))return;
+    const wasLong=hintLongPressed;
+    resetHintPressState();
+    if(wasLong)btn.dataset.hintSuppressClickUntil=String(Date.now()+900);
+  },{passive:true});
+
+  btn.addEventListener('pointercancel',cancelPress,{passive:true});
+  btn.addEventListener('pointerleave',event=>{
+    if(event.pointerType==='mouse'&&btn.dataset.hintPressing==='1')cancelPress();
+  },{passive:true});
+  btn.addEventListener('contextmenu',event=>event.preventDefault());
+  btn.addEventListener('selectstart',event=>event.preventDefault());
+  btn.addEventListener('dragstart',event=>event.preventDefault());
 }
 function restoreHintButtonAfterSafariResume(){
   resetHintPressState();
-  setupHintLongPress();
   requestAnimationFrame(()=>{
+    setupHintLongPress();
     try{updateButtons()}catch(e){}
     const btn=document.getElementById('hintBtn');
     if(btn){
+      btn.disabled=false;
       btn.style.removeProperty('pointer-events');
       btn.classList.remove('longPressActive');
     }
