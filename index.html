@@ -9088,6 +9088,1388 @@ body:not(.arrangeMode) #app > .controls > #preGameReadyBtn {
 }
 /* ===== end persistent five-card module + unified control shell ===== */
 
+
+/* ===== session wallet + modular ceremony + player assets ===== */
+.randomLedgerPlayer {
+  cursor: pointer !important;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform .12s ease, filter .12s ease, border-color .12s ease;
+}
+.randomLedgerPlayer:active {
+  transform: translateY(1px) scale(.985);
+  filter: brightness(1.12);
+}
+.randomLedgerPlayer:focus-visible {
+  outline: 2px solid #fff3a3;
+  outline-offset: -2px;
+}
+#playerAssetOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 190;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(2,7,14,.66);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+#playerAssetOverlay.show { display: flex; }
+.playerAssetPanel {
+  width: min(90vw, 340px);
+  padding: 14px;
+  border: 2px solid #6fd8f5;
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 50% 0%, #356a8b55 0, transparent 42%),
+    linear-gradient(180deg,#183653,#0f2038 58%,#0a1527);
+  box-shadow: 0 18px 48px #000b, inset 0 1px 0 #ffffff18;
+}
+.playerAssetHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.playerAssetTitle {
+  color: #ffd96f;
+  font-size: 18px;
+  line-height: 1.05;
+  font-weight: 1000;
+}
+.playerAssetName {
+  margin-top: 4px;
+  color: #e8f6ff;
+  font-size: 13px;
+  font-weight: 900;
+}
+.playerAssetClose {
+  min-width: 56px;
+  min-height: 36px;
+  border: 2px solid #568bb2;
+  border-radius: 10px;
+  background: linear-gradient(180deg,#284a70,#152b49);
+  color: #fff;
+  font-weight: 1000;
+}
+.playerAssetRows {
+  display: grid;
+  gap: 7px;
+  margin-top: 12px;
+}
+.playerAssetRow {
+  min-height: 43px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 10px;
+  border: 1px solid #416f91;
+  border-radius: 11px;
+  background: linear-gradient(180deg,#102a41,#0a1b2e);
+}
+.playerAssetRow span {
+  color: #cde4f1;
+  font-size: 12px;
+  font-weight: 900;
+}
+.playerAssetRow strong {
+  color: #fff2c0;
+  font-size: 21px;
+  line-height: 1;
+  font-weight: 1000;
+}
+.playerAssetRow strong.pos { color:#5effc7; }
+.playerAssetRow strong.neg { color:#ff8198; }
+.playerAssetRow.total {
+  border-color: #e8bd59;
+  background: linear-gradient(180deg,#463816,#251d0c);
+}
+.playerAssetHint {
+  margin-top: 9px;
+  color: #9dbdce;
+  font-size: 10px;
+  line-height: 1.35;
+  text-align: center;
+  font-weight: 800;
+}
+
+/* Opening animations share the same fixed game-content module instead of a viewport overlay. */
+#app {
+  position: relative !important;
+  isolation: isolate;
+}
+#app > #ceremony {
+  position: relative !important;
+  inset: auto !important;
+  grid-column: 1 !important;
+  grid-row: 2 / 5 !important;
+  align-self: stretch !important;
+  justify-self: stretch !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 4px !important;
+  overflow: hidden !important;
+  z-index: 75 !important;
+  box-sizing: border-box !important;
+}
+#app > #ceremony.show {
+  display: grid !important;
+  place-items: stretch !important;
+}
+#app > #ceremony .ceremonyBox {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  display: grid !important;
+  grid-template-rows: auto minmax(0,1fr) !important;
+  gap: 4px !important;
+  padding: 8px !important;
+  border: 2px solid #69c9f5;
+  border-radius: 15px;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  background:
+    radial-gradient(circle at 50% 44%, #15516755 0, transparent 34%),
+    linear-gradient(180deg,#132d4a,#09172a 64%,#07111f) !important;
+}
+#app > #ceremony .ceremonyTitle {
+  min-height: 30px;
+  margin: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(18px,4.7vw,25px) !important;
+}
+#app > #ceremony #ceremonyBody {
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+#app > #ceremony #ceremonyBody > * {
+  max-width: 100%;
+  max-height: 100%;
+}
+#app > #ceremony .dealArena {
+  width: min(94%, 420px) !important;
+  height: min(100%, 455px) !important;
+  min-height: 0 !important;
+  margin: 0 auto !important;
+  box-sizing: border-box !important;
+}
+#app > #ceremony .cutStage {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  align-content: center;
+}
+#app > #ceremony .drawRow {
+  width: min(100%, 470px) !important;
+  max-height: 100%;
+  align-items: center;
+}
+@media (max-height: 690px) {
+  #app > #ceremony .ceremonyBox { padding: 5px !important; }
+  #app > #ceremony .ceremonyTitle { min-height: 24px; font-size: 17px !important; }
+  #app > #ceremony .dealArena { width: min(88%, 330px) !important; height: min(100%, 350px) !important; }
+  #app > #ceremony .miniSeat { transform-origin: center; }
+}
+/* ===== end session wallet + modular ceremony + player assets ===== */
+
+
+/* ===== uniform dealer draw + history hint + deterministic sorting ===== */
+#app > #ceremony .drawRow,
+#ceremony .drawRow {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  align-items: start !important;
+  justify-items: center !important;
+  gap: clamp(4px, 1.4vw, 10px) !important;
+  width: min(100%, 470px) !important;
+  margin-inline: auto !important;
+}
+#app > #ceremony .drawSlot,
+#ceremony .drawSlot {
+  width: 100% !important;
+  min-width: 0 !important;
+  display: grid !important;
+  grid-template-rows: 24px auto !important;
+  justify-items: center !important;
+  align-items: start !important;
+  font-size: 11px !important;
+}
+#app > #ceremony .drawPlayerName,
+#ceremony .drawPlayerName {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 24px !important;
+  line-height: 24px !important;
+  padding-inline: 2px !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  text-align: center !important;
+  color: #eef7ff !important;
+}
+#app > #ceremony .drawCard,
+#ceremony .drawCard,
+body #ceremony .drawCard.playingCardFace {
+  --playing-card-width: clamp(48px, 12vw, 56px) !important;
+  width: var(--playing-card-width) !important;
+  min-width: var(--playing-card-width) !important;
+  max-width: var(--playing-card-width) !important;
+  height: calc(var(--playing-card-width) * var(--playing-card-height-scale)) !important;
+  min-height: calc(var(--playing-card-width) * var(--playing-card-height-scale)) !important;
+  max-height: calc(var(--playing-card-width) * var(--playing-card-height-scale)) !important;
+  margin: 7px auto 0 !important;
+  align-self: start !important;
+}
+#pileLabel {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+.recentPlayHint {
+  width: 100%;
+  margin-top: 3px;
+  padding-top: 3px;
+  border-top: 1px dashed #4a7188;
+  color: #9fc5d7;
+  font-size: 9px;
+  line-height: 1.15;
+  font-weight: 900;
+  letter-spacing: .15px;
+  text-align: center;
+  white-space: nowrap;
+  opacity: .9;
+}
+@media (max-width: 390px) {
+  #app > #ceremony .drawCard,
+  #ceremony .drawCard,
+  body #ceremony .drawCard.playingCardFace {
+    --playing-card-width: 47px !important;
+  }
+  #app > #ceremony .drawPlayerName,
+  #ceremony .drawPlayerName {
+    font-size: 10px !important;
+  }
+}
+/* ===== end uniform dealer draw + history hint + deterministic sorting ===== */
+
+
+/* ===== deal-as-arrange shell + compact history + topbar actions ===== */
+#pileLabel {
+  width: min(100%, 210px) !important;
+  min-height: 0 !important;
+  padding: 3px 6px !important;
+  margin-inline: auto !important;
+  align-items: center !important;
+  text-align: center !important;
+  gap: 1px !important;
+}
+#pileLabel .recentPlayItem,
+#pileLabel .recentPlayEmpty {
+  width: 100% !important;
+  min-height: 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  line-height: 1.05 !important;
+  padding: 0 2px !important;
+}
+#pileLabel .recentPlayHint {
+  width: auto !important;
+  min-width: 116px !important;
+  margin-top: 1px !important;
+  padding: 2px 5px 0 !important;
+  font-size: 8px !important;
+  line-height: 1 !important;
+  text-align: center !important;
+}
+#app:not(.randomMatchMode) > .topbar {
+  grid-template-columns: minmax(62px,1fr) 42px minmax(76px,92px) 44px 34px 46px 36px !important;
+}
+.computerHomeBtn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+#app > .topbar .soundBtn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  justify-self: end !important;
+}
+#app.randomMatchMode > .topbar {
+  grid-template-columns: minmax(0,1fr) 38px !important;
+}
+#app.randomMatchMode #randomLedgerBar {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+}
+#app.randomMatchMode .computerHomeBtn {
+  display: none !important;
+}
+#app.randomMatchMode .topbar .soundBtn {
+  display: inline-flex !important;
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  width: 36px !important;
+  height: 100% !important;
+  margin: 0 !important;
+  z-index: 3;
+}
+body.dealTemplateMode #app > #ceremony {
+  display: none !important;
+}
+body.dealTemplateMode #app.preGameReadyActive > .controls > .handWrap {
+  position: relative !important;
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: stretch !important;
+  overflow: hidden !important;
+}
+#dealHandModule {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid #3e7899;
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 50% 48%, #164c6655 0, transparent 38%),
+    linear-gradient(180deg,#0d2940,#081827);
+}
+#dealHandModule .dealArena {
+  width: min(96%, 390px) !important;
+  height: min(96%, 250px) !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+#dealHandModule .miniSeat {
+  min-width: 64px !important;
+  max-width: 96px !important;
+}
+#dealHandModule .miniSeat b {
+  display: block;
+  max-width: 82px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+body.dealTemplateMode #preGameReadyBtn,
+body.dealTemplateMode .quick .ctrl,
+body.dealTemplateMode .actions .ctrl {
+  pointer-events: none !important;
+  opacity: .56 !important;
+}
+body.dealTemplateMode .preReadyName {
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+}
+@media (max-width:390px), (max-height:680px) {
+  #dealHandModule .dealArena {
+    width: min(94%, 330px) !important;
+    height: min(94%, 205px) !important;
+  }
+  #pileLabel { width: min(100%, 190px) !important; }
+}
+/* ===== end deal-as-arrange shell + compact history + topbar actions ===== */
+
+
+/* ===== full opening flow inside arrange hand slot + history proportions ===== */
+#dealHandModule.openingHandModule {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  display: grid !important;
+  place-items: stretch !important;
+  padding: 7px !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  border: 1px solid #3e7899 !important;
+  border-radius: 12px !important;
+  background:
+    radial-gradient(circle at 50% 48%, #164c6655 0, transparent 40%),
+    linear-gradient(180deg,#0d2940,#081827) !important;
+}
+/* 抽庄：在手牌格里使用完整的 2×2 方格 */
+#dealHandModule.stage-draw .openingDrawGrid {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  grid-template-rows: repeat(2,minmax(0,1fr));
+  gap: 7px;
+}
+#dealHandModule .openingDrawSlot {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: 20px minmax(0,1fr);
+  align-items: stretch;
+  justify-items: stretch;
+  padding: 4px;
+  border: 1px solid #315f7d;
+  border-radius: 9px;
+  background: linear-gradient(180deg,#12334d,#0a2134);
+  overflow: hidden;
+}
+#dealHandModule .openingDrawSlot.dealerWinner {
+  border-color: #ffe178;
+  box-shadow: inset 0 0 0 2px #ffe17855,0 0 16px #ffd85c66;
+  background: linear-gradient(180deg,#4b3c19,#1e2d32);
+}
+#dealHandModule .drawPlayerName {
+  width: 100%;
+  min-width: 0;
+  height: 20px;
+  line-height: 20px;
+  padding: 0 3px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+  color: #eef7ff;
+  font-size: 10px;
+  box-sizing: border-box;
+}
+#dealHandModule .openingDrawCardBox {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+#dealHandModule .drawCard,
+#dealHandModule .drawCard.playingCardFace {
+  --playing-card-width: clamp(46px,15vw,66px) !important;
+  width: var(--playing-card-width) !important;
+  min-width: var(--playing-card-width) !important;
+  max-width: var(--playing-card-width) !important;
+  height: calc(var(--playing-card-width) * var(--playing-card-height-scale)) !important;
+  min-height: calc(var(--playing-card-width) * var(--playing-card-height-scale)) !important;
+  max-height: calc(var(--playing-card-width) * var(--playing-card-height-scale)) !important;
+  margin: 0 !important;
+}
+/* 续局庄家：同一格内居中使用整个区域 */
+#dealHandModule .openingDealerBoard {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0,1fr) auto auto minmax(0,1fr);
+  place-items: center;
+  gap: 5px;
+}
+#dealHandModule .openingDealerCoin {
+  grid-row: 2;
+  width: clamp(70px,22vw,102px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 4px solid #ffe18a;
+  border-radius: 50%;
+  background: radial-gradient(circle,#b66f22,#5d2b11 70%);
+  color: #fff0a8;
+  font-size: clamp(32px,10vw,48px);
+  font-weight: 1000;
+  box-shadow: 0 6px 0 #2b1209,0 0 22px #ffd76855;
+}
+#dealHandModule .openingDealerName {
+  max-width: 90%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #fff4c4;
+  font-size: 16px;
+  font-weight: 1000;
+}
+#dealHandModule .openingDealerHint { color:#a9d9eb;font-size:10px;font-weight:900; }
+/* 切牌：牌堆和翻开牌各占一块 */
+#dealHandModule .openingCutBoard {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 22px minmax(0,1fr);
+  align-items: stretch;
+  gap: 4px;
+}
+#dealHandModule .openingCutZone {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0,1fr) auto;
+  place-items: center;
+  gap: 5px;
+  padding: 7px 4px;
+  border: 1px solid #315f7d;
+  border-radius: 10px;
+  background: linear-gradient(180deg,#12344e,#091e31);
+  overflow: hidden;
+}
+#dealHandModule .openingCutArrow {
+  display: grid;
+  place-items: center;
+  color: #78e9f0;
+  font-size: 18px;
+  font-weight: 1000;
+}
+#dealHandModule .openingCutZone .dealDeck,
+#dealHandModule .openingCutPlaceholder,
+#dealHandModule .openingCutCard {
+  align-self: center;
+}
+#dealHandModule .openingCutZone .dealDeck {
+  width: clamp(50px,16vw,72px) !important;
+  height: calc(clamp(50px,16vw,72px) * 1.4) !important;
+}
+#dealHandModule .openingCutCard {
+  --playing-card-width: clamp(50px,16vw,72px) !important;
+  width: var(--playing-card-width) !important;
+  height: calc(var(--playing-card-width) * var(--playing-card-height-scale)) !important;
+}
+#dealHandModule .openingCutPlaceholder {
+  width: clamp(50px,16vw,72px);
+  aspect-ratio: .714;
+  display: grid;
+  place-items: center;
+  border: 2px dashed #4c7892;
+  border-radius: 8px;
+  color: #8db4c7;
+  font-size: 9px;
+  font-weight: 900;
+}
+#dealHandModule .openingCutZone strong {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+  color: #c8edf3;
+  font-size: 9px;
+}
+/* 派牌：四个位置围绕中央牌堆，填满手牌格 */
+#dealHandModule.stage-deal { padding: 5px !important; }
+#dealHandModule .openingDealArena {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+#dealHandModule .openingDealArena .miniSeat {
+  width: clamp(68px,23vw,96px) !important;
+  height: clamp(46px,14vw,58px) !important;
+  padding: 4px 3px !important;
+  box-sizing: border-box;
+}
+#dealHandModule .openingDealArena .mini-front { top: 6px !important; }
+#dealHandModule .openingDealArena .mini-you { bottom: 6px !important; }
+#dealHandModule .openingDealArena .mini-left { left: 6px !important; }
+#dealHandModule .openingDealArena .mini-right { right: 6px !important; }
+#dealHandModule .openingDealArena .miniDeck { width: clamp(42px,13vw,58px) !important; }
+#dealHandModule .openingDealArena .miniSeat b {
+  max-width: 100% !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+}
+/* 历史框：前三手占主体，提示只占最下面一条 */
+#pileLabel {
+  height: 58px !important;
+  min-height: 58px !important;
+  display: grid !important;
+  grid-template-rows: minmax(0,1fr) 11px !important;
+  align-items: stretch !important;
+  justify-content: stretch !important;
+  gap: 1px !important;
+  padding: 3px 5px 2px !important;
+}
+#pileLabel .recentPlayList {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: repeat(3,minmax(0,1fr));
+  align-content: stretch;
+  overflow: hidden;
+}
+#pileLabel .recentPlayItem,
+#pileLabel .recentPlayEmpty {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 3px !important;
+  overflow: hidden !important;
+  line-height: 1 !important;
+  font-size: 9px !important;
+  box-sizing: border-box;
+}
+#pileLabel .recentPlayPlayer,
+#pileLabel .recentPlayType {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+#pileLabel .recentPlayHint {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 11px !important;
+  min-height: 11px !important;
+  margin: 0 !important;
+  padding: 1px 0 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-top: 1px dashed #4a7188 !important;
+  font-size: 7px !important;
+  line-height: 1 !important;
+}
+@media (max-width:390px), (max-height:680px) {
+  #dealHandModule.openingHandModule { padding: 5px !important; }
+  #dealHandModule.stage-draw .openingDrawGrid { gap: 5px; }
+  #dealHandModule .drawCard,
+  #dealHandModule .drawCard.playingCardFace { --playing-card-width: 44px !important; }
+  #dealHandModule .openingCutZone { padding: 5px 2px; }
+  #dealHandModule .openingCutZone .dealDeck,
+  #dealHandModule .openingCutPlaceholder,
+  #dealHandModule .openingCutCard { --playing-card-width: 46px !important; width:46px !important; }
+  #pileLabel { height: 54px !important; min-height:54px !important; }
+}
+/* ===== end full opening flow inside arrange hand slot + history proportions ===== */
+
+
+/* ===== opening stages use matchmaking-style central panel ===== */
+body.dealTemplateMode #preGameReadyPanel,
+body.dealTemplateMode #app.preGameReadyActive > .controls > #humanInfo,
+body.dealTemplateMode #app.preGameReadyActive > .controls > .quick,
+body.dealTemplateMode #app.preGameReadyActive > .controls > .preGameComboButtons,
+body.dealTemplateMode #app.preGameReadyActive > .controls > .actions,
+body.dealTemplateMode #app.preGameReadyActive > .controls > #preGameReadyBtn {
+  display: none !important;
+}
+body.dealTemplateMode #app.preGameReadyActive > .controls {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  grid-template-rows: 1fr !important;
+  gap: 0 !important;
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
+body.dealTemplateMode #app.preGameReadyActive > .controls > .handWrap {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  min-height: clamp(330px, 56vh, 620px) !important;
+  height: auto !important;
+  border-radius: 16px !important;
+}
+#dealHandModule.openingPanelShell {
+  padding: 10px !important;
+  border-radius: 18px !important;
+  border: 2px solid #7fc9ff !important;
+  background:
+    linear-gradient(180deg,#26456d 0%, #173558 26%, #0e243f 100%) !important;
+  box-shadow: 0 12px 24px #0008, inset 0 1px 0 #ffffff20 !important;
+}
+#dealHandModule .openingStagePanel {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr;
+  gap: 10px;
+  min-height: 0;
+}
+#dealHandModule .openingStageHead {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding-top: 2px;
+}
+#dealHandModule .openingStageTitle {
+  margin: 0;
+  color: #ffd86d;
+  font-size: clamp(22px, 4vw, 34px);
+  font-weight: 1000;
+  letter-spacing: .5px;
+  text-align: center;
+}
+#dealHandModule .openingStageBadge {
+  max-width: 92%;
+  padding: 5px 12px;
+  border: 2px solid #cba247;
+  color: #f7d56a;
+  font-size: clamp(11px, 2vw, 14px);
+  font-weight: 900;
+  line-height: 1.1;
+  text-align: center;
+  background: linear-gradient(180deg,#1f3557,#132742);
+  box-shadow: inset 0 1px 0 #ffffff14;
+}
+#dealHandModule .openingStageProgress {
+  color: #d8e7f4;
+  font-size: clamp(18px, 3vw, 28px);
+  font-weight: 1000;
+  text-align: center;
+}
+#dealHandModule .openingStageBody {
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  border: 2px solid #29577a;
+  background: linear-gradient(180deg,#092838,#071d2f);
+  box-shadow: inset 0 0 0 1px #8ccaff14;
+  overflow: hidden;
+  padding: 10px;
+}
+#dealHandModule .openingDrawGrid,
+#dealHandModule .openingCutBoard,
+#dealHandModule .openingDealArena {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+}
+#dealHandModule.stage-draw .openingDrawGrid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  grid-template-rows: 1fr 1fr !important;
+  gap: 12px !important;
+  align-items: stretch !important;
+}
+#dealHandModule .openingDrawSlot {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  border-radius: 14px !important;
+  padding: 10px 6px !important;
+  display: grid !important;
+  grid-template-rows: auto 1fr !important;
+  gap: 8px !important;
+  align-items: center !important;
+  justify-items: center !important;
+}
+#dealHandModule .openingDrawCardBox {
+  min-height: 0 !important;
+  width: 100%;
+  height: 100%;
+  display: grid !important;
+  place-items: center !important;
+}
+#dealHandModule .drawCard,
+#dealHandModule .drawCard.playingCardFace {
+  --playing-card-width: clamp(56px, 15vw, 82px) !important;
+}
+#dealHandModule .openingCutBoard {
+  display: grid !important;
+  grid-template-columns: 1fr auto 1fr !important;
+  gap: 12px !important;
+  align-items: center !important;
+}
+#dealHandModule .openingCutZone {
+  height: 100% !important;
+  min-height: 150px;
+  padding: 12px 8px !important;
+  border-radius: 14px !important;
+  display: grid !important;
+  justify-items: center !important;
+  align-content: center !important;
+  gap: 10px !important;
+}
+#dealHandModule .openingCutZone .dealDeck,
+#dealHandModule .openingCutPlaceholder,
+#dealHandModule .openingCutCard {
+  --playing-card-width: clamp(62px, 16vw, 86px) !important;
+  width: clamp(62px, 16vw, 86px) !important;
+}
+#dealHandModule .openingCutArrow {
+  font-size: clamp(22px, 5vw, 38px) !important;
+}
+#dealHandModule .openingDealArena {
+  width: min(100%, 560px) !important;
+  height: 100% !important;
+  min-height: 220px !important;
+}
+#dealHandModule .openingDealArena .miniSeat {
+  min-width: 82px !important;
+  max-width: 130px !important;
+  padding: 8px 8px 7px !important;
+}
+#dealHandModule .openingDealArena .miniSeat b {
+  max-width: 100% !important;
+}
+#dealHandModule .openingDealArena .miniDeck {
+  width: clamp(48px, 13vw, 64px) !important;
+}
+@media (max-width: 390px), (max-height: 680px) {
+  body.dealTemplateMode #app.preGameReadyActive > .controls > .handWrap {
+    min-height: clamp(300px, 52vh, 540px) !important;
+  }
+  #dealHandModule .openingStagePanel { gap: 8px; }
+  #dealHandModule .openingStageBody { padding: 8px; }
+  #dealHandModule.stage-draw .openingDrawGrid { gap: 8px !important; }
+  #dealHandModule .openingDrawSlot { padding: 8px 4px !important; gap: 6px !important; }
+  #dealHandModule .drawCard,
+  #dealHandModule .drawCard.playingCardFace { --playing-card-width: clamp(48px, 14vw, 72px) !important; }
+  #dealHandModule .openingCutZone { min-height: 132px; padding: 8px 4px !important; }
+  #dealHandModule .openingCutZone .dealDeck,
+  #dealHandModule .openingCutPlaceholder,
+  #dealHandModule .openingCutCard {
+    --playing-card-width: clamp(54px, 15vw, 74px) !important;
+    width: clamp(54px, 15vw, 74px) !important;
+  }
+}
+/* ===== end opening stages use matchmaking-style central panel ===== */
+
+
+/* ===== opening panel ratio + arrange hand centering + full-height history slot ===== */
+body.dealTemplateMode #app.preGameReadyActive > .controls > .handWrap {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 8px 0 !important;
+  overflow: hidden !important;
+}
+#dealHandModule.openingPanelShell {
+  width: min(100%, 720px) !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  aspect-ratio: 85 / 110 !important;
+  height: auto !important;
+  align-self: center !important;
+  justify-self: center !important;
+  margin: 0 auto !important;
+}
+#dealHandModule .openingStagePanel {
+  grid-template-rows: auto auto auto 1fr !important;
+  min-height: 0 !important;
+}
+#dealHandModule .openingStageBody {
+  min-height: 0 !important;
+  height: 100% !important;
+}
+#dealHandModule .openingDealArena {
+  width: 100% !important;
+  height: 100% !important;
+}
+/* 理牌界面手牌往中间放，不贴上边 */
+body.arrangeMode #app.preGameReadyActive > .controls > .handWrap {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 8px 0 10px !important;
+}
+body.arrangeMode #app.preGameReadyActive #hand {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  align-content: center !important;
+  height: 100% !important;
+  padding: 10px 8px !important;
+  box-sizing: border-box !important;
+}
+/* 出牌界面历史虚线格：吃满上下并占右侧约三分之一 */
+#centerPile {
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) !important;
+  align-items: stretch !important;
+  min-height: 142px !important;
+}
+#pileCards,
+#pileLabel {
+  min-height: 118px !important;
+  height: 100% !important;
+  align-self: stretch !important;
+}
+#pileCards {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+#pileLabel {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  min-height: 118px !important;
+  display: grid !important;
+  grid-template-rows: minmax(0,1fr) 14px !important;
+  padding: 5px 6px 3px !important;
+  gap: 2px !important;
+  justify-self: stretch !important;
+}
+#pileLabel .recentPlayList {
+  grid-template-rows: repeat(3, minmax(0,1fr)) !important;
+  gap: 2px !important;
+}
+#pileLabel .recentPlayItem,
+#pileLabel .recentPlayEmpty {
+  min-height: 0 !important;
+  padding: 2px 4px !important;
+  font-size: 10px !important;
+  line-height: 1.05 !important;
+  border-radius: 6px !important;
+  background: linear-gradient(180deg,#0b2334aa,#091d2daa) !important;
+}
+#pileLabel .recentPlayHint {
+  height: 14px !important;
+  min-height: 14px !important;
+  font-size: 7px !important;
+  padding-top: 1px !important;
+}
+@media (max-width:390px), (max-height:680px) {
+  #dealHandModule.openingPanelShell {
+    width: min(100%, 660px) !important;
+  }
+  #centerPile {
+    min-height: 128px !important;
+  }
+  #pileCards,
+  #pileLabel {
+    min-height: 104px !important;
+  }
+  #pileLabel {
+    min-height: 104px !important;
+    grid-template-rows: minmax(0,1fr) 12px !important;
+  }
+  #pileLabel .recentPlayItem,
+  #pileLabel .recentPlayEmpty {
+    font-size: 9px !important;
+    padding: 1px 3px !important;
+  }
+  #pileLabel .recentPlayHint {
+    height: 12px !important;
+    min-height: 12px !important;
+  }
+}
+/* ===== end opening panel ratio + arrange hand centering + full-height history slot ===== */
+
+
+/* ===== random-match opening flow inside the matchmaking box ===== */
+.matchQueuePanel { height: 100%; }
+.matchOpeningPanel { display: none; }
+.matchScreen.opening { align-items: center !important; justify-content: center !important; }
+.matchScreen.opening #matchQueuePanel { display: none !important; }
+.matchScreen.opening #matchOpeningPanel {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  display: grid !important;
+  grid-template-rows: auto auto auto minmax(0,1fr);
+  gap: 10px;
+  padding: 4px;
+  box-sizing: border-box;
+}
+.matchScreen.opening .matchBox {
+  width: min(calc(100vw - 24px), 720px) !important;
+  height: min(82dvh, 760px) !important;
+  max-height: calc(100dvh - 24px) !important;
+  min-height: 480px !important;
+  padding: 14px !important;
+  border-radius: 22px !important;
+  border: 3px solid #78caff !important;
+  background: linear-gradient(180deg,#27476f 0%,#17375c 28%,#102846 100%) !important;
+  box-shadow: 0 20px 48px #000c, inset 0 1px 0 #ffffff24 !important;
+}
+.matchOpeningTitle {
+  color: #ffd76d;
+  font-size: clamp(26px,6vw,38px);
+  line-height: 1.05;
+  font-weight: 1000;
+  text-align: center;
+  text-shadow: 0 3px 0 #6b4512, 0 0 16px #ffd76744;
+}
+.matchOpeningLabel {
+  width: fit-content;
+  max-width: 94%;
+  justify-self: center;
+  padding: 7px 16px;
+  border: 2px solid #d3a94b;
+  background: linear-gradient(180deg,#203a61,#152c4b);
+  color: #f8dc83;
+  font-size: clamp(12px,3vw,16px);
+  line-height: 1.15;
+  font-weight: 1000;
+  text-align: center;
+}
+.matchOpeningProgress {
+  color: #d7e5f2;
+  font-size: clamp(19px,4vw,28px);
+  line-height: 1;
+  font-weight: 1000;
+  text-align: center;
+}
+.matchOpeningBody {
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  padding: 12px;
+  border: 2px solid #315f80;
+  border-radius: 4px;
+  background:
+    radial-gradient(circle at 50% 46%,#15506b55 0,transparent 42%),
+    linear-gradient(180deg,#092b3b,#071d30);
+  box-shadow: inset 0 0 0 1px #a5d9ff18;
+  box-sizing: border-box;
+}
+/* 抽庄：四个格子真正铺满主体区域 */
+.matchOpeningDrawGrid {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  grid-template-rows: repeat(2,minmax(0,1fr));
+  gap: 12px;
+}
+.matchOpeningDrawSlot {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0,1fr);
+  gap: 8px;
+  align-items: center;
+  justify-items: center;
+  padding: 10px;
+  border: 2px solid #2e5d7c;
+  border-radius: 14px;
+  background: linear-gradient(180deg,#0d3245,#092436);
+  box-shadow: inset 0 1px 0 #ffffff12;
+}
+.matchOpeningDrawSlot.dealerWinner {
+  border-color: #ffe078 !important;
+  background: linear-gradient(180deg,#51451f,#2c2d22) !important;
+  box-shadow: 0 0 24px #ffd85e88, inset 0 0 0 2px #fff1a833 !important;
+}
+.matchOpeningDrawName {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #f7fbff;
+  font-size: clamp(13px,3vw,18px);
+  font-weight: 1000;
+  text-align: center;
+}
+.matchOpeningDrawCardBox {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+}
+.matchOpeningCardBack,
+.matchOpeningDeck,
+.matchOpeningFlyingCard {
+  background-image: var(--custom-card-back) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  border: 2px solid #eef0ffd9;
+  box-shadow: 0 5px 0 #18213e,0 8px 18px #0008;
+}
+.matchOpeningCardBack,
+.matchOpeningCard.playingCardFace {
+  --playing-card-width: clamp(64px,17vw,92px) !important;
+  width: var(--playing-card-width) !important;
+  aspect-ratio: 5/7 !important;
+  border-radius: calc(var(--playing-card-width)*.1) !important;
+}
+/* 翻牌：牌堆和结果各占一半，不缩成小窗 */
+.matchOpeningCutGrid {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto minmax(0,1fr);
+  gap: 14px;
+  align-items: stretch;
+}
+.matchOpeningCutZone {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 12px;
+  padding: 12px 8px;
+  border: 2px solid #2e5d7c;
+  border-radius: 14px;
+  background: linear-gradient(180deg,#0d3245,#092436);
+}
+.matchOpeningDeck,
+.matchOpeningCutCard.playingCardFace,
+.matchOpeningCutPlaceholder {
+  --playing-card-width: clamp(76px,20vw,112px) !important;
+  width: var(--playing-card-width) !important;
+  aspect-ratio: 5/7 !important;
+  border-radius: calc(var(--playing-card-width)*.1) !important;
+}
+.matchOpeningCutPlaceholder {
+  display: grid;
+  place-items: center;
+  border: 2px dashed #5d87a1;
+  color: #a9c4d3;
+  font-size: 12px;
+  font-weight: 1000;
+  background: #071a29;
+}
+.matchOpeningCutZone strong {
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #f6d97c;
+  font-size: clamp(11px,2.5vw,15px);
+  text-align: center;
+}
+.matchOpeningCutArrow {
+  align-self: center;
+  color: #79efff;
+  font-size: clamp(28px,7vw,46px);
+  font-weight: 1000;
+  text-shadow: 0 0 14px #65edff88;
+}
+/* 分牌：四方围绕中央牌堆并使用整块空间 */
+.matchOpeningDealGrid {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0,1fr) minmax(92px,1.05fr) minmax(0,1fr);
+  grid-template-rows: minmax(64px,1fr) minmax(130px,1.6fr) minmax(64px,1fr);
+  gap: 8px;
+}
+.matchOpeningDealSeat {
+  min-width: 0;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 4px;
+  padding: 8px;
+  border: 2px solid #2e5d7c;
+  border-radius: 14px;
+  background: linear-gradient(180deg,#0d3245,#092436);
+  transition: border-color .15s, box-shadow .15s, background .15s;
+}
+.matchOpeningDealSeat.target {
+  border-color: #76f4e7;
+  background: linear-gradient(180deg,#17574f,#0d3937);
+  box-shadow: 0 0 20px #64f5e688;
+}
+.matchOpeningDealSeat.top { grid-column:2; grid-row:1; }
+.matchOpeningDealSeat.left { grid-column:1; grid-row:2; }
+.matchOpeningDealSeat.right { grid-column:3; grid-row:2; }
+.matchOpeningDealSeat.bottom { grid-column:2; grid-row:3; }
+.matchOpeningDealName {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #f7fbff;
+  font-size: clamp(12px,2.7vw,17px);
+  font-weight: 1000;
+  text-align: center;
+}
+.matchOpeningDealCount {
+  color: #ffd970;
+  font-size: clamp(18px,4vw,28px);
+  font-weight: 1000;
+}
+.matchOpeningDealCenter {
+  grid-column:2;
+  grid-row:2;
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.matchOpeningDeck {
+  width: clamp(58px,15vw,84px);
+  aspect-ratio: 5/7;
+  border-radius: 9px;
+  z-index: 2;
+}
+.matchOpeningFlyingCard {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: clamp(36px,9vw,50px);
+  aspect-ratio: 5/7;
+  margin-left: calc(clamp(36px,9vw,50px)/-2);
+  margin-top: calc(clamp(50px,12.6vw,70px)/-2);
+  border-radius: 6px;
+  opacity: 0;
+  z-index: 5;
+}
+.matchOpeningFlyingCard.fly-top { animation: matchDealTop .22s ease-out; }
+.matchOpeningFlyingCard.fly-left { animation: matchDealLeft .22s ease-out; }
+.matchOpeningFlyingCard.fly-right { animation: matchDealRight .22s ease-out; }
+.matchOpeningFlyingCard.fly-bottom { animation: matchDealBottom .22s ease-out; }
+@keyframes matchDealTop { 0%{opacity:1;transform:translate(0,0) scale(.75)} 100%{opacity:.1;transform:translate(0,-155%) scale(.9)} }
+@keyframes matchDealLeft { 0%{opacity:1;transform:translate(0,0) scale(.75)} 100%{opacity:.1;transform:translate(-190%,0) scale(.9)} }
+@keyframes matchDealRight { 0%{opacity:1;transform:translate(0,0) scale(.75)} 100%{opacity:.1;transform:translate(190%,0) scale(.9)} }
+@keyframes matchDealBottom { 0%{opacity:1;transform:translate(0,0) scale(.75)} 100%{opacity:.1;transform:translate(0,155%) scale(.9)} }
+@media (max-width:390px), (max-height:680px) {
+  .matchScreen.opening .matchBox { min-height: 430px !important; height:min(84dvh,680px) !important; padding:10px !important; }
+  .matchScreen.opening #matchOpeningPanel { gap:7px; }
+  .matchOpeningBody { padding:8px; }
+  .matchOpeningDrawGrid { gap:8px; }
+  .matchOpeningDrawSlot { padding:7px; gap:5px; }
+  .matchOpeningCutGrid { gap:8px; }
+  .matchOpeningCutZone { padding:8px 4px; gap:8px; }
+  .matchOpeningDealGrid { grid-template-columns:minmax(0,1fr) minmax(78px,1fr) minmax(0,1fr); grid-template-rows:minmax(54px,1fr) minmax(110px,1.45fr) minmax(54px,1fr); }
+  .matchOpeningDealSeat { padding:5px; border-radius:10px; }
+}
+/* ===== end random-match opening flow inside the matchmaking box ===== */
+
+
+/* ===== match opening full playing-card face fix ===== */
+#matchOpeningPanel .matchOpeningCard.playingCardFace,
+#matchOpeningPanel .matchOpeningCutCard.playingCardFace {
+  --playing-card-height-scale: 1.4444444444;
+  --playing-card-border-scale: 0.026;
+  --playing-card-inner-inset-scale: 0.045;
+  --playing-card-inner-border-scale: 0.012;
+  --playing-card-radius-scale: 0.0760869565;
+  --playing-card-inner-radius-scale: 0.058;
+  --playing-card-rank-scale: 0.3369565217;
+  --playing-card-rank-line-scale: 0.3260869565;
+  --playing-card-suit-scale: 0.5434782609;
+  --playing-card-rank-left-scale: 0.12;
+  --playing-card-rank-top-scale: 0.16;
+  --playing-card-suit-left-scale: 0.105;
+  --playing-card-suit-top-scale: 0.69;
+  --playing-card-suit-column-scale: 0.38;
+  --playing-card-shadow-x-scale: 0.0543478261;
+  --playing-card-shadow-y-scale: 0.0760869565;
+  --playing-card-glow-scale: 0.1956521739;
+  --playing-card-frame-color: #d4c9aa;
+  box-sizing: border-box !important;
+  position: relative !important;
+  width: var(--playing-card-width) !important;
+  min-width: var(--playing-card-width) !important;
+  max-width: var(--playing-card-width) !important;
+  height: calc(var(--playing-card-width) * var(--playing-card-height-scale)) !important;
+  min-height: calc(var(--playing-card-width) * var(--playing-card-height-scale)) !important;
+  max-height: calc(var(--playing-card-width) * var(--playing-card-height-scale)) !important;
+  display: block !important;
+  flex: 0 0 var(--playing-card-width) !important;
+  aspect-ratio: 9 / 13 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: calc(var(--playing-card-width) * var(--playing-card-radius-scale)) !important;
+  background:
+    radial-gradient(circle at 28% 16%, #fff 0, #fffaf0 24%, transparent 56%),
+    linear-gradient(150deg,#fffef8 0%,#f7eed9 42%,#efe0bf 100%) !important;
+  color: #111 !important;
+  box-shadow:
+    calc(var(--playing-card-width) * var(--playing-card-shadow-x-scale))
+      calc(var(--playing-card-width) * var(--playing-card-shadow-y-scale)) 0 #02070b,
+    0 0 calc(var(--playing-card-width) * var(--playing-card-glow-scale)) #ffffff33,
+    inset 0 calc(var(--playing-card-width) * .012) calc(var(--playing-card-width) * .025) #ffffffcc !important;
+  overflow: hidden !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+}
+#matchOpeningPanel .matchOpeningCard.playingCardFace.red,
+#matchOpeningPanel .matchOpeningCutCard.playingCardFace.red {
+  color: #d83243 !important;
+}
+#matchOpeningPanel .playingCardFace::before,
+#matchOpeningPanel .playingCardFace::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+#matchOpeningPanel .playingCardFace::after {
+  inset: 0;
+  border: calc(var(--playing-card-width) * var(--playing-card-border-scale)) solid var(--playing-card-frame-color);
+  border-radius: inherit;
+}
+#matchOpeningPanel .playingCardFace::before {
+  inset: calc(var(--playing-card-width) * var(--playing-card-inner-inset-scale));
+  border: calc(var(--playing-card-width) * var(--playing-card-inner-border-scale)) solid #efe7cd;
+  border-radius: calc(var(--playing-card-width) * var(--playing-card-inner-radius-scale));
+  box-shadow: inset 0 0 calc(var(--playing-card-width) * .025) #cfc4a633;
+}
+#matchOpeningPanel .playingCardFace > .cardFaceRank {
+  position: absolute !important;
+  left: calc(var(--playing-card-width) * var(--playing-card-rank-left-scale)) !important;
+  top: calc(var(--playing-card-width) * var(--playing-card-rank-top-scale)) !important;
+  z-index: 1 !important;
+  width: auto !important;
+  height: calc(var(--playing-card-width) * var(--playing-card-rank-line-scale)) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: none !important;
+  color: inherit !important;
+  font: 900 calc(var(--playing-card-width) * var(--playing-card-rank-scale)) /
+    calc(var(--playing-card-width) * var(--playing-card-rank-line-scale)) Arial, Helvetica, sans-serif !important;
+  white-space: nowrap !important;
+  text-align: left !important;
+  text-shadow: none !important;
+  transform: none !important;
+}
+#matchOpeningPanel .playingCardFace > .cardFaceSuit {
+  position: absolute !important;
+  left: calc(var(--playing-card-width) * var(--playing-card-suit-left-scale)) !important;
+  top: calc(var(--playing-card-width) * var(--playing-card-suit-top-scale)) !important;
+  z-index: 1 !important;
+  width: calc(var(--playing-card-width) * var(--playing-card-suit-column-scale)) !important;
+  height: calc(var(--playing-card-width) * var(--playing-card-suit-scale)) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: none !important;
+  color: inherit !important;
+  font: 900 calc(var(--playing-card-width) * var(--playing-card-suit-scale)) /
+    calc(var(--playing-card-width) * var(--playing-card-suit-scale)) Arial, Helvetica, sans-serif !important;
+  white-space: nowrap !important;
+  text-align: center !important;
+  text-shadow: none !important;
+  transform: none !important;
+}
+#matchOpeningPanel .matchOpeningCardBack {
+  aspect-ratio: 9 / 13 !important;
+  height: calc(var(--playing-card-width) * 1.4444444444) !important;
+  min-height: calc(var(--playing-card-width) * 1.4444444444) !important;
+  max-height: calc(var(--playing-card-width) * 1.4444444444) !important;
+}
+/* ===== end match opening full playing-card face fix ===== */
+
 </style>
 </head>
 <body>
@@ -9134,7 +10516,7 @@ body:not(.arrangeMode) #app > .controls > #preGameReadyBtn {
         <button type="button" class="randomMatchBtn" onclick="startSimulatedMatchmaking('standard')">随机匹配<small>60秒理牌 · 40秒出牌</small></button>
         <button type="button" class="randomMatchBtn quickMatchBtn" onclick="startSimulatedMatchmaking('quick')">快速局<small>25秒理牌 · 15秒出牌</small></button>
       </div>
-      <div class="homeRandomBalance"><span>随机匹配累计</span><strong id="homeRandomBalanceValue" class="pos">+923</strong></div>
+      <div class="homeRandomBalance"><span>随机匹配累计</span><strong id="homeRandomBalanceValue" class="pos">+800</strong></div>
     </div>
   </section>
 
@@ -9195,12 +10577,20 @@ body:not(.arrangeMode) #app > .controls > #preGameReadyBtn {
 </div></div>
 </div>
 <div id="matchScreen" class="matchScreen">
-  <div class="matchBox">
-    <div class="matchTitle">随机匹配</div>
-    <div id="matchLabel" class="matchLabel">模拟匹配 · 标准局</div>
-    <div id="matchTimer" class="matchTimer">正在寻找玩家<span class="matchDots"></span></div>
-    <div id="matchSlots" class="matchSlots"></div>
-    <button type="button" class="matchCancel" onclick="cancelSimulatedMatchmaking()">取消匹配</button>
+  <div id="matchBox" class="matchBox">
+    <div id="matchQueuePanel" class="matchQueuePanel">
+      <div class="matchTitle">随机匹配</div>
+      <div id="matchLabel" class="matchLabel">模拟匹配 · 标准局</div>
+      <div id="matchTimer" class="matchTimer">正在寻找玩家<span class="matchDots"></span></div>
+      <div id="matchSlots" class="matchSlots"></div>
+      <button type="button" class="matchCancel" onclick="cancelSimulatedMatchmaking()">取消匹配</button>
+    </div>
+    <div id="matchOpeningPanel" class="matchOpeningPanel" aria-hidden="true">
+      <div id="matchOpeningTitle" class="matchOpeningTitle">准备开局</div>
+      <div id="matchOpeningLabel" class="matchOpeningLabel">抽牌决定庄家</div>
+      <div id="matchOpeningProgress" class="matchOpeningProgress">0/4</div>
+      <div id="matchOpeningBody" class="matchOpeningBody"></div>
+    </div>
   </div>
 </div>
 
@@ -9223,9 +10613,8 @@ body:not(.arrangeMode) #app > .controls > #preGameReadyBtn {
     <div class="mainBalance zero" id="mainBalance"><small>我的主金额</small><strong id="myBalance">0</strong></div>
     <div class="roundTag">AI TEST · <span id="roundTag">第0场</span></div>
     <button type="button" class="smallbtn ledgerBtn" onclick="openLedger()">账</button>
+    <button type="button" class="smallbtn computerHomeBtn" id="computerHomeBtn" onclick="returnComputerToLobby()">主页</button>
     <button type="button" class="smallbtn soundBtn" id="soundBtn" onclick="toggleSound()">♪</button>
-    <button type="button" class="smallbtn skipBtn" onclick="openSkipConfirm()">跳</button>
-    <button type="button" class="smallbtn" onclick="resetMatch()">重置</button>
 
     <div id="randomLedgerBar"></div>
 <div id="turnCountdown">40</div>
@@ -9237,7 +10626,7 @@ body:not(.arrangeMode) #app > .controls > #preGameReadyBtn {
     <div class="seat" id="north" role="button" tabindex="0" aria-label="与上方玩家互动" onclick="openSeatInteractionMenu(2)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openSeatInteractionMenu(2)}"><div class="name">玩家</div><div class="count"></div><div class="cardbacks"></div></div>
     <div class="seat" id="west" role="button" tabindex="0" aria-label="与左侧玩家互动" onclick="openSeatInteractionMenu(1)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openSeatInteractionMenu(1)}"><div class="name">玩家</div><div class="count"></div><div class="cardbacks"></div></div>
     <div class="seat" id="east" role="button" tabindex="0" aria-label="与右侧玩家互动" onclick="openSeatInteractionMenu(3)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openSeatInteractionMenu(3)}"><div class="name">玩家</div><div class="count"></div><div class="cardbacks"></div></div>
-    <div id="centerPile"><div id="pileCards"></div><div id="pileLabel" role="button" tabindex="0" aria-label="查看上两手出牌" onclick="openRecentPlayHistory()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRecentPlayHistory()}">等待开局</div></div>
+    <div id="centerPile"><div id="pileCards"></div><div id="pileLabel" role="button" tabindex="0" aria-label="查看前三手完整资讯" onclick="openRecentPlayHistory()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRecentPlayHistory()}">等待开局</div></div>
     <div id="recentTransfer">尚无过账记录</div>
     <div class="log" id="log"></div>
   </div>
@@ -9264,6 +10653,24 @@ body:not(.arrangeMode) #app > .controls > #preGameReadyBtn {
     </div>
   </div>
 
+  <div id="playerAssetOverlay" onclick="if(event.target===this)closePlayerAssetPanel()" aria-hidden="true">
+    <div class="playerAssetPanel" role="dialog" aria-modal="true" aria-labelledby="playerAssetTitle">
+      <div class="playerAssetHeader">
+        <div>
+          <div id="playerAssetTitle" class="playerAssetTitle">玩家财产</div>
+          <div id="playerAssetName" class="playerAssetName">玩家</div>
+        </div>
+        <button type="button" class="playerAssetClose" onclick="closePlayerAssetPanel()">关闭</button>
+      </div>
+      <div class="playerAssetRows">
+        <div class="playerAssetRow"><span id="playerAssetBaseLabel">桌外财产</span><strong id="playerAssetBase">0</strong></div>
+        <div class="playerAssetRow"><span>本桌净输赢</span><strong id="playerAssetTable">0</strong></div>
+        <div class="playerAssetRow total"><span>当前总财产</span><strong id="playerAssetTotal">0</strong></div>
+      </div>
+      <div class="playerAssetHint">本桌结束后才会结算到主页本金</div>
+    </div>
+  </div>
+
   <div id="preGameReadyPanel">
     <div class="preReadyHeader">
       <div class="preReadyTitle">理牌准备</div>
@@ -9281,21 +10688,21 @@ body:not(.arrangeMode) #app > .controls > #preGameReadyBtn {
       <button id="hintBtn" class="ctrl hint" type="button" data-long-ready="1">提示</button>
     </div>
     <div class="actions"><button type="button" id="passBtn" class="ctrl danger" onclick="humanPass()">过</button><button type="button" id="playBtn" class="ctrl primary" onclick="humanPlay()">出牌</button></div>
-    <div class="handWrap"><div id="hand"></div></div>
+    <div class="handWrap" onclick="handleHandAreaBlankClick(event)"><div id="hand"></div></div>
     <div id="preGameComboButtons" class="preGameComboButtons" aria-label="五张牌型快速选择"></div>
     <button id="preGameReadyBtn" type="button" onclick="playerPreGameReady()">READY</button>
   </div>
-</div>
+<div id="ceremony"><div class="ceremonyBox"><div class="ceremonyTitle" id="ceremonyTitle"></div><div id="ceremonyBody"></div></div></div></div>
 
-<div id="ceremony"><div class="ceremonyBox"><div class="ceremonyTitle" id="ceremonyTitle"></div><div id="ceremonyBody"></div></div></div>
+
 
 <div id="overlay" style="display: none;">
   <div class="modal" id="modal">
     <h1>选择手牌方向</h1>
     <p>牌局内可随时点击“大小”或“花色”理牌；再次点击当前按钮会反转左右顺序，并自动保存。</p>
     <div class="choice">
-      <button type="button" id="ascBtn" onclick="chooseDirection('asc')">左小 → 右大<br><small>3 … A 2</small></button>
-      <button type="button" id="descBtn" onclick="chooseDirection('desc')" class="selected">左大 → 右小<br><small>2 A … 3</small></button>
+      <button type="button" id="ascBtn" onclick="chooseDirection('asc')" class="selected">左小 → 右大<br><small>3 … A 2</small></button>
+      <button type="button" id="descBtn" onclick="chooseDirection('desc')">左大 → 右小<br><small>2 A … 3</small></button>
     </div>
     <button type="button" class="big" onclick="startFromModal()">开始对局</button>
   </div>
@@ -9346,7 +10753,7 @@ function safeStorageSet(key,value){
     return false;
   }
 }
-let direction = safeStorageGet('cd_direction','asc') || 'asc';
+let direction = 'asc';
 let sortMode = 'rank';
 let selected = new Set();
 let currentPlayer = 0;
@@ -9390,6 +10797,76 @@ function sfx(kind){
   if(kind==='win')o.frequency.exponentialRampToValueAtTime(1180,now+cfg[1]);
   g.gain.setValueAtTime(0.0001,now);g.gain.exponentialRampToValueAtTime(cfg[2],now+.005);g.gain.exponentialRampToValueAtTime(.0001,now+cfg[1]);
   o.connect(g);g.connect(audioCtx.destination);o.start(now);o.stop(now+cfg[1]+.02);
+}
+function createCartoonNoise(duration=0.12){
+  const length=Math.max(1,Math.floor(audioCtx.sampleRate*duration));
+  const buffer=audioCtx.createBuffer(1,length,audioCtx.sampleRate);
+  const data=buffer.getChannelData(0);
+  for(let i=0;i<length;i++){
+    const fade=1-i/length;
+    data[i]=(Math.random()*2-1)*fade;
+  }
+  const source=audioCtx.createBufferSource();
+  source.buffer=buffer;
+  return source;
+}
+function playInteractionSfx(kind,phase='launch'){
+  if(!soundEnabled)return;
+  ensureAudio();
+  const now=audioCtx.currentTime;
+  const output=audioCtx.createGain();
+  output.gain.setValueAtTime(.92,now);
+  output.connect(audioCtx.destination);
+
+  const tone=(type,startFreq,endFreq,startOffset,duration,volume)=>{
+    const osc=audioCtx.createOscillator();
+    const gain=audioCtx.createGain();
+    const start=now+startOffset;
+    osc.type=type;
+    osc.frequency.setValueAtTime(Math.max(20,startFreq),start);
+    osc.frequency.exponentialRampToValueAtTime(Math.max(20,endFreq),start+duration);
+    gain.gain.setValueAtTime(.0001,start);
+    gain.gain.exponentialRampToValueAtTime(Math.max(.0002,volume),start+.008);
+    gain.gain.exponentialRampToValueAtTime(.0001,start+duration);
+    osc.connect(gain);gain.connect(output);
+    osc.start(start);osc.stop(start+duration+.025);
+  };
+  const noise=(filterType,frequency,q,startOffset,duration,volume)=>{
+    const source=createCartoonNoise(duration);
+    const filter=audioCtx.createBiquadFilter();
+    const gain=audioCtx.createGain();
+    const start=now+startOffset;
+    filter.type=filterType;
+    filter.frequency.setValueAtTime(frequency,start);
+    filter.Q.setValueAtTime(q,start);
+    gain.gain.setValueAtTime(.0001,start);
+    gain.gain.exponentialRampToValueAtTime(volume,start+.006);
+    gain.gain.exponentialRampToValueAtTime(.0001,start+duration);
+    source.connect(filter);filter.connect(gain);gain.connect(output);
+    source.start(start);source.stop(start+duration+.02);
+  };
+
+  if(kind==='tomato'){
+    if(phase==='launch'){
+      tone('sawtooth',520,125,0,.24,.026);
+      noise('bandpass',1100,.65,0,.19,.018);
+    }else{
+      tone('triangle',165,68,0,.18,.055);
+      tone('square',720,185,.004,.075,.021);
+      noise('bandpass',390,.72,0,.15,.072);
+      noise('lowpass',1250,.55,.018,.11,.026);
+    }
+  }else{
+    if(phase==='launch'){
+      tone('sine',470,720,0,.11,.021);
+      tone('triangle',680,920,.045,.09,.014);
+    }else{
+      tone('sine',660,790,0,.13,.031);
+      tone('sine',880,1050,.055,.15,.027);
+      tone('triangle',1320,1580,.12,.13,.018);
+      noise('highpass',2400,.75,.07,.12,.018);
+    }
+  }
 }
 function toggleSound(){soundEnabled=!soundEnabled;safeStorageSet('cd_sound',soundEnabled?'on':'off');document.getElementById('soundBtn').textContent=soundEnabled?'♪':'×';if(soundEnabled){ensureAudio();sfx('tap')}}
 
@@ -9781,17 +11258,30 @@ function updateSortControls(){
     suitBtn.setAttribute('aria-pressed',sortMode==='suit'?'true':'false');
   }
 }
+let lastSortTapMode='';
+let lastSortTapAt=0;
 function setSortMode(m){sfx('tap');
-  const sameMode=sortMode===m;
-  if(sameMode)direction=direction==='asc'?'desc':'asc';
+  const now=performance.now();
+  const modeChanged=sortMode!==m;
+  const isDoubleSame=!modeChanged&&lastSortTapMode===m&&(now-lastSortTapAt)<=360;
   sortMode=m;
+  let reversed=false;
+  if(isDoubleSame){
+    direction=direction==='asc'?'desc':'asc';
+    reversed=true;
+    lastSortTapMode='';
+    lastSortTapAt=0;
+  }else{
+    lastSortTapMode=m;
+    lastSortTapAt=now;
+  }
   safeStorageSet('cd_direction',direction);
   updateSortControls();
   selected.clear();resetHints();renderHand();updateButtons();
   const order=m==='rank'
     ? (direction==='asc'?'3 在左，2 在右':'2 在左，3 在右')
     : (direction==='asc'?'♦ 在左，♠ 在右':'♠ 在左，♦ 在右');
-  toast(`${m==='rank'?'大小':'花色'}排列 · ${order}${sameMode?'（已反转）':''}`);
+  toast(`${m==='rank'?'大小':'花色'}排列 · ${order}${reversed?'（双击反转）':modeChanged?'（保持左右顺序）':'（双击可反转）'}`);
 }
 function sortedHand(hand){
   const sign=direction==='asc'?1:-1;
@@ -9819,64 +11309,372 @@ function hideCeremony(){
   ceremonyActive=false;
   document.getElementById('ceremony').classList.remove('show','fastAI');
 }
-async function animateDealerDraw(){
-  const draw=shuffle(buildDeck()).slice(0,4);
-  showCeremony('抽牌决定庄家',`<div class="drawRow">${players.map((p,i)=>`<div class="drawSlot"><b>${p.name}</b><div class="drawCard" id="draw${i}" aria-label="未翻开的牌"></div></div>`).join('')}</div>`);
-  await ceremonySleep(500);
-  for(let i=0;i<4;i++){
-    const id='draw'+i,c=draw[i],back=document.getElementById(id);
-    back.outerHTML=playingCardHtml(c,'drawCard reveal',`id="${id}"`);
-    sfx('flip');
-    await ceremonySleep(360);
-  }
-  dealerIndex=0;for(let i=1;i<4;i++)if(cardPower(draw[i])>cardPower(draw[dealerIndex]))dealerIndex=i;
-  document.getElementById('ceremonyTitle').innerHTML=`<span class="pixelSpark">◆</span> ${players[dealerIndex].name} 做庄 <span class="pixelSpark">◆</span>`;
-  document.getElementById('draw'+dealerIndex).classList.add('dealerWinner');sfx('turn');
-  await ceremonySleep(900);
+let dealTemplateSnapshot=null;
+let openingTemplateStage='';
+let openingDrawRevealedCount=0;
+
+function openingPlayerDisplayName(index){
+  return escapeLobbyHtml(index===0?'你':players[index].name);
+}
+function openingStageShellHTML(title,hint,progress,body){
+  return `<div class="openingStagePanel">
+    <div class="openingStageHead">
+      <h3 class="openingStageTitle">${escapeLobbyHtml(title)}</h3>
+      <div class="openingStageBadge">${escapeLobbyHtml(hint)}</div>
+    </div>
+    <div class="openingStageProgress">${escapeLobbyHtml(String(progress))}</div>
+    <div class="openingStageBody">${body}</div>
+  </div>`;
+}
+function dealerDrawGridHTML(){
+  return `<div class="openingDrawGrid">
+    ${players.map((p,i)=>`<div class="openingDrawSlot" id="openingDrawSlot${i}">
+      <b class="drawPlayerName" title="${escapeLobbyHtml(p.name)}">${openingPlayerDisplayName(i)}</b>
+      <div class="openingDrawCardBox"><div class="drawCard" id="draw${i}" aria-label="未翻开的牌"></div></div>
+    </div>`).join('')}
+  </div>`;
+}
+function dealerCarryModuleHTML(){
+  const name=escapeLobbyHtml(players[dealerIndex]?.name||'玩家');
+  return `<div class="openingDealerBoard">
+    <div class="openingDealerCoin">庄</div>
+    <div class="openingDealerName" title="${name}">${name}</div>
+    <div class="openingDealerHint">上一场赢家继续做庄</div>
+  </div>`;
+}
+function cutStageModuleHTML(cutCard=null,dealStart=null){
+  const targetName=dealStart==null?'':escapeLobbyHtml(players[dealStart]?.name||'玩家');
+  return `<div class="openingCutBoard ${cutCard?'revealed':'waiting'}">
+    <div class="openingCutZone deckZone">
+      <div class="dealDeck"></div>
+      <span>牌堆</span>
+    </div>
+    <div class="openingCutArrow">➜</div>
+    <div class="openingCutZone resultZone">
+      ${cutCard
+        ? `${playingCardFaceHtml(cutCard,'openingCutCard')}<strong title="${targetName}">从 ${targetName} 开始分牌</strong>`
+        : '<div class="openingCutPlaceholder">等待翻牌</div><strong>决定发牌起点</strong>'}
+    </div>
+  </div>`;
 }
 function dealArenaHTML(){
-  return `<div class="dealArena">
-    <div class="miniSeat mini-you" id="mini0"><b>你</b><div class="miniCount" id="mc0">0</div></div>
-    <div class="miniSeat mini-left" id="mini1"><b>玩家</b><div class="miniCount" id="mc1">0</div></div>
-    <div class="miniSeat mini-front" id="mini2"><b>玩家</b><div class="miniCount" id="mc2">0</div></div>
-    <div class="miniSeat mini-right" id="mini3"><b>玩家</b><div class="miniCount" id="mc3">0</div></div>
+  const names=players.map((p,i)=>openingPlayerDisplayName(i));
+  return `<div class="dealArena openingDealArena">
+    <div class="miniSeat mini-you" id="mini0"><b title="${names[0]}">${names[0]}</b><div class="miniCount" id="mc0">0</div></div>
+    <div class="miniSeat mini-left" id="mini1"><b title="${names[1]}">${names[1]}</b><div class="miniCount" id="mc1">0</div></div>
+    <div class="miniSeat mini-front" id="mini2"><b title="${names[2]}">${names[2]}</b><div class="miniCount" id="mc2">0</div></div>
+    <div class="miniSeat mini-right" id="mini3"><b title="${names[3]}">${names[3]}</b><div class="miniCount" id="mc3">0</div></div>
     <div class="miniDeck"></div><div class="flyingCard" id="flyingCard"></div>
   </div>`;
 }
+function renderOpeningTemplatePlayers(stage=openingTemplateStage){
+  const list=document.getElementById('preGameReadyList');
+  if(!list)return;
+  list.innerHTML=players.map((p,i)=>{
+    let status='等待';
+    if(stage==='draw')status=i<openingDrawRevealedCount?'已翻开':'等待抽牌';
+    else if(stage==='dealer')status=i===dealerIndex?'本局庄家':'等待切牌';
+    else if(stage==='cut')status=i===dealerIndex?'正在翻牌':'等待分牌';
+    else if(stage==='deal')status=`已分 ${dealCounts[i]||0} 张`;
+    return `<div class="preReadyPlayer ${i===0?'me':''}">
+      <div class="preReadyName" title="${escapeLobbyHtml(p.name)}">${escapeLobbyHtml(p.name)}</div>
+      <div class="preReadyState ${i===dealerIndex&&stage!=='deal'?'joining':'on'}">${status}</div>
+    </div>`;
+  }).join('');
+}
+function setOpeningTemplateStage(stage,{title,hint,progress,buttonText,body}){
+  hideCeremony();
+  ceremonyActive=true;
+  openingTemplateStage=stage;
+  const app=document.getElementById('app');
+  const panel=document.getElementById('preGameReadyPanel');
+  const titleEl=document.querySelector('#preGameReadyPanel .preReadyTitle');
+  const hintEl=document.getElementById('preGameReadyHint');
+  const timer=document.getElementById('preGameReadySeconds');
+  const readyBtn=document.getElementById('preGameReadyBtn');
+  const hand=document.getElementById('hand');
+  const wrap=document.querySelector('.handWrap');
+  if(!dealTemplateSnapshot){
+    dealTemplateSnapshot={
+      title:titleEl?.textContent||'理牌准备',
+      hint:hintEl?.textContent||'',
+      timer:timer?.textContent||'60',
+      readyText:readyBtn?.textContent||'READY'
+    };
+  }
+  document.body.classList.add('arrangeMode','dealTemplateMode');
+  app?.classList.add('preGameReadyActive','dealTemplateActive');
+  panel?.classList.add('show');
+  if(titleEl)titleEl.textContent=title;
+  if(hintEl)hintEl.textContent=hint;
+  if(timer)timer.textContent=progress;
+  if(readyBtn){readyBtn.textContent=buttonText;readyBtn.disabled=true;readyBtn.classList.remove('ready');}
+  if(hand)hand.style.display='none';
+  if(wrap){
+    let module=wrap.querySelector('#dealHandModule');
+    if(!module){
+      module=document.createElement('div');
+      module.id='dealHandModule';
+      wrap.appendChild(module);
+    }
+    module.className=`openingHandModule openingPanelShell stage-${stage}`;
+    module.innerHTML=openingStageShellHTML(title,hint,progress,body);
+  }
+  renderOpeningTemplatePlayers(stage);
+  updateButtons();
+}
+function updateDealTemplateProgress(total){
+  const timer=document.getElementById('preGameReadySeconds');
+  if(timer)timer.textContent=`${total}/52`;
+  renderOpeningTemplatePlayers('deal');
+}
+function stopDealTemplate(){
+  const app=document.getElementById('app');
+  const panel=document.getElementById('preGameReadyPanel');
+  const title=document.querySelector('#preGameReadyPanel .preReadyTitle');
+  const hint=document.getElementById('preGameReadyHint');
+  const timer=document.getElementById('preGameReadySeconds');
+  const readyBtn=document.getElementById('preGameReadyBtn');
+  const hand=document.getElementById('hand');
+  document.querySelector('#dealHandModule')?.remove();
+  if(hand)hand.style.display='flex';
+  if(title)title.textContent=dealTemplateSnapshot?.title||'理牌准备';
+  if(hint)hint.textContent=dealTemplateSnapshot?.hint||'整理手牌 · 全员READY立即开始';
+  if(timer)timer.textContent=dealTemplateSnapshot?.timer||'60';
+  if(readyBtn){readyBtn.textContent=dealTemplateSnapshot?.readyText||'READY';readyBtn.disabled=false;}
+  document.body.classList.remove('dealTemplateMode','arrangeMode');
+  app?.classList.remove('dealTemplateActive','preGameReadyActive');
+  panel?.classList.remove('show');
+  ceremonyActive=false;
+  openingTemplateStage='';
+  openingDrawRevealedCount=0;
+  dealTemplateSnapshot=null;
+  updateButtons();
+}
+function setMatchOpeningStage(stage,title,label,progress,body){
+  ceremonyActive=true;
+  const screen=document.getElementById('matchScreen');
+  const panel=document.getElementById('matchOpeningPanel');
+  const titleEl=document.getElementById('matchOpeningTitle');
+  const labelEl=document.getElementById('matchOpeningLabel');
+  const progressEl=document.getElementById('matchOpeningProgress');
+  const bodyEl=document.getElementById('matchOpeningBody');
+  screen?.classList.add('show','opening',`opening-${stage}`);
+  ['draw','dealer','cut','deal'].forEach(name=>{
+    if(name!==stage)screen?.classList.remove(`opening-${name}`);
+  });
+  panel?.setAttribute('aria-hidden','false');
+  if(titleEl)titleEl.textContent=title;
+  if(labelEl)labelEl.textContent=label;
+  if(progressEl)progressEl.textContent=String(progress);
+  if(bodyEl)bodyEl.innerHTML=body;
+}
+function hideMatchOpeningStage(){
+  ceremonyActive=false;
+  const screen=document.getElementById('matchScreen');
+  const panel=document.getElementById('matchOpeningPanel');
+  screen?.classList.remove('show','opening','opening-draw','opening-dealer','opening-cut','opening-deal');
+  panel?.setAttribute('aria-hidden','true');
+}
+function matchOpeningPlayerName(index){
+  return escapeLobbyHtml(index===0?(players[index]?.name||'你'):(players[index]?.name||`玩家${index+1}`));
+}
+function matchOpeningDrawHTML(){
+  return `<div class="matchOpeningDrawGrid">${players.map((p,i)=>`
+    <div class="matchOpeningDrawSlot" id="matchOpeningDrawSlot${i}">
+      <div class="matchOpeningDrawName" title="${escapeLobbyHtml(p.name)}">${matchOpeningPlayerName(i)}</div>
+      <div class="matchOpeningDrawCardBox"><div class="matchOpeningCardBack" id="matchOpeningDraw${i}"></div></div>
+    </div>`).join('')}</div>`;
+}
+function matchOpeningCutHTML(cutCard=null,dealStart=null){
+  const targetName=dealStart==null?'':escapeLobbyHtml(players[dealStart]?.name||'玩家');
+  return `<div class="matchOpeningCutGrid">
+    <div class="matchOpeningCutZone"><div class="matchOpeningDeck"></div><strong>中央牌堆</strong></div>
+    <div class="matchOpeningCutArrow">➜</div>
+    <div class="matchOpeningCutZone">${cutCard
+      ? `${playingCardFaceHtml(cutCard,'matchOpeningCutCard')}<strong title="${targetName}">从 ${targetName} 开始分牌</strong>`
+      : '<div class="matchOpeningCutPlaceholder">等待翻牌</div><strong>决定发牌起点</strong>'}</div>
+  </div>`;
+}
+function matchOpeningDealHTML(){
+  const names=players.map((p,i)=>matchOpeningPlayerName(i));
+  return `<div class="matchOpeningDealGrid">
+    <div class="matchOpeningDealSeat top" id="matchOpeningSeat2"><div class="matchOpeningDealName" title="${names[2]}">${names[2]}</div><div class="matchOpeningDealCount" id="matchOpeningCount2">0</div></div>
+    <div class="matchOpeningDealSeat left" id="matchOpeningSeat1"><div class="matchOpeningDealName" title="${names[1]}">${names[1]}</div><div class="matchOpeningDealCount" id="matchOpeningCount1">0</div></div>
+    <div class="matchOpeningDealCenter"><div class="matchOpeningDeck"></div><div class="matchOpeningFlyingCard" id="matchOpeningFlyingCard"></div></div>
+    <div class="matchOpeningDealSeat right" id="matchOpeningSeat3"><div class="matchOpeningDealName" title="${names[3]}">${names[3]}</div><div class="matchOpeningDealCount" id="matchOpeningCount3">0</div></div>
+    <div class="matchOpeningDealSeat bottom" id="matchOpeningSeat0"><div class="matchOpeningDealName" title="${names[0]}">${names[0]}</div><div class="matchOpeningDealCount" id="matchOpeningCount0">0</div></div>
+  </div>`;
+}
+
+async function animateDealerDraw(){
+  const draw=shuffle(buildDeck()).slice(0,4);
+  if(randomMatchGameMode){
+    setMatchOpeningStage('draw','抽牌决定庄家','四人各翻一张牌 · 最大者做庄','0/4',matchOpeningDrawHTML());
+    await ceremonySleep(500);
+    for(let i=0;i<4;i++){
+      const id='matchOpeningDraw'+i;
+      const back=document.getElementById(id);
+      if(back)back.outerHTML=playingCardHtml(draw[i],'matchOpeningCard reveal',`id="${id}"`);
+      const progress=document.getElementById('matchOpeningProgress');
+      if(progress)progress.textContent=`${i+1}/4`;
+      sfx('flip');
+      await ceremonySleep(360);
+    }
+    dealerIndex=0;
+    for(let i=1;i<4;i++)if(cardPower(draw[i])>cardPower(draw[dealerIndex]))dealerIndex=i;
+    document.getElementById('matchOpeningDrawSlot'+dealerIndex)?.classList.add('dealerWinner');
+    const title=document.getElementById('matchOpeningTitle');
+    const label=document.getElementById('matchOpeningLabel');
+    if(title)title.textContent=`${players[dealerIndex].name} 做庄`;
+    if(label)label.textContent='最高牌已确认 · 准备翻牌决定发牌起点';
+    sfx('turn');
+    await ceremonySleep(900);
+    return;
+  }
+
+  openingDrawRevealedCount=0;
+  setOpeningTemplateStage('draw',{
+    title:'抽牌决定庄家',
+    hint:'四人各翻一张牌 · 最大者做庄',
+    progress:'0/4',
+    buttonText:'抽牌中',
+    body:dealerDrawGridHTML()
+  });
+  await ceremonySleep(500);
+  for(let i=0;i<4;i++){
+    const id='draw'+i,c=draw[i],back=document.getElementById(id);
+    if(back)back.outerHTML=playingCardHtml(c,'drawCard reveal',`id="${id}"`);
+    openingDrawRevealedCount=i+1;
+    const timer=document.getElementById('preGameReadySeconds');
+    if(timer)timer.textContent=`${openingDrawRevealedCount}/4`;
+    renderOpeningTemplatePlayers('draw');
+    sfx('flip');
+    await ceremonySleep(360);
+  }
+  dealerIndex=0;
+  for(let i=1;i<4;i++)if(cardPower(draw[i])>cardPower(draw[dealerIndex]))dealerIndex=i;
+  document.getElementById('openingDrawSlot'+dealerIndex)?.classList.add('dealerWinner');
+  const titleEl=document.querySelector('#preGameReadyPanel .preReadyTitle');
+  const hintEl=document.getElementById('preGameReadyHint');
+  if(titleEl)titleEl.textContent=`${players[dealerIndex].name} 做庄`;
+  if(hintEl)hintEl.textContent='最高牌已确认 · 准备翻牌决定发牌起点';
+  renderOpeningTemplatePlayers('dealer');
+  sfx('turn');
+  await ceremonySleep(900);
+}
+function showCarryDealerTemplate(){
+  if(randomMatchGameMode){
+    setMatchOpeningStage('dealer',`第${roundNumber}场 · ${players[dealerIndex].name} 做庄`,'上一场赢家继续做庄 · 准备翻牌','庄',dealerCarryModuleHTML());
+    return;
+  }
+  setOpeningTemplateStage('dealer',{
+    title:`第${roundNumber}场 · ${players[dealerIndex].name} 做庄`,
+    hint:'上一场赢家继续做庄 · 准备翻牌',
+    progress:'庄',
+    buttonText:'准备切牌',
+    body:dealerCarryModuleHTML()
+  });
+}
 async function animateCutAndDeal(deck){
-  // 从本局已经洗好的牌堆中翻开一张真实扑克牌决定发牌起点。
   const cutCard=deck[Math.floor(gameRandom()*deck.length)];
   const cut=cutValueFromCard(cutCard);
   const dealStart=(dealerIndex+((cut-1)%4))%4;
 
-  showCeremony(`${players[dealerIndex].name} 翻牌决定发牌起点`,
-    `<div class="cutStage"><div class="dealDeck"></div></div>`);
+  if(randomMatchGameMode){
+    setMatchOpeningStage('cut',`${players[dealerIndex].name} 翻牌决定发牌起点`,'从庄家位置按翻开牌点数计算','翻牌',matchOpeningCutHTML());
+    sfx('deal');
+    await ceremonySleep(520);
+
+    setMatchOpeningStage('cut','发牌起点已确定',`从 ${players[dealStart].name} 开始依次分牌`,String(cut),matchOpeningCutHTML(cutCard,dealStart));
+    sfx('flip');
+    await ceremonySleep(1100);
+
+    players.forEach(p=>p.hand=[]);
+    dealCounts=[0,0,0,0];
+    setMatchOpeningStage('deal','正在分牌','四个位置依次收牌 · 52张完成后进入理牌','0/52',matchOpeningDealHTML());
+    for(let i=0;i<52;i++){
+      const pi=(dealStart+i)%4;
+      players[pi].hand.push(deck[i]);
+      dealCounts[pi]++;
+      document.querySelectorAll('.matchOpeningDealSeat').forEach(el=>el.classList.remove('target'));
+      document.getElementById('matchOpeningSeat'+pi)?.classList.add('target');
+      const countEl=document.getElementById('matchOpeningCount'+pi);
+      if(countEl)countEl.textContent=dealCounts[pi];
+      const progress=document.getElementById('matchOpeningProgress');
+      if(progress)progress.textContent=`${i+1}/52`;
+      const fly=document.getElementById('matchOpeningFlyingCard');
+      if(fly){
+        fly.className='matchOpeningFlyingCard';
+        void fly.offsetWidth;
+        fly.classList.add(['fly-bottom','fly-left','fly-top','fly-right'][pi]);
+      }
+      if(i%4===0)sfx('deal');
+      await ceremonySleep(62);
+    }
+    document.querySelectorAll('.matchOpeningDealSeat').forEach(el=>el.classList.remove('target'));
+    const title=document.getElementById('matchOpeningTitle');
+    const label=document.getElementById('matchOpeningLabel');
+    const progress=document.getElementById('matchOpeningProgress');
+    if(title)title.textContent='分牌完成';
+    if(label)label.textContent='正在进入理牌界面';
+    if(progress)progress.textContent='52/52';
+    sfx('turn');
+    await ceremonySleep(500);
+    return {cut,dealStart};
+  }
+
+  setOpeningTemplateStage('cut',{
+    title:`${players[dealerIndex].name} 翻牌决定发牌起点`,
+    hint:'从庄家位置按翻开牌点数计算',
+    progress:'翻牌',
+    buttonText:'切牌中',
+    body:cutStageModuleHTML()
+  });
   sfx('deal');
   await ceremonySleep(520);
 
-  document.getElementById('ceremonyBody').innerHTML=`
-    <div class="cutStage">
-      ${playingCardFaceHtml(cutCard)}
-      <div class="startMarker">从 ${players[dealStart].name} 开始分牌</div>
-    </div>`;
+  setOpeningTemplateStage('cut',{
+    title:'发牌起点已确定',
+    hint:`从 ${players[dealStart].name} 开始依次分牌`,
+    progress:String(cut),
+    buttonText:'准备分牌',
+    body:cutStageModuleHTML(cutCard,dealStart)
+  });
   sfx('flip');
   await ceremonySleep(1100);
-  players.forEach(p=>p.hand=[]);dealCounts=[0,0,0,0];
-  document.getElementById('ceremonyTitle').textContent='派牌中';
-  document.getElementById('ceremonyBody').innerHTML=dealArenaHTML();
+
+  players.forEach(p=>p.hand=[]);
+  dealCounts=[0,0,0,0];
+  setOpeningTemplateStage('deal',{
+    title:'正在分牌',
+    hint:'四个位置依次收牌 · 完成后进入理牌',
+    progress:'0/52',
+    buttonText:'分牌中',
+    body:dealArenaHTML()
+  });
   for(let i=0;i<52;i++){
-    const pi=(dealStart+i)%4;players[pi].hand.push(deck[i]);dealCounts[pi]++;
-    document.querySelectorAll('.miniSeat').forEach(x=>x.classList.remove('target'));
-    document.getElementById('mini'+pi).classList.add('target');
-    document.getElementById('mc'+pi).textContent=dealCounts[pi];
-    const fly=document.getElementById('flyingCard');fly.className='flyingCard';void fly.offsetWidth;
-    fly.classList.add(['fly-you','fly-left','fly-front','fly-right'][pi]);
+    const pi=(dealStart+i)%4;
+    players[pi].hand.push(deck[i]);
+    dealCounts[pi]++;
+    document.querySelectorAll('#dealHandModule .miniSeat').forEach(x=>x.classList.remove('target'));
+    document.getElementById('mini'+pi)?.classList.add('target');
+    const countEl=document.getElementById('mc'+pi);
+    if(countEl)countEl.textContent=dealCounts[pi];
+    const fly=document.getElementById('flyingCard');
+    if(fly){
+      fly.className='flyingCard';void fly.offsetWidth;
+      fly.classList.add(['fly-you','fly-left','fly-front','fly-right'][pi]);
+    }
     if(i%4===0)sfx('deal');
-    renderSeats();
+    updateDealTemplateProgress(i+1);
     await ceremonySleep(62);
   }
-  document.querySelectorAll('.miniSeat').forEach(x=>x.classList.remove('target'));
-  sfx('turn');await ceremonySleep(420);hideCeremony();return {cut,dealStart};
+  document.querySelectorAll('#dealHandModule .miniSeat').forEach(x=>x.classList.remove('target'));
+  sfx('turn');
+  await ceremonySleep(420);
+  stopDealTemplate();
+  return {cut,dealStart};
 }
 /* Lobby and waiting room */
 const LOBBY_STORAGE_KEY='cd_lobby_profile_v2';
@@ -10220,7 +12018,7 @@ players.forEach(p=>{p.score=0;p.round=0});transactionLog=[];lastRenderedTransfer
   clearRandomMatchMidDeparture();
   let deck=shuffle(buildDeck());players.forEach(p=>p.hand=[]);dealCounts=[0,0,0,0];renderAll();
   if(diamond3Opening){mustDiamond3=true;await animateDealerDraw()}
-  else{mustDiamond3=false;dealerIndex=previousWinner;showCeremony(`第${roundNumber}场 · ${players[dealerIndex].name} 做庄`,`<div class="cutStage"><div class="dealDeck"></div></div>`);sfx('turn');await ceremonySleep(650)}
+  else{mustDiamond3=false;dealerIndex=previousWinner;showCarryDealerTemplate();sfx('turn');await ceremonySleep(650)}
   const info=await animateCutAndDeal(deck);
   if(diamond3Opening){
     currentPlayer=players.findIndex(p=>containsDiamond3(p.hand));
@@ -10235,7 +12033,10 @@ players.forEach(p=>{p.score=0;p.round=0});transactionLog=[];lastRenderedTransfer
 
   // 随机匹配发牌后按标准局或快速局时限理牌；四人READY可提早开始。
   if(randomMatchGameMode){
-    await startPreGameReady();
+    ceremonyActive=false;
+    const readyPromise=startPreGameReady();
+    hideMatchOpeningStage();
+    await readyPromise;
     if(!randomMatchGameMode)return;
   }
 
@@ -10285,7 +12086,6 @@ function finishSpecial(winners){sfx('win');
   commitRoundScores();
   if(randomMatchGameMode){
     randomMatchSessionScores=players.map(p=>p.score);
-    saveRandomMatchBalance(players[0].score);
     planRandomMatchRosterChangesAfterRound();
   }
   previousWinner=winners[0].i;
@@ -10755,6 +12555,9 @@ const RANDOM_MATCH_CLOCKS=Object.freeze({
 let randomMatchGameMode=false;
 let randomMatchSpeed='standard';
 let randomMatchSessionScores=[0,0,0,0];
+let randomMatchPrincipalAtEntry=0;
+let randomMatchSettlementCommitted=true;
+let randomMatchAssetBases=[0,0,0,0];
 let playerPersonalities=[null,null,null,null];
 let turnDeadlineTimer=null;
 let turnDeadlineTicker=null;
@@ -11127,6 +12930,38 @@ function renderHomeRandomBalance(){
   el.textContent=(n>0?'+':'')+n;
   el.className=n>0?'pos':n<0?'neg':'';
 }
+function createSimulatedPlayerAsset(){
+  const roll=Math.random();
+  const sign=Math.random()<0.5?-1:1;
+  let magnitude=0;
+  // 90% 落在 ±150 内，而且越靠近 0 越常见。
+  if(roll<0.90){
+    magnitude=Math.floor(Math.pow(Math.random(),1.55)*151);
+  }else if(roll<0.975){
+    magnitude=151+Math.floor(Math.pow(Math.random(),1.8)*350);
+  }else if(roll<0.995){
+    magnitude=501+Math.floor(Math.pow(Math.random(),2.05)*1000);
+  }else{
+    magnitude=1501+Math.floor(Math.pow(Math.random(),2.4)*3500);
+  }
+  return magnitude===0?0:sign*magnitude;
+}
+function initializeRandomMatchAssets(){
+  randomMatchAssetBases=[
+    randomMatchPrincipalAtEntry,
+    createSimulatedPlayerAsset(),
+    createSimulatedPlayerAsset(),
+    createSimulatedPlayerAsset()
+  ];
+}
+function commitRandomMatchPrincipal(){
+  if(randomMatchSettlementCommitted)return loadRandomMatchBalance();
+  const tableNet=Number(players[0]?.score??randomMatchSessionScores[0]??0)||0;
+  const finalBalance=randomMatchPrincipalAtEntry+tableNet;
+  saveRandomMatchBalance(finalBalance);
+  randomMatchSettlementCommitted=true;
+  return finalBalance;
+}
 
 const SIMULATED_NAMES=[
   '阿杰','小凯','Miko','老陈','Ken仔','安安','Ray','阿豪','乐乐','小宇',
@@ -11222,6 +13057,7 @@ function applyRandomMatchReplacement(playerIndex){
   players[playerIndex].round=0;
   players[playerIndex].hand=[];
   randomMatchSessionScores[playerIndex]=0;
+  randomMatchAssetBases[playerIndex]=createSimulatedPlayerAsset();
   randomMatchSeatRounds[playerIndex]=0;
   randomMatchSeatStayTargets[playerIndex]=drawRandomMatchStayTarget(false);
   randomMatchPendingReplacements.delete(playerIndex);
@@ -11320,7 +13156,10 @@ function startSimulatedMatchmaking(speed='standard'){
   simulatedAliases=pickUniqueAliases(3);
   playerAIDifficulties=randomMixedDifficulties();
   assignRandomPersonalities();
-  randomMatchSessionScores=[loadRandomMatchBalance(),0,0,0];
+  randomMatchPrincipalAtEntry=loadRandomMatchBalance();
+  randomMatchSettlementCommitted=true;
+  randomMatchSessionScores=[0,0,0,0];
+  initializeRandomMatchAssets();
   document.getElementById('matchScreen').classList.add('show');
   const matchLabel=document.getElementById('matchLabel');
   if(matchLabel)matchLabel.textContent=randomMatchSpeed==='quick'
@@ -11353,7 +13192,7 @@ function startSimulatedMatchmaking(speed='standard'){
 function cancelSimulatedMatchmaking(){
   simulatedMatchActive=false;
   clearSimulatedTimers();
-  document.getElementById('matchScreen').classList.remove('show');
+  document.getElementById('matchScreen').classList.remove('show','opening','opening-draw','opening-dealer','opening-cut','opening-deal');
 }
 
 function setRandomMatchGameMode(enabled){
@@ -11367,6 +13206,7 @@ function setRandomMatchGameMode(enabled){
   }else{
     clearSeatInteractionTimer();
     closeSeatInteractionMenu();
+    closePlayerAssetPanel();
   }
 }
 function renderRandomLedgerBar(){
@@ -11375,11 +13215,37 @@ function renderRandomLedgerBar(){
   root.innerHTML=players.map((p,i)=>{
     const amount=liveBalance(i);
     const cls=amount>0?'pos':amount<0?'neg':'zero';
-    return `<div class="randomLedgerPlayer ${i===0?'me':''}">
+    return `<div class="randomLedgerPlayer ${i===0?'me':''}" role="button" tabindex="0" aria-label="查看${escapeLobbyHtml(p.name)}的财产" onclick="openPlayerAssetPanel(${i})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPlayerAssetPanel(${i})}">
       <div class="randomLedgerName">${escapeLobbyHtml(p.name)}</div>
       <div class="randomLedgerAmount ${cls}">${amount>0?'+':''}${amount}</div>
     </div>`;
   }).join('');
+}
+function closePlayerAssetPanel(){
+  const overlay=document.getElementById('playerAssetOverlay');
+  overlay?.classList.remove('show');
+  overlay?.setAttribute('aria-hidden','true');
+}
+function openPlayerAssetPanel(playerIndex){
+  if(!randomMatchGameMode||playerIndex<0||playerIndex>3)return;
+  const tableNet=liveBalance(playerIndex);
+  const base=playerIndex===0
+    ? randomMatchPrincipalAtEntry
+    : Number(randomMatchAssetBases[playerIndex]||0);
+  const total=base+tableNet;
+  const overlay=document.getElementById('playerAssetOverlay');
+  const name=document.getElementById('playerAssetName');
+  const baseLabel=document.getElementById('playerAssetBaseLabel');
+  const baseEl=document.getElementById('playerAssetBase');
+  const tableEl=document.getElementById('playerAssetTable');
+  const totalEl=document.getElementById('playerAssetTotal');
+  if(name)name.textContent=players[playerIndex]?.name||`玩家${playerIndex+1}`;
+  if(baseLabel)baseLabel.textContent=playerIndex===0?'主页本金':'桌外财产';
+  if(baseEl){baseEl.textContent=signed(base);baseEl.className=moneyClass(base);}
+  if(tableEl){tableEl.textContent=signed(tableNet);tableEl.className=moneyClass(tableNet);}
+  if(totalEl){totalEl.textContent=signed(total);totalEl.className=moneyClass(total);}
+  overlay?.classList.add('show');
+  overlay?.setAttribute('aria-hidden','false');
 }
 
 
@@ -11424,7 +13290,7 @@ function beginSimulatedMatchGame(){
   if(!simulatedMatchActive)return;
   simulatedMatchActive=false;
   clearSimulatedTimers();
-  document.getElementById('matchScreen').classList.remove('show');
+  document.getElementById('matchScreen').classList.add('show');
   document.getElementById('lobbyScreen').style.display='none';
 
   // 每次新进入随机匹配都视为全新桌，第一场固定由方块3开始。
@@ -11436,6 +13302,7 @@ function beginSimulatedMatchGame(){
   recentPlayHistory=[];
   roundSpecialPlays=[];
   initializeRandomMatchRosterLifecycle();
+  randomMatchSettlementCommitted=false;
 
   setAIDifficulty('normal');
   setRandomMatchGameMode(true);
@@ -11780,7 +13647,6 @@ function finishNormal(winner){sfx('win');
   commitRoundScores();
   if(randomMatchGameMode){
     randomMatchSessionScores=players.map(p=>p.score);
-    saveRandomMatchBalance(players[0].score);
     planRandomMatchRosterChangesAfterRound();
   }
   previousWinner=winner;
@@ -12039,7 +13905,7 @@ function settleRandomMatchEarlyExit(){
   reconcileRoundScoresFromPairwise();
   commitRoundScores();
   randomMatchSessionScores=players.map(p=>p.score);
-  saveRandomMatchBalance(players[0].score);
+  commitRandomMatchPrincipal();
   setRandomMatchGameMode(false);
   finishPreGameReady();
   renderAll();
@@ -12066,8 +13932,8 @@ function exitRandomMatchSession(){
   clearTurnDeadline();
   clearResultReadyTimers();
   document.getElementById('overlay').style.display='none';
-  saveRandomMatchBalance(players[0].score);
   randomMatchSessionScores=players.map(p=>p.score);
+  commitRandomMatchPrincipal();
   setRandomMatchGameMode(false);
   document.getElementById('lobbyScreen').style.display='flex';
   setLobbyRoomView(false);
@@ -12124,6 +13990,36 @@ function showResults(title){
     </div>
   </div>`;
   document.getElementById('overlay').style.display='flex';
+}
+function handleHandAreaBlankClick(event){
+  if(event.target.closest('.card,button,#dealHandModule'))return;
+  if(!selected.size&&!hasHumanPreAction())return;
+  clearHumanPreAction(false);
+  selected.clear();
+  resetHints();
+  renderHand();
+  updateButtons();
+  toast('已取消选牌');
+}
+function returnComputerToLobby(){
+  if(randomMatchGameMode){openRandomMatchExitConfirm();return;}
+  clearTimeout(turnTimer);turnTimer=null;
+  clearTurnDeadline();
+  clearResultReadyTimers();
+  clearPreGameReady();
+  preGameReadyActive=false;
+  preGameReadyResolve=null;
+  stopDealTemplate();
+  hideCeremony();
+  setAutoPlay(false);
+  selected.clear();
+  resetHints();
+  gameOver=true;
+  document.getElementById('overlay').style.display='none';
+  document.getElementById('lobbyScreen').style.display='flex';
+  setLobbyRoomView(false);
+  players.forEach(p=>{p.score=0;p.round=0});
+  renderHomeRandomBalance();
 }
 function resetMatch(){
   if(randomMatchGameMode)return;
@@ -12754,18 +14650,18 @@ function renderPile(){
   if(!label)return;
 
   if(!recentPlayHistory.length){
-    label.innerHTML='<div class="recentPlayEmpty">自由</div>';
+    label.innerHTML='<div class="recentPlayList"><div class="recentPlayEmpty">自由出牌</div></div><div class="recentPlayHint">点击查看完整资讯</div>';
     return;
   }
 
-  label.innerHTML=recentPlayHistory.slice(0,3).map((item,index)=>`
+  label.innerHTML='<div class="recentPlayList">'+recentPlayHistory.slice(0,3).map((item,index)=>`
     <div class="recentPlayItem ${index===0?'latest':''} ${item.pass?'pass':''}"
       title="${escapeLobbyHtml(item.player)} · ${escapeLobbyHtml(item.type)}">
       <span class="recentPlayPlayer">${escapeLobbyHtml(item.player)}</span>
       <span class="recentPlaySeparator"> · </span>
       <span class="recentPlayType">${escapeLobbyHtml(item.type)}</span>
     </div>
-  `).join('');
+  `).join('')+'</div><div class="recentPlayHint">点击查看完整资讯</div>';
 }
 function renderSeats(){
   const map={1:'west',2:'north',3:'east'};
@@ -12996,10 +14892,12 @@ function performSeatInteraction(fromIndex,toIndex,kind,showToastMsg=true){
   node.style.setProperty('--y1',`${end.y}px`);
   node.style.setProperty('--rot', kind==='tomato'?`${Math.round((Math.random()*2-1)*260)}deg`:`${Math.round((Math.random()*2-1)*66)}deg`);
   layer.appendChild(node);
+  playInteractionSfx(kind,'launch');
   requestAnimationFrame(()=>node.classList.add('fly'));
 
   // 图标开始消失的同一瞬间，目标格同步闪灯；两者一起结束。
   setTimeout(()=>{
+    playInteractionSfx(kind,'impact');
     node.classList.add('hit');
     pulseSeatInteractionTarget(toIndex,kind,220);
     createInteractionImpact(kind,end);
@@ -13044,6 +14942,12 @@ function scheduleSeatInteraction(){
   },delay);
 }
 
+function mountCeremonyModule(){
+  const app=document.getElementById('app');
+  const ceremony=document.getElementById('ceremony');
+  if(app&&ceremony&&ceremony.parentElement!==app)app.appendChild(ceremony);
+}
+mountCeremonyModule();
 initLobby();
 setupHintLongPress();
 renderHomeRandomBalance();
