@@ -10470,6 +10470,41 @@ body.arrangeMode #app.preGameReadyActive #hand {
 }
 /* ===== end match opening full playing-card face fix ===== */
 
+
+/* ===== center the three recent-play rows ===== */
+#pileLabel .recentPlayList {
+  justify-items: stretch !important;
+}
+#pileLabel .recentPlayItem,
+#pileLabel .recentPlayItem.latest,
+#pileLabel .recentPlayItem.pass,
+#pileLabel .recentPlayEmpty {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+#pileLabel .recentPlayPlayer {
+  width: auto !important;
+  max-width: 46% !important;
+  min-width: 0 !important;
+  flex: 0 1 auto !important;
+  text-align: center !important;
+}
+#pileLabel .recentPlaySeparator {
+  flex: 0 0 auto !important;
+  margin: 0 2px !important;
+}
+#pileLabel .recentPlayType {
+  width: auto !important;
+  max-width: 46% !important;
+  min-width: 0 !important;
+  flex: 0 1 auto !important;
+  text-align: center !important;
+}
+/* ===== end center the three recent-play rows ===== */
+
 </style>
 </head>
 <body>
@@ -10683,11 +10718,11 @@ body.arrangeMode #app.preGameReadyActive #hand {
   <div class="controls turnCountdownActive turnFlashCyan" data-turn-left="40">
     <div id="humanInfo"><span id="autoModeBadge">自动中</span><span class="humanName">手牌</span><span id="humanTurnText">等待开局</span><span class="humanCount" id="humanCount">0张</span></div>
     <div class="quick">
-      <button type="button" id="sortRank" class="ctrl sortCtrl active" onclick="setSortMode('rank')" aria-pressed="true"><span>大小</span></button>
-      <button type="button" id="sortSuit" class="ctrl sortCtrl" onclick="setSortMode('suit')" aria-pressed="false"><span>花色</span></button>
-      <button id="hintBtn" class="ctrl hint" type="button" data-long-ready="1">提示</button>
+      <button type="button" id="sortRank" class="ctrl sortCtrl active is-unavailable" onclick="setSortMode('rank')" aria-pressed="true" disabled="" aria-disabled="true" title="当前没有可整理的手牌"><span>大小</span></button>
+      <button type="button" id="sortSuit" class="ctrl sortCtrl is-unavailable" onclick="setSortMode('suit')" aria-pressed="false" disabled="" aria-disabled="true" title="当前没有可整理的手牌"><span>花色</span></button>
+      <button id="hintBtn" class="ctrl hint is-unavailable" type="button" data-long-ready="1" data-hint-pointer-active="0" data-last-pointer-hint-at="0" data-hint-pointer-id="" data-captured-pointer-id="" disabled="" aria-disabled="true" title="当前阶段不能提示">提示</button>
     </div>
-    <div class="actions"><button type="button" id="passBtn" class="ctrl danger" onclick="humanPass()">过</button><button type="button" id="playBtn" class="ctrl primary" onclick="humanPlay()">出牌</button></div>
+    <div class="actions"><button type="button" id="passBtn" class="ctrl danger is-unavailable" onclick="humanPass()" disabled="" aria-disabled="true" title="仅自己回合且需要压牌时可过牌">过</button><button type="button" id="playBtn" class="ctrl primary is-unavailable" onclick="humanPlay()" disabled="" aria-disabled="true" title="选择当前可出的牌后才能操作">出牌</button></div>
     <div class="handWrap" onclick="handleHandAreaBlankClick(event)"><div id="hand"></div></div>
     <div id="preGameComboButtons" class="preGameComboButtons" aria-label="五张牌型快速选择"></div>
     <button id="preGameReadyBtn" type="button" onclick="playerPreGameReady()">READY</button>
@@ -14072,46 +14107,72 @@ function runHumanAutoPlay(){
     if(autoPlayEnabled&&currentPlayer===0&&!gameOver)humanPlay();
   },220);
 }
+function resetHintPressState(){
+  clearTimeout(hintPressTimer);
+  hintPressTimer=null;
+  hintLongPressed=false;
+  const btn=document.getElementById('hintBtn');
+  if(!btn)return;
+  btn.classList.remove('longPressActive');
+  btn.dataset.hintPointerActive='0';
+  btn.dataset.hintPointerId='';
+  try{
+    const captured=Number(btn.dataset.capturedPointerId||'');
+    if(Number.isFinite(captured)&&btn.hasPointerCapture?.(captured))btn.releasePointerCapture(captured);
+  }catch(e){}
+  btn.dataset.capturedPointerId='';
+}
 function setupHintLongPress(){
   const btn=document.getElementById('hintBtn');
-  if(!btn||btn.dataset.longReady)return;
+  if(!btn)return;
+  if(btn.dataset.longReady==='1'){
+    resetHintPressState();
+    return;
+  }
   btn.dataset.longReady='1';
+  btn.dataset.hintPointerActive='0';
+  btn.dataset.lastPointerHintAt='0';
 
-  let pointerId=null;
-
-  const cancelLongPress=()=>{
-    clearTimeout(hintPressTimer);
-    hintPressTimer=null;
-    pointerId=null;
-    btn.classList.remove('longPressActive');
-  };
+  const cancelLongPress=()=>resetHintPressState();
 
   btn.addEventListener('pointerdown',e=>{
     if(e.pointerType==='mouse'&&e.button!==0)return;
+    resetHintPressState();
     e.preventDefault();
     hintLongPressed=false;
-    pointerId=e.pointerId;
-    btn.setPointerCapture?.(e.pointerId);
+    btn.dataset.hintPointerActive='1';
+    btn.dataset.hintPointerId=String(e.pointerId);
+    btn.dataset.capturedPointerId=String(e.pointerId);
+    try{btn.setPointerCapture?.(e.pointerId)}catch(err){}
     btn.classList.add('longPressActive');
 
-    clearTimeout(hintPressTimer);
     hintPressTimer=setTimeout(()=>{
       hintLongPressed=true;
+      btn.dataset.lastPointerHintAt=String(Date.now());
       setAutoPlay(!autoPlayEnabled);
       btn.classList.remove('longPressActive');
       navigator.vibrate?.(35);
     },650);
-  });
+  },{passive:false});
 
   btn.addEventListener('pointerup',e=>{
-    if(pointerId!==null&&e.pointerId===pointerId){
-      e.preventDefault();
-      cancelLongPress();
+    const active=btn.dataset.hintPointerActive==='1';
+    const samePointer=btn.dataset.hintPointerId===String(e.pointerId);
+    if(!active||!samePointer)return;
+    e.preventDefault();
+    const wasLong=hintLongPressed;
+    btn.dataset.lastPointerHintAt=String(Date.now());
+    resetHintPressState();
+    if(!wasLong)showHint();
+  },{passive:false});
 
-      // 短按才执行普通提示；长按只切换自动模式。
-      if(!hintLongPressed)showHint();
-      else hintLongPressed=false;
-    }
+  // Safari 恢复页面后可能只派发 click，不再派发完整 pointerup。
+  btn.addEventListener('click',e=>{
+    const last=Number(btn.dataset.lastPointerHintAt||0);
+    if(Date.now()-last<550){e.preventDefault();return;}
+    resetHintPressState();
+    btn.dataset.lastPointerHintAt=String(Date.now());
+    showHint();
   });
 
   btn.addEventListener('pointercancel',cancelLongPress);
@@ -14120,6 +14181,25 @@ function setupHintLongPress(){
   btn.addEventListener('selectstart',e=>e.preventDefault());
   btn.addEventListener('dragstart',e=>e.preventDefault());
 }
+function restoreHintButtonAfterSafariResume(){
+  resetHintPressState();
+  setupHintLongPress();
+  requestAnimationFrame(()=>{
+    try{updateButtons()}catch(e){}
+    const btn=document.getElementById('hintBtn');
+    if(btn){
+      btn.style.removeProperty('pointer-events');
+      btn.classList.remove('longPressActive');
+    }
+  });
+}
+window.addEventListener('pageshow',restoreHintButtonAfterSafariResume);
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='hidden')resetHintPressState();
+  else restoreHintButtonAfterSafariResume();
+});
+window.addEventListener('pagehide',resetHintPressState);
+window.addEventListener('blur',resetHintPressState);
 
 function currentHumanLegalPlays(){
   if(!players[0]||!Array.isArray(players[0].hand)||gameOver||ceremonyActive)return [];
