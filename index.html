@@ -5961,6 +5961,561 @@ body #app #playHistoryOverlay .played.playingCardFace + .played.playingCardFace 
   font-size: 12px;
 }
 
+
+/* ===== Balatro-inspired UI skin update: visuals and motion only, game logic unchanged ===== */
+:root {
+  --balatro-bg-1: #15051d;
+  --balatro-bg-2: #0c122b;
+  --balatro-bg-3: #09111a;
+  --balatro-panel-1: #172744;
+  --balatro-panel-2: #0e1831;
+  --balatro-stroke: #6ec5ff;
+  --balatro-stroke-soft: #355a8b;
+  --balatro-gold: #ffd25b;
+  --balatro-gold-deep: #bf7b17;
+  --balatro-teal: #72f1d4;
+  --balatro-hot: #ff5aa5;
+  --balatro-violet: #8d5cff;
+  --balatro-red: #ff6b7c;
+  --balatro-text: #fff7e8;
+  --balatro-shadow: #04070dcc;
+  --balatro-shadow-hard: #02040a;
+}
+html, body {
+  background:
+    radial-gradient(circle at 50% -10%, #452052 0, transparent 36%),
+    radial-gradient(circle at 15% 20%, #1b4568 0, transparent 30%),
+    radial-gradient(circle at 85% 18%, #47235d 0, transparent 28%),
+    linear-gradient(180deg, var(--balatro-bg-1) 0%, var(--balatro-bg-2) 42%, var(--balatro-bg-3) 100%) !important;
+  color: var(--balatro-text) !important;
+}
+body {
+  font-family: "Trebuchet MS", "Arial Rounded MT Bold", "PingFang SC", "Microsoft YaHei", sans-serif !important;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 50% 45%, #0ff3 0, transparent 18%),
+    radial-gradient(circle at 50% 50%, transparent 0, transparent 55%, #0008 100%);
+  mix-blend-mode: screen;
+}
+body::after {
+  opacity: 0.18 !important;
+  background:
+    radial-gradient(circle at 50% 50%, transparent 0, transparent 70%, #0008 100%),
+    repeating-linear-gradient(0deg, #ffffff08 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(90deg, #ffffff05 0 1px, transparent 1px 6px) !important;
+}
+#app {
+  position: relative;
+  background:
+    radial-gradient(circle at 50% 38%, #173862 0, #121830 28%, #0b1020 62%, #090c16 100%) !important;
+}
+#app::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 45%, #68fff41a 0, transparent 18%),
+    linear-gradient(180deg, #ffffff08, transparent 14%, transparent 86%, #00000036);
+}
+.topbar,
+#cardTracker,
+.controls,
+#humanInfo,
+.seat,
+#centerPile,
+.log,
+#recentTransfer,
+.modal,
+.lobbyPanel,
+#lobbyScreen.roomOpen > .roomPanel,
+.ceremonyBox,
+.matchBox,
+.roomPlayer,
+.createRoomBox,
+.startSeedBox,
+.profileCard,
+.waitingHeader,
+.passwordGate,
+.playHistoryPanel,
+.playHistoryHand,
+.result table,
+#preGameReadyPanel {
+  border-radius: 14px !important;
+}
+.topbar {
+  background:
+    linear-gradient(180deg, #21365f, #10172d 55%, #0a1020) !important;
+  border-bottom: 2px solid #6ec5ff55;
+  box-shadow: inset 0 1px 0 #ffffff22, 0 8px 24px #0008;
+}
+.title,
+.title span,
+.turnSub,
+.waitingTitle,
+.lobbyTitle,
+.ceremonyTitle,
+.matchTitle,
+.playHistoryTitle,
+.passwordGateTitle,
+.startSeedTitle,
+.modeTitle {
+  text-shadow: 0 2px 0 #000, 0 0 14px #0006;
+}
+.score,
+.mainBalance,
+.smallbtn,
+.roundTag,
+.roomSecurity,
+.hostTag,
+.waitOnlyBadge,
+#visibleTurnTimer,
+#turnBanner,
+.seatBalance {
+  border-radius: 999px !important;
+}
+.score,
+.mainBalance,
+.smallbtn,
+.roomSecurity,
+.seatBalance,
+.hostTag,
+.waitOnlyBadge {
+  border: 2px solid #5ca9e0 !important;
+  background: linear-gradient(180deg, #1a3457, #10203b) !important;
+  box-shadow: 0 4px 0 #04101b, 0 0 18px #3bc0ff22;
+}
+.smallbtn,
+.ctrl,
+.lobbyAction,
+.choice button,
+.big,
+.roomJoinSubmit,
+.playHistoryClose,
+.startSeedRow button,
+.joinRoomInputBox button,
+.seedDifficultyRow button,
+.aiLevelBtn,
+.multiplayerBtn,
+.randomMatchBtn,
+.quickAction,
+#preGameReadyBtn {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px !important;
+  border: 2px solid #7aceff88 !important;
+  color: #fff8ef !important;
+  box-shadow: 0 5px 0 var(--balatro-shadow-hard), 0 0 18px #0004;
+}
+.smallbtn::before,
+.ctrl::before,
+.lobbyAction::before,
+.choice button::before,
+.big::before,
+.roomJoinSubmit::before,
+.playHistoryClose::before,
+.startSeedRow button::before,
+.joinRoomInputBox button::before,
+.seedDifficultyRow button::before,
+.aiLevelBtn::before,
+.multiplayerBtn::before,
+.randomMatchBtn::before,
+#preGameReadyBtn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0 25%, #ffffff1f 35%, transparent 45% 100%);
+  transform: translateX(-120%);
+  animation: balatroShine 5.2s linear infinite;
+  pointer-events: none;
+}
+.ctrl,
+.lobbyAction,
+.choice button,
+.seedDifficultyRow button,
+.aiLevelBtn,
+.multiplayerBtn,
+.randomMatchBtn,
+#preGameReadyBtn {
+  background: linear-gradient(180deg, #26436e, #152644 55%, #101d37) !important;
+}
+.ctrl.primary,
+.lobbyAction.primary,
+.big,
+.multiplayerBtn,
+#preGameReadyBtn {
+  background: linear-gradient(180deg, #2c9c90, #1f655e 55%, #164641) !important;
+  border-color: #78f1d9 !important;
+}
+.ctrl.danger,
+.lobbyAction.gold,
+.seedDifficultyRow .hard,
+.aiLevelBtn.hard,
+.roomLeaveButton {
+  background: linear-gradient(180deg, #9f4b75, #6a2d52 56%, #411a2f) !important;
+  border-color: #ff8fc4 !important;
+}
+#sortRank.ctrl.active,
+#sortSuit.ctrl.active,
+.choice button.selected,
+.ctrl.active,
+.aiLevelBtn.selected {
+  background: linear-gradient(180deg, #ffdd70, #cd9320 58%, #8f5715) !important;
+  border-color: #ffeaa7 !important;
+  color: #2a1400 !important;
+  text-shadow: none !important;
+}
+.ctrl.hint,
+.quickMatchBtn,
+.startSeedRow button,
+.joinRoomInputBox button,
+.roomLinkButton {
+  background: linear-gradient(180deg, #2b8ca2, #1d5f6f 58%, #123947) !important;
+  border-color: #7ff1ff !important;
+}
+.ctrl:active:not(:disabled),
+.lobbyAction:active,
+.roomJoinSubmit:active,
+.playHistoryClose:active,
+.startSeedRow button:active,
+.joinRoomInputBox button:active,
+.aiLevelBtn:active,
+.randomMatchBtn:active,
+#preGameReadyBtn:active {
+  transform: translateY(4px) scale(0.99) !important;
+  box-shadow: 0 1px 0 var(--balatro-shadow-hard), 0 0 10px #0003 !important;
+}
+#turnBanner {
+  border: 2px solid #ffda7d !important;
+  background: linear-gradient(180deg, #6f5316, #b78119 45%, #704312) !important;
+  color: #fff7e4 !important;
+  box-shadow: inset 0 1px 0 #fff4, 0 5px 0 #3b2208, 0 0 28px #ffcb5a33;
+}
+#turnBanner.activeTurn {
+  animation: balatroGoldPulse 1.2s ease-in-out infinite, balatroFloat 2.8s ease-in-out infinite !important;
+}
+.turnArrow {
+  color: #fff7d6 !important;
+  text-shadow: 0 0 12px #ffdc83, 0 0 22px #ffdc8355 !important;
+}
+.seat,
+#humanInfo,
+#centerPile,
+.log,
+#recentTransfer,
+#cardTracker,
+.controls,
+.lobbyPanel,
+.createRoomBox,
+.startSeedBox,
+.profileCard,
+.roomPlayer,
+.playHistoryHand,
+.waitingHeader,
+.passwordGate,
+#preGameReadyPanel {
+  border: 2px solid #3d6fa2 !important;
+  background: linear-gradient(180deg, #132544, #0d1730 55%, #0a1227) !important;
+  box-shadow: inset 0 1px 0 #ffffff14, 0 8px 24px #0007;
+}
+.seat.active,
+#humanInfo.active,
+.roomPlayer.localPlayer {
+  border-color: #73ffe0 !important;
+  box-shadow: inset 0 1px 0 #ffffff1e, 0 0 0 2px #72f1d433, 0 0 28px #72f1d444 !important;
+  animation: balatroGlowPulse 1.6s ease-in-out infinite;
+}
+.seat .name,
+.humanName,
+#humanTurnText,
+.roomPlayerName,
+.roomCode,
+#roomCountText,
+#homeRandomBalanceValue,
+.mainBalance strong,
+.humanCount,
+.trackerLabel,
+.waitingTitle,
+.roomSecurity,
+#visibleTurnTimer {
+  font-weight: 1000 !important;
+}
+.roomCode,
+.mainBalance strong,
+.humanCount,
+#homeRandomBalanceValue,
+#visibleTurnTimer {
+  color: var(--balatro-gold) !important;
+  text-shadow: 0 1px 0 #482909, 0 0 14px #ffca553a;
+}
+#recentTransfer,
+.log,
+#pileLabel,
+#status,
+.startHint,
+.preReadyHint,
+.pvpNote,
+.emptyLedger,
+.lobbySub,
+.waitingSub,
+.fieldLabel,
+.passwordFieldLabel,
+.roomPlayerState,
+.drawSlot,
+.drawRow,
+.result td,
+.result th {
+  color: #d7eaff !important;
+}
+#pileLabel {
+  cursor: pointer;
+  border-radius: 12px;
+  border: 1px dashed #79d7f5 !important;
+  background: linear-gradient(180deg, #0c1830, #091425) !important;
+}
+#centerPile {
+  border-color: #5e93c8 !important;
+  background:
+    radial-gradient(circle at 50% 50%, #0f5f7266 0, transparent 24%),
+    linear-gradient(180deg, #0f203d, #091527 58%, #09121f) !important;
+}
+#pileCards {
+  gap: 4px !important;
+}
+body #app #pileCards .played.playingCardFace {
+  animation: balatroPop 0.24s ease-out;
+}
+#cardTracker {
+  background: linear-gradient(180deg, #1c2a4a, #101a33) !important;
+  border: 2px solid #5586bb !important;
+}
+.trackerLight {
+  border-radius: 6px !important;
+  background: linear-gradient(180deg, #8dffff, #57c2e6) !important;
+  box-shadow: 0 0 10px #72f1d477, inset 0 0 4px #fff8 !important;
+}
+.trackerLight.redSuit:not(.out) {
+  background: linear-gradient(180deg, #ffa8b5, #ff627e) !important;
+  box-shadow: 0 0 10px #ff738977, inset 0 0 4px #fff7 !important;
+}
+.trackerLight.out {
+  background: linear-gradient(180deg, #17243d, #0f1830) !important;
+}
+.lobbyInput,
+.startSeedInput,
+.roomCodeJoinInput,
+.roomLink,
+#joinPasswordInput,
+#createPasswordInput {
+  border-radius: 12px !important;
+  border: 2px solid #527eb0 !important;
+  background: linear-gradient(180deg, #091425, #0b1321) !important;
+  color: #fffaf1 !important;
+  box-shadow: inset 0 1px 0 #ffffff12, 0 3px 0 #050b13;
+}
+.lobbyInput::placeholder,
+.startSeedInput::placeholder,
+.roomCodeJoinInput::placeholder,
+#joinPasswordInput::placeholder,
+#createPasswordInput::placeholder {
+  color: #9eb8d8 !important;
+}
+.modeTitle,
+.startSeedTitle,
+.lobbyTitle,
+.waitingTitle,
+.playHistoryTitle,
+.passwordGateTitle {
+  color: #ffd56b !important;
+  letter-spacing: 0.4px;
+}
+.randomMatchBtn,
+.aiLevelBtn,
+.multiplayerBtn {
+  min-height: 54px !important;
+}
+.randomMatchBtn small,
+.aiLevelBtn small,
+.seedDifficultyRow button small {
+  color: #eef8ff !important;
+  opacity: 0.88;
+}
+.playHistoryPanel,
+.modal,
+.lobbyPanel,
+#lobbyScreen.roomOpen > .roomPanel,
+.ceremonyBox,
+.matchBox {
+  border: 2px solid #74c9ff !important;
+  background: linear-gradient(180deg, #173254, #0e1b34 65%, #0a1529) !important;
+  box-shadow: 0 18px 40px #000a, 0 0 0 1px #ffffff10 inset !important;
+}
+.playHistoryClose,
+.roomJoinSubmit,
+.roomLinkButton {
+  min-height: 46px !important;
+}
+#playHistoryOverlay,
+#overlay,
+#ceremony,
+#matchScreen {
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.playHistoryCards {
+  padding-bottom: 10px !important;
+}
+.playHistoryWho {
+  color: #fff7e5 !important;
+}
+.playHistoryStep {
+  color: var(--balatro-teal) !important;
+}
+.playHistoryHand {
+  border-color: #3d6f92 !important;
+  background:
+    radial-gradient(circle at 50% 50%, #0d415233 0, transparent 24%),
+    linear-gradient(180deg, #081b2b, #091421) !important;
+}
+/* Cards */
+.playingCardFace {
+  border-radius: calc(var(--playing-card-width) * 0.11) !important;
+}
+body #app #hand .card.playingCardFace,
+body #app .played.playingCardFace,
+body #ceremony .drawCard.playingCardFace,
+body #ceremony .cutPlayingCard.playingCardFace {
+  --playing-card-frame-color: #d6cbad;
+  background:
+    radial-gradient(circle at 28% 16%, #ffffff 0, #fffaf0 24%, transparent 56%),
+    linear-gradient(150deg, #fffef8 0%, #f7eed9 42%, #efe0bf 100%) !important;
+  box-shadow:
+    0 calc(var(--playing-card-width) * 0.075) 0 #02070b,
+    0 calc(var(--playing-card-width) * 0.03) calc(var(--playing-card-width) * 0.08) #0008,
+    inset 0 calc(var(--playing-card-width) * 0.012) calc(var(--playing-card-width) * 0.025) #ffffffcc !important;
+}
+body #app #hand .card.playingCardFace {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease !important;
+}
+body #app #hand .card.playingCardFace.selected {
+  transform: translateY(-12px) scale(1.03) rotate(-1deg) !important;
+  box-shadow:
+    0 calc(var(--playing-card-width) * 0.075) 0 #02070b,
+    0 0 0 3px #ffe081,
+    0 0 20px #ffd15f66,
+    0 calc(var(--playing-card-width) * 0.03) calc(var(--playing-card-width) * 0.09) #0008,
+    inset 0 calc(var(--playing-card-width) * 0.012) calc(var(--playing-card-width) * 0.025) #ffffffcc !important;
+}
+body #app #hand .card.playingCardFace.hinted {
+  animation: balatroHintPulse 0.9s ease-in-out infinite;
+}
+body #app #hand .playingCardFace::after,
+body #app #hand .playingCardFace::before,
+body #app .played.playingCardFace::after,
+body #app .played.playingCardFace::before {
+  filter: saturate(1.08);
+}
+#passBtn:disabled,
+#playBtn:disabled,
+.ctrl:disabled,
+.lobbyAction:disabled,
+.roomJoinSubmit:disabled {
+  opacity: 0.38 !important;
+  filter: grayscale(0.15) saturate(0.8);
+}
+.actions .ctrl {
+  font-size: 18px !important;
+  letter-spacing: 0.5px;
+}
+#humanInfo {
+  background:
+    linear-gradient(180deg, #18314f, #101e35 58%, #0c1626) !important;
+}
+.log,
+#recentTransfer {
+  background: linear-gradient(180deg, #0f1e35, #0a1220) !important;
+}
+#recentTransfer.flash {
+  animation: balatroGlowPulse 0.48s ease-in-out 1;
+}
+#preGameReadyPanel {
+  background: linear-gradient(180deg, #18314f, #101f36 60%, #0b1528) !important;
+  border: 2px solid #6ec5ff !important;
+  box-shadow: 0 10px 28px #0009, 0 0 0 1px #ffffff10 inset !important;
+}
+.preReadyTimer,
+#visibleTurnTimer {
+  background: linear-gradient(180deg, #ffd96d, #d29319 58%, #8e5913) !important;
+  color: #2c1802 !important;
+  border: 2px solid #ffe6a7 !important;
+  box-shadow: 0 4px 0 #3d2205, 0 0 18px #ffcb5c40;
+}
+@keyframes balatroShine {
+  0%, 18% { transform: translateX(-130%); }
+  24% { transform: translateX(130%); }
+  100% { transform: translateX(130%); }
+}
+@keyframes balatroGoldPulse {
+  0%, 100% { box-shadow: inset 0 1px 0 #fff4, 0 5px 0 #3b2208, 0 0 20px #ffcb5a33; }
+  50% { box-shadow: inset 0 1px 0 #fff7, 0 5px 0 #3b2208, 0 0 32px #ffd56480; }
+}
+@keyframes balatroGlowPulse {
+  0%, 100% { box-shadow: inset 0 1px 0 #ffffff18, 0 0 0 2px #72f1d422, 0 0 18px #72f1d433; }
+  50% { box-shadow: inset 0 1px 0 #ffffff2c, 0 0 0 2px #72f1d455, 0 0 28px #72f1d466; }
+}
+@keyframes balatroHintPulse {
+  0%, 100% { box-shadow: 0 0 0 2px #6ed6ff, 0 0 12px #6ed6ff44, 0 calc(var(--playing-card-width) * 0.07) 0 #02070b; }
+  50% { box-shadow: 0 0 0 2px #95efff, 0 0 22px #7ff3ff88, 0 calc(var(--playing-card-width) * 0.07) 0 #02070b; }
+}
+@keyframes balatroFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+@keyframes balatroPop {
+  0% { transform: translateY(10px) scale(0.92); opacity: 0.4; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+@media (max-width: 420px) {
+  .topbar,
+  .controls,
+  .seat,
+  #centerPile,
+  #humanInfo,
+  .lobbyPanel,
+  #lobbyScreen.roomOpen > .roomPanel,
+  .playHistoryPanel,
+  .playHistoryHand,
+  .createRoomBox,
+  .startSeedBox,
+  .profileCard,
+  .waitingHeader,
+  .passwordGate,
+  #preGameReadyPanel {
+    border-radius: 12px !important;
+  }
+  .smallbtn,
+  .ctrl,
+  .lobbyAction,
+  .roomJoinSubmit,
+  .playHistoryClose,
+  .startSeedRow button,
+  .joinRoomInputBox button,
+  .seedDifficultyRow button,
+  .aiLevelBtn,
+  .multiplayerBtn,
+  .randomMatchBtn,
+  #preGameReadyBtn {
+    border-radius: 12px !important;
+  }
+}
+/* ===== end Balatro-inspired skin ===== */
+
 </style>
 </head>
 <body>
@@ -5982,7 +6537,7 @@ body #app #playHistoryOverlay .played.playingCardFace + .played.playingCardFace 
     <button type="button" class="randomMatchBtn" onclick="startSimulatedMatchmaking('standard')">随机匹配<small>60秒理牌 · 40秒出牌</small></button>
     <button type="button" class="randomMatchBtn quickMatchBtn" onclick="startSimulatedMatchmaking('quick')">快速局<small>25秒理牌 · 15秒出牌</small></button>
   </div>
-  <div class="homeRandomBalance"><span>随机匹配累计</span><strong id="homeRandomBalanceValue" class="neg">-403</strong></div>
+  <div class="homeRandomBalance"><span>随机匹配累计</span><strong id="homeRandomBalanceValue" class="neg">-391</strong></div>
 </div>
 
 <div class="modeTitle">电脑对战</div>
