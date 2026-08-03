@@ -8195,6 +8195,185 @@ body.arrangeMode #app.preGameReadyActive > .controls > #preGameReadyBtn {
 }
 /* ===== end settlement/history precision refinement ===== */
 
+
+/* ===== random-match lifecycle + true SOS flash + net alignment ===== */
+#turnBanner {
+  grid-template-columns: minmax(0,1fr) auto auto !important;
+}
+#randomMidExitBtn {
+  display:none;
+  min-width:48px;
+  height:calc(100% - 6px);
+  padding:0 7px;
+  border:2px solid #ff879b;
+  border-radius:999px;
+  background:linear-gradient(180deg,#7c293b,#4b1927);
+  color:#fff;
+  font-size:13px;
+  font-weight:1000;
+  box-shadow:2px 2px 0 #02070b;
+}
+.randomMatchMode #randomMidExitBtn { display:inline-flex; align-items:center; justify-content:center; }
+.turnCountdownActive {
+  isolation:isolate;
+}
+.turnCountdownActive::before {
+  content:"" !important;
+  position:absolute !important;
+  inset:0 !important;
+  z-index:0 !important;
+  pointer-events:none !important;
+  border-radius:inherit !important;
+  background-image:none !important;
+  background-color:rgba(29,139,159,.82);
+  animation:sosTrueCyanRed .25s steps(1,end) infinite alternate !important;
+}
+.turnCountdownActive > * {
+  position:relative;
+  z-index:2;
+}
+.turnCountdownActive::after {
+  color:#fff !important;
+  font-size:22px !important;
+  font-weight:1000 !important;
+  text-shadow:0 1px 0 #000,0 0 8px #fff,0 0 16px #ffe77a !important;
+  animation:sosTimerBadge .5s steps(1,end) infinite !important;
+}
+@keyframes sosTrueCyanRed {
+  from {
+    background-color:rgba(29,139,159,.82);
+    box-shadow:inset 0 0 0 3px #87ffff,0 0 24px #65f7ffcc;
+  }
+  to {
+    background-color:rgba(167,44,77,.82);
+    box-shadow:inset 0 0 0 3px #ff9db1,0 0 24px #ff5f80cc;
+  }
+}
+@keyframes sosTimerBadge {
+  0%,49.999% {
+    background:linear-gradient(180deg,#138ba0,#07566d);
+    border-color:#b7ffff;
+    box-shadow:0 3px 0 #041018,0 0 18px #7cffff;
+  }
+  50%,100% {
+    background:linear-gradient(180deg,#b42f52,#701a35);
+    border-color:#ffd0da;
+    box-shadow:0 3px 0 #1d0610,0 0 18px #ff7894;
+  }
+}
+.pairSettlementEquation {
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) 70px 78px !important;
+  align-items:center !important;
+  gap:6px !important;
+}
+.pairEquationFlow { grid-column:1; min-width:0; }
+.pairEquationNetLabel {
+  grid-column:2;
+  color:#cfe3ec;
+  font-size:11px;
+  font-weight:1000;
+  text-align:center;
+}
+.pairEquationNetCell {
+  grid-column:3;
+  width:100%;
+  justify-content:flex-end !important;
+  justify-self:stretch !important;
+}
+.pairEquationNetCell .pairSettlementAmount {
+  min-width:0;
+  width:auto;
+  text-align:right !important;
+}
+.aiTakeoverBadge {
+  margin-left:5px;
+  padding:2px 5px;
+  border:1px solid #ffbc67;
+  border-radius:999px;
+  background:#5b2e12;
+  color:#ffe0a2;
+  font-size:8px;
+  line-height:1.1;
+  font-weight:1000;
+  white-space:nowrap;
+}
+.randomRosterNotice {
+  display:none;
+  gap:4px;
+  margin:6px 0;
+  padding:6px 8px;
+  border:1px dashed #4d7994;
+  border-radius:9px;
+  background:#091827;
+  color:#cce9f5;
+  font-size:10px;
+  font-weight:900;
+}
+.randomRosterNotice.show { display:grid; }
+.readyState.left {
+  border-color:#ff7a8d !important;
+  background:#4c1b28 !important;
+  color:#ffc2cc !important;
+}
+.readyState.joining {
+  border-color:#77ddff !important;
+  background:#12384a !important;
+  color:#b9f2ff !important;
+}
+.randomExitRule {
+  margin-bottom:8px;
+  padding:8px 10px;
+  border:1px solid #ff9a6e;
+  border-radius:10px;
+  background:#3b1d13;
+  color:#ffe3c7;
+  font-size:12px;
+  font-weight:1000;
+  text-align:center;
+}
+@media (max-width:420px) {
+  #randomMidExitBtn { min-width:44px; padding:0 6px; font-size:12px; }
+  .pairSettlementEquation { grid-template-columns:minmax(0,1fr) 62px 74px !important; gap:4px !important; }
+  .pairEquationNetLabel { font-size:10px; }
+  .turnCountdownActive::after { font-size:20px !important; }
+}
+/* ===== end random-match lifecycle + true SOS flash + net alignment ===== */
+
+
+/* ===== guaranteed class-driven SOS colors ===== */
+.turnCountdownActive::before {
+  animation:none !important;
+  background-image:none !important;
+  transition:none !important;
+}
+.turnCountdownActive.turnFlashCyan::before {
+  background-color:rgba(18,169,187,.34) !important;
+  box-shadow:inset 0 0 0 3px #83ffff,0 0 24px #65f7ffcc !important;
+}
+.turnCountdownActive.turnFlashRed::before {
+  background-color:rgba(207,43,76,.32) !important;
+  box-shadow:inset 0 0 0 3px #ff9eb3,0 0 24px #ff5f80cc !important;
+}
+.turnCountdownActive.turnFlashCyan::after {
+  background:linear-gradient(180deg,#158ca2,#07566d) !important;
+  border-color:#b7ffff !important;
+  box-shadow:0 3px 0 #041018,0 0 18px #7cffff !important;
+}
+.turnCountdownActive.turnFlashRed::after {
+  background:linear-gradient(180deg,#b73254,#711a35) !important;
+  border-color:#ffd0da !important;
+  box-shadow:0 3px 0 #1d0610,0 0 18px #ff7894 !important;
+}
+#app > .controls.turnCountdownActive {
+  overflow:visible !important;
+}
+#app > .controls.turnCountdownActive::after {
+  top:4px !important;
+  right:8px !important;
+}
+/* ===== end guaranteed class-driven SOS colors ===== */
+
 </style>
 </head>
 <body>
@@ -8241,7 +8420,7 @@ body.arrangeMode #app.preGameReadyActive > .controls > #preGameReadyBtn {
         <button type="button" class="randomMatchBtn" onclick="startSimulatedMatchmaking('standard')">随机匹配<small>60秒理牌 · 40秒出牌</small></button>
         <button type="button" class="randomMatchBtn quickMatchBtn" onclick="startSimulatedMatchmaking('quick')">快速局<small>25秒理牌 · 15秒出牌</small></button>
       </div>
-      <div class="homeRandomBalance"><span>随机匹配累计</span><strong id="homeRandomBalanceValue" class="pos">+267</strong></div>
+      <div class="homeRandomBalance"><span>随机匹配累计</span><strong id="homeRandomBalanceValue" class="pos">+270</strong></div>
     </div>
   </section>
 
@@ -8340,7 +8519,7 @@ body.arrangeMode #app.preGameReadyActive > .controls > #preGameReadyBtn {
 <div id="cardTracker"><div class="trackerRank"><div class="trackerLabel">2</div><div class="trackerLights"><span class="trackerLight  " title="♠2"></span><span class="trackerLight  redSuit" title="♥2"></span><span class="trackerLight  " title="♣2"></span><span class="trackerLight  redSuit" title="♦2"></span></div></div><div class="trackerRank"><div class="trackerLabel">A</div><div class="trackerLights"><span class="trackerLight  " title="♠A"></span><span class="trackerLight  redSuit" title="♥A"></span><span class="trackerLight  " title="♣A"></span><span class="trackerLight  redSuit" title="♦A"></span></div></div><div class="trackerRank"><div class="trackerLabel">K</div><div class="trackerLights"><span class="trackerLight  " title="♠K"></span><span class="trackerLight  redSuit" title="♥K"></span><span class="trackerLight  " title="♣K"></span><span class="trackerLight  redSuit" title="♦K"></span></div></div><div class="trackerRank"><div class="trackerLabel">Q</div><div class="trackerLights"><span class="trackerLight  " title="♠Q"></span><span class="trackerLight  redSuit" title="♥Q"></span><span class="trackerLight  " title="♣Q"></span><span class="trackerLight  redSuit" title="♦Q"></span></div></div><div class="trackerRank"><div class="trackerLabel">J</div><div class="trackerLights"><span class="trackerLight  " title="♠J"></span><span class="trackerLight  redSuit" title="♥J"></span><span class="trackerLight  " title="♣J"></span><span class="trackerLight  redSuit" title="♦J"></span></div></div><div class="trackerRank"><div class="trackerLabel">10</div><div class="trackerLights"><span class="trackerLight  " title="♠10"></span><span class="trackerLight  redSuit" title="♥10"></span><span class="trackerLight  " title="♣10"></span><span class="trackerLight  redSuit" title="♦10"></span></div></div><div class="trackerRank"><div class="trackerLabel">9</div><div class="trackerLights"><span class="trackerLight  " title="♠9"></span><span class="trackerLight  redSuit" title="♥9"></span><span class="trackerLight  " title="♣9"></span><span class="trackerLight  redSuit" title="♦9"></span></div></div><div class="trackerRank"><div class="trackerLabel">8</div><div class="trackerLights"><span class="trackerLight  " title="♠8"></span><span class="trackerLight  redSuit" title="♥8"></span><span class="trackerLight  " title="♣8"></span><span class="trackerLight  redSuit" title="♦8"></span></div></div><div class="trackerRank"><div class="trackerLabel">7</div><div class="trackerLights"><span class="trackerLight  " title="♠7"></span><span class="trackerLight  redSuit" title="♥7"></span><span class="trackerLight  " title="♣7"></span><span class="trackerLight  redSuit" title="♦7"></span></div></div><div class="trackerRank"><div class="trackerLabel">6</div><div class="trackerLights"><span class="trackerLight  " title="♠6"></span><span class="trackerLight  redSuit" title="♥6"></span><span class="trackerLight  " title="♣6"></span><span class="trackerLight  redSuit" title="♦6"></span></div></div><div class="trackerRank"><div class="trackerLabel">5</div><div class="trackerLights"><span class="trackerLight  " title="♠5"></span><span class="trackerLight  redSuit" title="♥5"></span><span class="trackerLight  " title="♣5"></span><span class="trackerLight  redSuit" title="♦5"></span></div></div><div class="trackerRank"><div class="trackerLabel">4</div><div class="trackerLights"><span class="trackerLight  " title="♠4"></span><span class="trackerLight  redSuit" title="♥4"></span><span class="trackerLight  " title="♣4"></span><span class="trackerLight  redSuit" title="♦4"></span></div></div><div class="trackerRank"><div class="trackerLabel">3</div><div class="trackerLights"><span class="trackerLight  " title="♠3"></span><span class="trackerLight  redSuit" title="♥3"></span><span class="trackerLight  " title="♣3"></span><span class="trackerLight  redSuit" title="♦3"></span></div></div></div>
 
   <div id="table">
-    <div id="turnBanner"><div id="turnBannerText"><span id="turnMain">等待开局</span><span class="turnSub" id="turnSub"></span></div><div id="visibleTurnTimer">40s</div></div>
+    <div id="turnBanner"><div id="turnBannerText"><span id="turnMain">等待开局</span><span class="turnSub" id="turnSub"></span></div><div id="visibleTurnTimer">40s</div><button type="button" id="randomMidExitBtn" onclick="openRandomMatchExitConfirm()">退出</button></div>
     <div class="seat" id="north"><div class="name">玩家</div><div class="count"></div><div class="cardbacks"></div></div>
     <div class="seat" id="west"><div class="name">玩家</div><div class="count"></div><div class="cardbacks"></div></div>
     <div class="seat" id="east"><div class="name">玩家</div><div class="count"></div><div class="cardbacks"></div></div>
@@ -8368,8 +8547,8 @@ body.arrangeMode #app.preGameReadyActive > .controls > #preGameReadyBtn {
     <div id="preGameReadyList" class="preReadyList"></div>
   </div>
 
-  <div class="controls">
-    <div id="humanInfo" class="turnCountdownActive turnFlashCyan" data-turn-left="40"><span id="autoModeBadge">自动中</span><span class="humanName">手牌</span><span id="humanTurnText">等待开局</span><span class="humanCount" id="humanCount">0张</span></div>
+  <div class="controls turnCountdownActive turnFlashCyan" data-turn-left="40">
+    <div id="humanInfo"><span id="autoModeBadge">自动中</span><span class="humanName">手牌</span><span id="humanTurnText">等待开局</span><span class="humanCount" id="humanCount">0张</span></div>
     <div class="quick">
       <button type="button" id="sortRank" class="ctrl sortCtrl active" onclick="setSortMode('rank')" aria-pressed="true"><span>大小</span></button>
       <button type="button" id="sortSuit" class="ctrl sortCtrl" onclick="setSortMode('suit')" aria-pressed="false"><span>花色</span></button>
@@ -8568,12 +8747,35 @@ function createSeededRandom(seed){
 function gameRandom(){
   return seededRandom?seededRandom():Math.random();
 }
+function setSkipConfirmContent(title,text,confirmText){
+  const root=document.getElementById('skipConfirm');
+  if(!root)return;
+  const titleEl=root.querySelector('.skipTitle');
+  const textEl=root.querySelector('.skipText');
+  const confirmBtn=root.querySelector('.skipActions .danger');
+  if(titleEl)titleEl.textContent=title;
+  if(textEl)textEl.textContent=text;
+  if(confirmBtn)confirmBtn.textContent=confirmText;
+}
 function openSkipConfirm(){
-  if(randomMatchGameMode)return;
+  if(randomMatchGameMode){openRandomMatchExitConfirm();return}
   if(gameOver){
     returnToDifficultySelect();
     return;
   }
+  setSkipConfirmContent('跳过这局？','立即结束当前牌局，不计算输赢、不记录胜率。你可以重新选择难度或继续使用同一种子。','确定跳过');
+  document.getElementById('skipConfirm').classList.add('show');
+}
+function openRandomMatchExitConfirm(){
+  if(!randomMatchGameMode)return;
+  if(ceremonyActive){toast('开局流程中，请稍候');return}
+  const remain=players[0]?.hand?.length||0;
+  const pay=remainingCardSettlementAmount(remain);
+  setSkipConfirmContent(
+    '退出随机匹配？',
+    `你还剩${remain}张牌，将按每位对手都已出完计算：分别支付${pay}分给其余三位玩家。`,
+    '结算并退出'
+  );
   document.getElementById('skipConfirm').classList.add('show');
 }
 function closeSkipConfirm(){
@@ -8597,7 +8799,10 @@ function returnToDifficultySelect(){
   const sub=document.querySelector('.lobbySub');
   if(sub)sub.textContent='已跳过当前局，可重新选择难度或使用同一种子';
 }
-function confirmQuickSkip(){returnToDifficultySelect()}
+function confirmQuickSkip(){
+  if(randomMatchGameMode){settleRandomMatchEarlyExit();return}
+  returnToDifficultySelect();
+}
 
 function shuffle(a){
   for(let i=a.length-1;i>0;i--){const j=Math.floor(gameRandom()*(i+1));[a[i],a[j]]=[a[j],a[i]]}
@@ -9277,14 +9482,25 @@ async function newGame(fullReset=false){
 
 players.forEach(p=>{p.score=0;p.round=0});transactionLog=[];lastRenderedTransferSeq=0}
   roundNumber++;
+  const rosterResetOpening=randomMatchGameMode&&randomMatchRosterChangedNextRound;
+  const diamond3Opening=roundNumber===1||rosterResetOpening;
+  randomMatchRosterChangedNextRound=false;
   gameOver=false;firstPlay=true;lastPlay=null;passes=0;selected.clear();resetHints();
   players.forEach(p=>p.round=0);logMsg(`种子 ${currentDealSeed}`);
+  clearRandomMatchMidDeparture();
   let deck=shuffle(buildDeck());players.forEach(p=>p.hand=[]);dealCounts=[0,0,0,0];renderAll();
-  if(roundNumber===1){mustDiamond3=true;await animateDealerDraw()}
+  if(diamond3Opening){mustDiamond3=true;await animateDealerDraw()}
   else{mustDiamond3=false;dealerIndex=previousWinner;showCeremony(`第${roundNumber}场 · ${players[dealerIndex].name} 做庄`,`<div class="cutStage"><div class="dealDeck"></div></div>`);sfx('turn');await ceremonySleep(650)}
   const info=await animateCutAndDeal(deck);
-  if(roundNumber===1){currentPlayer=players.findIndex(p=>containsDiamond3(p.hand));logMsg(`第一场由${players[currentPlayer].name}持有方块3先出`)}
-  else{currentPlayer=previousWinner;logMsg(`第${roundNumber}场由上一场赢家${players[currentPlayer].name}任意先出`)}
+  if(diamond3Opening){
+    currentPlayer=players.findIndex(p=>containsDiamond3(p.hand));
+    logMsg(rosterResetOpening
+      ? `本桌有新玩家加入，由${players[currentPlayer].name}持有方块3先出`
+      : `第一场由${players[currentPlayer].name}持有方块3先出`);
+  }else{
+    currentPlayer=previousWinner;
+    logMsg(`第${roundNumber}场由上一场赢家${players[currentPlayer].name}任意先出`);
+  }
   leader=currentPlayer;renderAll();
 
   // 随机匹配发牌后按标准局或快速局时限理牌；四人READY可提早开始。
@@ -9295,6 +9511,7 @@ players.forEach(p=>{p.score=0;p.round=0});transactionLog=[];lastRenderedTransfer
 
   const special=checkSpecialWins();
   if(special.length){finishSpecial(special);return}
+  scheduleRandomMatchMidDeparture();
   nextTurn();
 }
 function checkSpecialWins(){
@@ -9310,10 +9527,21 @@ function checkSpecialWins(){
 function recordTransfer(from,to,amount,reason,category='结算'){
   if(amount<=0||from===to)return;
   players[from].round-=amount;players[to].round+=amount;
-  transactionLog.push({seq:transactionLog.length+1,round:roundNumber,from,to,amount,reason,category});
+  transactionLog.push({
+    seq:transactionLog.length+1,
+    round:roundNumber,
+    from,
+    to,
+    fromName:players[from]?.name||`玩家${from+1}`,
+    toName:players[to]?.name||`玩家${to+1}`,
+    amount,
+    reason,
+    category
+  });
   renderBalanceBar();
 }
 function finishSpecial(winners){sfx('win');
+  clearRandomMatchMidDeparture();
   gameOver=true;
   const ws=new Set(winners.map(w=>w.i));
   if(ws.size===1){
@@ -9325,6 +9553,11 @@ function finishSpecial(winners){sfx('win');
   winners.forEach(w=>logMsg(`${players[w.i].name}以${w.type}直接胜利`));
   reconcileRoundScoresFromPairwise();
   commitRoundScores();
+  if(randomMatchGameMode){
+    randomMatchSessionScores=players.map(p=>p.score);
+    saveRandomMatchBalance(players[0].score);
+    planRandomMatchRosterChangesAfterRound();
+  }
   previousWinner=winners[0].i;
   showResults('特殊牌型直接胜利');
 }
@@ -9805,6 +10038,15 @@ let simulatedMatchActive=false;
 let simulatedMatchTimers=[];
 let simulatedAliases=[];
 let playerAIDifficulties=['human','normal','normal','normal'];
+let randomMatchSeatRounds=[0,0,0,0];
+let randomMatchSeatStayTargets=[Infinity,2,2,2];
+let randomMatchPendingReplacements=new Set();
+let randomMatchNewJoinSeats=new Set();
+let randomMatchAIProxySeats=new Set();
+let randomMatchRosterChangedNextRound=false;
+let randomMatchRosterNotices=[];
+let randomMatchMidDepartureTimer=null;
+let randomMatchMidDepartureRound=0;
 function randomMatchClock(kind){return RANDOM_MATCH_CLOCKS[randomMatchSpeed]?.[kind]??RANDOM_MATCH_CLOCKS.standard[kind]}
 
 function setAIDifficulty(level){
@@ -10196,6 +10438,108 @@ function pickUniqueAliases(count){
   }
   return out;
 }
+
+function drawRandomMatchStayTarget(longTable=false){
+  if(longTable)return 8+Math.floor(Math.random()*7);
+  const r=Math.random();
+  if(r<0.30)return 1;
+  if(r<0.66)return 2;
+  if(r<0.82)return 3;
+  if(r<0.94)return 4+Math.floor(Math.random()*3);
+  return 7+Math.floor(Math.random()*6);
+}
+function initializeRandomMatchRosterLifecycle(){
+  const longTable=Math.random()<0.04;
+  randomMatchSeatRounds=[0,0,0,0];
+  randomMatchSeatStayTargets=[Infinity];
+  for(let i=1;i<4;i++)randomMatchSeatStayTargets[i]=drawRandomMatchStayTarget(longTable);
+  randomMatchPendingReplacements.clear();
+  randomMatchNewJoinSeats.clear();
+  randomMatchAIProxySeats.clear();
+  randomMatchRosterChangedNextRound=false;
+  randomMatchRosterNotices=[];
+  clearRandomMatchMidDeparture();
+}
+function pickReplacementAlias(){
+  const used=new Set(players.slice(1).map(p=>String(p.name||'').replace(/\s*AI代打$/,'')));
+  const candidates=pickUniqueAliases(12);
+  const found=candidates.find(name=>!used.has(name));
+  return found||`新玩家${10+Math.floor(Math.random()*90)}`;
+}
+function applyRandomMatchReplacement(playerIndex){
+  if(playerIndex<1||playerIndex>3)return false;
+  const oldName=players[playerIndex].name;
+  const newName=pickReplacementAlias();
+  players[playerIndex].name=newName;
+  players[playerIndex].score=0;
+  players[playerIndex].round=0;
+  players[playerIndex].hand=[];
+  randomMatchSessionScores[playerIndex]=0;
+  randomMatchSeatRounds[playerIndex]=0;
+  randomMatchSeatStayTargets[playerIndex]=drawRandomMatchStayTarget(false);
+  randomMatchPendingReplacements.delete(playerIndex);
+  randomMatchAIProxySeats.delete(playerIndex);
+  randomMatchNewJoinSeats.add(playerIndex);
+  randomMatchRosterChangedNextRound=true;
+  playerAIDifficulties[playerIndex]=['easy','normal','hard'][Math.floor(Math.random()*3)];
+  playerPersonalities[playerIndex]=AI_PERSONALITY_TYPES[Math.floor(Math.random()*AI_PERSONALITY_TYPES.length)];
+  randomMatchRosterNotices.push(`${oldName}离开，${newName}加入`);
+  return true;
+}
+function ensureRandomMatchPendingReplacements(){
+  [...randomMatchPendingReplacements].forEach(applyRandomMatchReplacement);
+}
+function planRandomMatchRosterChangesAfterRound(){
+  if(!randomMatchGameMode)return;
+  const candidates=[];
+  for(let i=1;i<4;i++){
+    randomMatchSeatRounds[i]=(randomMatchSeatRounds[i]||0)+1;
+    if(randomMatchAIProxySeats.has(i)||randomMatchSeatRounds[i]>=randomMatchSeatStayTargets[i]){
+      candidates.push(i);
+    }
+  }
+  // 避免多数牌局三个人同时全走；至少保留一名旧玩家，除非有AI代打必须替换。
+  if(candidates.length===3&&!candidates.some(i=>randomMatchAIProxySeats.has(i))){
+    candidates.splice(Math.floor(Math.random()*candidates.length),1);
+  }
+  candidates.forEach(i=>randomMatchPendingReplacements.add(i));
+  if(candidates.length){
+    randomMatchRosterNotices=candidates.map(i=>`${players[i].name}本场后离开`);
+  }else{
+    randomMatchRosterNotices=[];
+  }
+}
+function clearRandomMatchMidDeparture(){
+  if(randomMatchMidDepartureTimer){
+    clearTimeout(randomMatchMidDepartureTimer);
+    randomMatchMidDepartureTimer=null;
+  }
+}
+function triggerRandomMatchMidDeparture(playerIndex,scheduledRound){
+  if(!randomMatchGameMode||gameOver||roundNumber!==scheduledRound||playerIndex<1||playerIndex>3)return;
+  if(randomMatchAIProxySeats.has(playerIndex))return;
+  randomMatchAIProxySeats.add(playerIndex);
+  randomMatchPendingReplacements.add(playerIndex);
+  const name=players[playerIndex].name;
+  logMsg(`${name}中途离场，AI代打接管`);
+  toast(`${name}中途离场 · AI代打`);
+  renderAll();
+}
+function scheduleRandomMatchMidDeparture(){
+  clearRandomMatchMidDeparture();
+  if(!randomMatchGameMode||gameOver)return;
+  // 极少数牌局才会发生中途离场，由AI继续把当前牌局打完。
+  if(Math.random()>=0.025)return;
+  const candidates=[1,2,3].filter(i=>!randomMatchAIProxySeats.has(i));
+  if(!candidates.length)return;
+  const playerIndex=candidates[Math.floor(Math.random()*candidates.length)];
+  const scheduledRound=roundNumber;
+  randomMatchMidDepartureRound=scheduledRound;
+  const delay=randomMatchSpeed==='quick'
+    ? 6000+Math.floor(Math.random()*9000)
+    : 12000+Math.floor(Math.random()*24000);
+  randomMatchMidDepartureTimer=setTimeout(()=>triggerRandomMatchMidDeparture(playerIndex,scheduledRound),delay);
+}
 function renderMatchSlots(joined){
   const root=document.getElementById('matchSlots');
   const slots=[];
@@ -10331,6 +10675,16 @@ function beginSimulatedMatchGame(){
   clearSimulatedTimers();
   document.getElementById('matchScreen').classList.remove('show');
   document.getElementById('lobbyScreen').style.display='none';
+
+  // 每次新进入随机匹配都视为全新桌，第一场固定由方块3开始。
+  roundNumber=0;
+  previousWinner=null;
+  dealerIndex=null;
+  transactionLog=[];
+  lastRenderedTransferSeq=0;
+  recentPlayHistory=[];
+  roundSpecialPlays=[];
+  initializeRandomMatchRosterLifecycle();
 
   setAIDifficulty('normal');
   setRandomMatchGameMode(true);
@@ -10572,8 +10926,9 @@ function pairSettlementBreakdown(opponentIndex,records){
     total:baseAmount+specialParts.reduce((sum,item)=>sum+item.amount,0)
   };
 }
-function roundSettlementHtml(){
+function roundSettlementHtml(options={}){
   const records=currentRoundTransactions();
+  const opponentsFinished=!!options.opponentsFinished;
   const opponentRows=[1,2,3].map(opponentIndex=>{
     const result=pairSettlementBreakdown(opponentIndex,records);
     const hasSpecial=result.specialParts.length>0;
@@ -10586,13 +10941,14 @@ function roundSettlementHtml(){
             <span class="pairEquationPart"><b>${escapeLobbyHtml(item.label)}</b><strong class="${moneyClass(item.amount)}">${Math.abs(item.amount)}</strong></span>
           `).join('')}
         </div>
-        <span class="pairAmountCell pairEquationNetCell"><b>净额</b><i>＝</i><strong class="pairSettlementAmount ${moneyClass(result.total)}">${signed(result.total)}</strong></span>
+        <span class="pairEquationNetLabel">净额</span>
+        <span class="pairAmountCell pairEquationNetCell"><i>＝</i><strong class="pairSettlementAmount ${moneyClass(result.total)}">${signed(result.total)}</strong></span>
       </div>`:'';
 
     return `<div class="pairSettlementLine ${hasSpecial?'hasSpecial':''}">
       <div class="pairSettlementMain">
         <span class="pairOpponentName">${escapeLobbyHtml(players[opponentIndex].name)}</span>
-        <span class="pairOpponentRemain">剩 ${players[opponentIndex].hand.length} 张</span>
+        <span class="pairOpponentRemain">${opponentsFinished?'已出完':`剩 ${players[opponentIndex].hand.length} 张`}</span>
         <span class="pairAmountCell pairBaseAmountCell"><i>＝</i><strong class="pairSettlementAmount ${moneyClass(result.baseAmount)}">${signed(result.baseAmount)}</strong></span>
       </div>
       ${specialRow}
@@ -10614,12 +10970,17 @@ function roundSettlementHtml(){
   </div>`;
 }
 
+function remainingCardSettlementAmount(count){
+  const n=Math.max(0,Number(count)||0);
+  return n===13?13*3+2:n>=10?n*2+2:n+2;
+}
 function finishNormal(winner){sfx('win');
+  clearRandomMatchMidDeparture();
   gameOver=true;
   // 三名输家分别支付赢家
   for(let i=0;i<4;i++)if(i!==winner){
     const n=players[i].hand.length;
-    const pay=(n===13?13*3+2:n>=10?n*2+2:n+2);
+    const pay=remainingCardSettlementAmount(n);
     const label=n===13?'13草':n>=10?'种草':'剩牌结算';
     recordTransfer(i,winner,pay,`${label}：剩${n}张`,'赢家结算');
   }
@@ -10639,6 +11000,7 @@ function finishNormal(winner){sfx('win');
   if(randomMatchGameMode){
     randomMatchSessionScores=players.map(p=>p.score);
     saveRandomMatchBalance(players[0].score);
+    planRandomMatchRosterChangesAfterRound();
   }
   previousWinner=winner;
   logMsg(`${players[winner].name}出完牌，获得胜利`);
@@ -10680,7 +11042,7 @@ function renderBalanceBar(){
   if(ticker){
     const last=transactionLog[transactionLog.length-1];
     if(last){
-      ticker.innerHTML=`第${last.round}场 · <b>${players[last.from].name}</b> → <b>${players[last.to].name}</b> <span class="transferAmount">${last.amount}</span> · ${last.reason}`;
+      ticker.innerHTML=`第${last.round}场 · <b>${escapeLobbyHtml(last.fromName||players[last.from].name)}</b> → <b>${escapeLobbyHtml(last.toName||players[last.to].name)}</b> <span class="transferAmount">${last.amount}</span> · ${last.reason}`;
       if(last.seq!==lastRenderedTransferSeq){ticker.classList.remove('flash');void ticker.offsetWidth;ticker.classList.add('flash');lastRenderedTransferSeq=last.seq;}
     }else{
       ticker.textContent='尚无过账记录';
@@ -10695,7 +11057,7 @@ function transactionHtml(roundOnly=false){
   return `<div class="ledgerList">${records.map(t=>`<div class="ledgerEntry">
     <div class="ledgerSeq"><b>第${t.round}场</b>#${t.seq}</div>
     <div class="ledgerReason">
-      <div class="route"><span>${players[t.from].name}</span><span class="arrow">→</span><span>${players[t.to].name}</span></div>
+      <div class="route"><span>${escapeLobbyHtml(t.fromName||players[t.from].name)}</span><span class="arrow">→</span><span>${escapeLobbyHtml(t.toName||players[t.to].name)}</span></div>
       <small>${t.reason} · ${t.category}</small>
     </div>
     <div class="ledgerAmount">${t.amount}</div>
@@ -10721,14 +11083,22 @@ function renderReadyStates(){
   const root=document.getElementById('readyList');
   if(!root)return;
 
-  root.innerHTML=players.map((p,i)=>`
-    <div class="readyPlayer ${i===0?'me':''}">
+  root.innerHTML=players.map((p,i)=>{
+    const leaving=randomMatchPendingReplacements.has(i);
+    const joined=randomMatchNewJoinSeats.has(i);
+    const stateText=leaving?'已离开':resultReadyStates[i]?'READY':joined?'新玩家加入':'未准备';
+    const stateClass=leaving?'left':resultReadyStates[i]?'on':joined?'joining':'';
+    return `<div class="readyPlayer ${i===0?'me':''} ${leaving?'leaving':''}">
       <div class="readyName">${escapeLobbyHtml(p.name)}</div>
-      <div class="readyState ${resultReadyStates[i]?'on':''}">
-        ${resultReadyStates[i]?'READY':'未准备'}
-      </div>
-    </div>
-  `).join('');
+      <div class="readyState ${stateClass}">${stateText}</div>
+    </div>`;
+  }).join('');
+
+  const notice=document.getElementById('randomRosterNotice');
+  if(notice){
+    notice.innerHTML=randomMatchRosterNotices.map(text=>`<span>${escapeLobbyHtml(text)}</span>`).join('');
+    notice.classList.toggle('show',randomMatchRosterNotices.length>0);
+  }
 
   const btn=document.getElementById('readyNextBtn');
   if(btn){
@@ -10748,6 +11118,23 @@ function playerReadyNextRound(){
 }
 function scheduleSimulatedReadyStates(){
   for(let i=1;i<4;i++){
+    if(randomMatchPendingReplacements.has(i)){
+      const replaceDelay=650+Math.floor(Math.random()*2200);
+      resultReadyTimers.push(setTimeout(()=>{
+        if(roundTransitioning)return;
+        applyRandomMatchReplacement(i);
+        renderReadyStates();
+        const readyDelay=550+Math.floor(Math.random()*1900);
+        const readyTimer=setTimeout(()=>{
+          if(roundTransitioning)return;
+          resultReadyStates[i]=true;
+          renderReadyStates();
+        },readyDelay);
+        resultReadyTimers.push(readyTimer);
+      },replaceDelay));
+      continue;
+    }
+
     const instant=Math.random()<0.18;
     const delay=instant
       ? 250+Math.floor(Math.random()*650)
@@ -10795,6 +11182,9 @@ async function startNextRandomRound(){
     btn.textContent='正在开局…';
   }
 
+  // 倒数结束时仍有人未完成换位，就在开局前同步补上新玩家。
+  ensureRandomMatchPendingReplacements();
+
   // 强制清理上一场残留状态，避免newGame因ceremonyActive直接return。
   ceremonyActive=false;
   gameOver=false;
@@ -10803,6 +11193,8 @@ async function startNextRandomRound(){
   document.getElementById('overlay').style.display='none';
   players.forEach(p=>p.round=0);
   randomMatchSessionScores=players.map(p=>p.score);
+  randomMatchNewJoinSeats.clear();
+  randomMatchRosterNotices=[];
 
   // 让旧的DOM动画和计时器先结束，再开始新一场。
   await sleep(80);
@@ -10827,6 +11219,7 @@ function showRandomMatchResults(title){
         <b>下一场准备</b>
         <div class="readyTimer"><span id="resultReadyCountdown">${randomMatchClock('result')}</span><span class="readyTimerUnit">s</span></div>
       </div>
+      <div id="randomRosterNotice" class="randomRosterNotice"></div>
       <div id="readyList" class="readyList"></div>
       <button type="button" id="readyNextBtn" class="readyNextBtn" onclick="playerReadyNextRound()">准备下一场</button>
     </div>
@@ -10839,8 +11232,45 @@ function showRandomMatchResults(title){
   document.getElementById('overlay').style.display='flex';
   startResultReadyCountdown();
 }
+function settleRandomMatchEarlyExit(){
+  if(!randomMatchGameMode)return;
+  closeSkipConfirm();
+  clearTimeout(turnTimer);turnTimer=null;
+  clearTurnDeadline();
+  clearResultReadyTimers();
+  clearRandomMatchMidDeparture();
+  const remain=players[0].hand.length;
+  const pay=remainingCardSettlementAmount(remain);
+  gameOver=true;
+
+  // 退出者视为仍有全部剩牌；其余三家都视为已经出完。
+  for(let i=1;i<4;i++){
+    recordTransfer(0,i,pay,`中途退出：剩${remain}张，对方视为已出完`,'中途退出');
+  }
+  reconcileRoundScoresFromPairwise();
+  commitRoundScores();
+  randomMatchSessionScores=players.map(p=>p.score);
+  saveRandomMatchBalance(players[0].score);
+  setRandomMatchGameMode(false);
+  finishPreGameReady();
+  renderAll();
+
+  document.getElementById('modal').innerHTML=`<div class="result">
+    <h1>中途退出结算</h1>
+    <div class="randomExitRule">剩 ${remain} 张 · 分别支付 ${pay} 分给其余三位玩家</div>
+    ${roundSettlementHtml({opponentsFinished:true})}
+    <button type="button" class="big" onclick="exitRandomMatchSession()">确认并返回主页</button>
+  </div>`;
+  document.getElementById('overlay').style.display='flex';
+}
+
 function exitRandomMatchSession(){
   setAutoPlay(false);
+  clearRandomMatchMidDeparture();
+  randomMatchPendingReplacements.clear();
+  randomMatchNewJoinSeats.clear();
+  randomMatchAIProxySeats.clear();
+  randomMatchRosterNotices=[];
   finishPreGameReady();
   roundTransitioning=false;
   ceremonyActive=false;
@@ -11316,7 +11746,10 @@ function renderSeats(){
     el.classList.toggle('active',!ceremonyActive&&!gameOver&&currentPlayer===i);
 
     const nameEl=el.querySelector('.name');
-    if(nameEl)nameEl.textContent=players[i].name;
+    if(nameEl){
+      const proxy=randomMatchGameMode&&randomMatchAIProxySeats.has(i);
+      nameEl.innerHTML=`<span>${escapeLobbyHtml(players[i].name)}</span>${proxy?'<small class="aiTakeoverBadge">AI代打</small>':''}`;
+    }
 
     const shown=ceremonyActive?dealCounts[i]:players[i].hand.length;
     const amount=liveBalance(i);
@@ -11443,38 +11876,33 @@ document.querySelectorAll('button,.ctrl').forEach(el=>{
     el.removeAttribute('data-turn-left');
   }
   function getTurnFlashTarget(){
-    if(typeof ceremonyActive!=='undefined' && ceremonyActive) return null;
-    if(typeof gameOver!=='undefined' && gameOver) return null;
-    if(typeof preGameReadyActive!=='undefined' && preGameReadyActive) return null;
-    if(typeof currentPlayer==='undefined') return null;
-    if(currentPlayer===0) return document.getElementById('humanInfo');
+    if(typeof ceremonyActive!=='undefined'&&ceremonyActive)return null;
+    if(typeof gameOver!=='undefined'&&gameOver)return null;
+    if(typeof preGameReadyActive!=='undefined'&&preGameReadyActive)return null;
+    if(typeof currentPlayer==='undefined')return null;
+    if(currentPlayer===0)return document.querySelector('#app > .controls');
     return document.getElementById(seatMap[currentPlayer]);
   }
-  function getShownSeconds(){
-    if(typeof turnSecondsLeft==='number' && Number.isFinite(turnSecondsLeft)) return Math.max(0, turnSecondsLeft);
-    return 0;
-  }
   function applyTurnFlash(){
-    const all=[document.getElementById('humanInfo'), document.getElementById('west'), document.getElementById('north'), document.getElementById('east')];
+    const all=[document.querySelector('#app > .controls'),document.getElementById('west'),document.getElementById('north'),document.getElementById('east')];
     all.forEach(clearTurnFlashClasses);
     const target=getTurnFlashTarget();
-    if(!target) return;
-    target.classList.add('turnCountdownActive');
-    target.setAttribute('data-turn-left', String(getShownSeconds()));
-    target.classList.add((sosTick % 2===0)?'turnFlashCyan':'turnFlashRed');
+    if(!target)return;
+    target.classList.add('turnCountdownActive',sosTick%2===0?'turnFlashCyan':'turnFlashRed');
+    target.setAttribute('data-turn-left',String(Math.max(0,Number(turnSecondsLeft)||0)));
   }
-  const originalUpdateVisibleTurnTimer = typeof updateVisibleTurnTimer==='function' ? updateVisibleTurnTimer : null;
+  const originalUpdateVisibleTurnTimer=typeof updateVisibleTurnTimer==='function'?updateVisibleTurnTimer:null;
   if(originalUpdateVisibleTurnTimer){
-    updateVisibleTurnTimer = function(){
-      const result = originalUpdateVisibleTurnTimer.apply(this, arguments);
+    updateVisibleTurnTimer=function(){
+      const result=originalUpdateVisibleTurnTimer.apply(this,arguments);
       applyTurnFlash();
       return result;
     };
   }
-  const originalRenderAll = typeof renderAll==='function' ? renderAll : null;
+  const originalRenderAll=typeof renderAll==='function'?renderAll:null;
   if(originalRenderAll){
-    renderAll = function(){
-      const result = originalRenderAll.apply(this, arguments);
+    renderAll=function(){
+      const result=originalRenderAll.apply(this,arguments);
       applyTurnFlash();
       return result;
     };
@@ -11482,7 +11910,7 @@ document.querySelectorAll('button,.ctrl').forEach(el=>{
   setInterval(()=>{
     sosTick=(sosTick+1)%100000;
     applyTurnFlash();
-  }, 250);
+  },250);
 })();
 /* ===== end turn SOS flash hooks ===== */
 
