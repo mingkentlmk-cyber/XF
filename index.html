@@ -3,7 +3,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>锄大D</title>
 <style>
-/* Consolidated production stylesheet. */
 @keyframes turnPulse {
   50% {
     box-shadow: 0 0 20px #f4c55788;
@@ -3118,9 +3117,6 @@ body {
   -webkit-tap-highlight-color: transparent !important;
   cursor: pointer;
 }
-#hintBtn.longPressActive {
-  transform: translateY(1px) !important;
-}
 #preGameReadyPanel {
   display: none;
   position: fixed;
@@ -3714,10 +3710,6 @@ input {
   background: linear-gradient(120deg, transparent 35%, #ffffff55 48%, transparent 61%);
   transform: translateX(-70%);
   animation: hintAutoSweep 2.2s ease-in-out infinite;
-}
-#hintBtn.longPressActive {
-  transform: translateY(1px) scale(0.985) !important;
-  filter: brightness(1.18) !important;
 }
 #autoModeBadge {
   display: none !important;
@@ -5088,7 +5080,6 @@ body.arrangeMode #app.preGameReadyActive #hand .card {
   grid-template-columns: 1fr 1.15fr 1fr;
 }
 
-/* 唯一正面牌模板：各场景只改宽度，其余尺寸与坐标全部按梅花A等比缩放。 */
 .playingCardFace {
   --playing-card-width: 50px;
   --playing-card-height-scale: 1.4444444444;
@@ -5257,7 +5248,6 @@ body #ceremony .drawCard.playingCardFace.dealerWinner {
   }
 }
 
-/* 竖屏紧凑桌面：出牌区只保留牌高，最近动作固定三条。 */
 #app {
   grid-template-rows:
     clamp(46px, 6.4dvh, 52px)
@@ -5313,7 +5303,6 @@ body #ceremony .drawCard.playingCardFace.dealerWinner {
   display: none !important;
 }
 
-/* 当前回合只用整格高亮，不再在名字前添加图标。 */
 .turnArrow,
 .seat.active::before,
 .seat.active::after,
@@ -5418,7 +5407,6 @@ body #app #pileCards:has(.played:nth-child(5)) .played.playingCardFace {
   white-space: nowrap !important;
 }
 
-/* 下半部吃满余下空间，按钮紧贴、手牌居中，不再浪费桌面高度。 */
 #app > .controls {
   height: 100% !important;
   grid-template-rows:
@@ -5461,12 +5449,10 @@ body #app #pileCards:has(.played:nth-child(5)) .played.playingCardFace {
   align-items: center !important;
 }
 
-/* 叠放手牌隐藏被覆盖位置的双框，避免每张牌之间出现粗重叠边线。 */
 body #app #hand .playingCardFace:not(:first-child)::before,
 body #app #hand .playingCardFace:not(:first-child)::after {
   clip-path: inset(0 0 0 calc(var(--playing-card-width) * 0.085));
 }
-/* 参考图的暖白纸张、柔和内压边与右下投影。 */
 body #app #hand .card.playingCardFace,
 body #app .played.playingCardFace,
 body #ceremony .drawCard.playingCardFace,
@@ -5516,7 +5502,6 @@ body.arrangeMode #app.preGameReadyActive {
     minmax(0, 1fr) !important;
 }
 
-/* 最终交互规范：上方三位玩家为三等分，出牌区跨两格、历史区占一格。 */
 #centerPile {
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) !important;
   gap: 0 !important;
@@ -5532,7 +5517,6 @@ body.arrangeMode #app.preGameReadyActive {
   border-left: 2px solid #315b6d !important;
 }
 
-/* 理牌按钮只显示名称；再次点击当前按钮仍会反转排序。 */
 .quick .sortCtrl {
   grid-template-columns: 1fr !important;
   grid-template-rows: 1fr !important;
@@ -5548,7 +5532,6 @@ body.arrangeMode #app.preGameReadyActive {
   text-align: center;
 }
 
-/* 可按与不可按必须一眼可辨，避免只靠轻微透明度判断。 */
 .quick .ctrl.is-available:not(.active) {
   border-color: #52c9d9 !important;
   background: linear-gradient(180deg, #17495b, #0b2b39) !important;
@@ -5597,7 +5580,6 @@ button:disabled {
   transform: translateY(1px) !important;
 }
 
-/* 当前玩家以深色整块高亮：边框与外光醒目，内部保持足够对比避免文字曝光。 */
 #west.active,
 #north.active,
 #east.active,
@@ -5655,7 +5637,6 @@ button:disabled {
   }
 }
 
-/* 下一场准备倒计时的数字与单位固定同行。 */
 .readyTimer {
   min-width: 64px !important;
   display: inline-flex !important;
@@ -5827,8 +5808,6 @@ button:disabled {
   .pairSpecialSummaryLine { padding-block: 4px 1px; }
 }
 
-
-/* 最近出牌详情：点击右侧三条历史格，查看上两手实际牌面。 */
 #pileLabel {
   cursor: pointer !important;
   touch-action: manipulation;
@@ -5961,8 +5940,6 @@ body #app #playHistoryOverlay .played.playingCardFace + .played.playingCardFace 
   font-size: 12px;
 }
 
-
-/* ===== Balatro-inspired UI skin update: visuals and motion only, game logic unchanged ===== */
 :root {
   --balatro-bg-1: #15051d;
   --balatro-bg-2: #0c122b;
@@ -6383,7 +6360,6 @@ body #app #pileCards .played.playingCardFace {
     radial-gradient(circle at 50% 50%, #0d415233 0, transparent 24%),
     linear-gradient(180deg, #081b2b, #091421) !important;
 }
-/* Cards */
 .playingCardFace {
   border-radius: calc(var(--playing-card-width) * 0.11) !important;
 }
@@ -6514,10 +6490,7 @@ body #app .played.playingCardFace::before {
     border-radius: 12px !important;
   }
 }
-/* ===== end Balatro-inspired skin ===== */
 
-
-/* ===== Balatro heavy art update v2: stronger motion, chips, result showmanship ===== */
 :root {
   --bt-heavy-gold: #ffd86e;
   --bt-heavy-cyan: #8cf8ff;
@@ -6899,10 +6872,7 @@ body.bt-shake #app {
   .bt-chip { width: 14px; height: 14px; }
   .bt-spark { width: 7px; height: 7px; }
 }
-/* ===== end Balatro heavy art update v2 ===== */
 
-
-/* ===== Lobby tutorial and mobile position repair ===== */
 #lobbyScreen:not(.roomOpen) {
   align-items: flex-start !important;
   justify-content: center !important;
@@ -7094,10 +7064,7 @@ body.bt-shake #app {
     padding: 10px;
   }
 }
-/* ===== end lobby tutorial and repair ===== */
 
-
-/* ===== lobby symmetry cleanup ===== */
 .lobbySections {
   display: grid;
   gap: 14px;
@@ -7186,10 +7153,7 @@ body.bt-shake #app {
     margin-bottom: 10px !important;
   }
 }
-/* ===== end lobby symmetry cleanup ===== */
 
-
-/* ===== in-game grid alignment + SOS turn flash ===== */
 #table {
   display: grid !important;
   grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
@@ -7372,10 +7336,7 @@ body.bt-shake #app {
     min-height: 84px !important;
   }
 }
-/* ===== end in-game grid alignment + SOS turn flash ===== */
 
-
-/* ===== precision layout refinement: more pile space, safer hand space ===== */
 #app {
   grid-template-rows:
     clamp(48px, 6.4dvh, 54px)
@@ -7489,10 +7450,7 @@ body #app #pileCards:has(.played:nth-child(5)) .played.playingCardFace {
     --playing-card-width: 39px;
   }
 }
-/* ===== end precision layout refinement ===== */
 
-
-/* 隐藏种子奖励反馈 */
 #homeRandomBalanceValue.seedRewardPop {
   animation: seedRewardPop 0.7s cubic-bezier(.2,.9,.25,1);
 }
@@ -7502,8 +7460,6 @@ body #app #pileCards:has(.played:nth-child(5)) .played.playingCardFace {
   100% { transform: scale(1); filter: brightness(1); }
 }
 
-
-/* ===== final balanced gameplay layout ===== */
 #app {
   grid-template-rows:
     clamp(46px, 6.4dvh, 52px)
@@ -7666,10 +7622,7 @@ body #app #hand .card.playingCardFace:hover {
     padding: 0 6px !important;
   }
 }
-/* ===== end final balanced gameplay layout ===== */
 
-
-/* Extra guard for short mobile browser viewports. */
 @media (max-height: 620px) {
   #app {
     grid-template-rows:
@@ -7702,8 +7655,6 @@ body #app #hand .card.playingCardFace:hover {
   }
 }
 
-
-/* ===== final precision pass + arrange combo shortcuts + clear settlement math ===== */
 #app {
   grid-template-rows:
     clamp(46px, 6.3dvh, 52px)
@@ -7899,10 +7850,7 @@ body.arrangeMode #app.preGameReadyActive > .controls > #preGameReadyBtn { grid-r
   }
   .preGameComboBtn { min-width:78px; font-size:12px; }
 }
-/* ===== end final precision pass ===== */
 
-
-/* ===== four AI levels + real-match seed copy ===== */
 .aiLevels.fourLevels,
 .seedDifficultyRow.fourLevels {
   grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
@@ -7944,10 +7892,7 @@ body.arrangeMode #app.preGameReadyActive > .controls > #preGameReadyBtn { grid-r
     font-size: 11px !important;
   }
 }
-/* ===== end four AI levels + real-match seed copy ===== */
 
-
-/* ===== arrange-stage five-card shortcut row refinement ===== */
 body.arrangeMode #app.preGameReadyActive > .controls {
   grid-template-rows:
     clamp(28px, 4.2dvh, 34px)
@@ -8054,10 +7999,7 @@ body.arrangeMode #app.preGameReadyActive > .controls > #preGameReadyBtn {
     font-size: 10px !important;
   }
 }
-/* ===== end arrange-stage five-card shortcut row refinement ===== */
 
-
-/* ===== precision UX updates: pair select, quick gate, bright SOS timer ===== */
 .seat .cardbacks {
   display: none !important;
   min-height: 0 !important;
@@ -8124,10 +8066,7 @@ body.arrangeMode #app.preGameReadyActive > .controls > #preGameReadyBtn {
     font-size: 20px;
   }
 }
-/* ===== end precision UX updates ===== */
 
-
-/* ===== settlement/history precision refinement ===== */
 .pairSettlementLine.hasSpecial .pairBaseAmountCell,
 .pairSettlementLine.hasSpecial .pairBaseAmountCell .pairSettlementAmount,
 .pairSettlementLine.hasSpecial .pairBaseAmountCell i {
@@ -8193,10 +8132,7 @@ body.arrangeMode #app.preGameReadyActive > .controls > #preGameReadyBtn {
     font-size: 14px;
   }
 }
-/* ===== end settlement/history precision refinement ===== */
 
-
-/* ===== random-match lifecycle + true SOS flash + net alignment ===== */
 #turnBanner {
   grid-template-columns: minmax(0,1fr) auto auto !important;
 }
@@ -8338,10 +8274,7 @@ body.arrangeMode #app.preGameReadyActive > .controls > #preGameReadyBtn {
   .pairEquationNetLabel { font-size:10px; }
   .turnCountdownActive::after { font-size:20px !important; }
 }
-/* ===== end random-match lifecycle + true SOS flash + net alignment ===== */
 
-
-/* ===== guaranteed class-driven SOS colors ===== */
 .turnCountdownActive::before {
   animation:none !important;
   background-image:none !important;
@@ -8372,10 +8305,7 @@ body.arrangeMode #app.preGameReadyActive > .controls > #preGameReadyBtn {
   top:4px !important;
   right:8px !important;
 }
-/* ===== end guaranteed class-driven SOS colors ===== */
 
-
-/* ===== seat interaction + countdown precision ===== */
 #app > .controls.turnCountdownActive::after {
   display: none !important;
   content: none !important;
@@ -8439,10 +8369,7 @@ body.arrangeMode #app.preGameReadyActive > .controls > #preGameReadyBtn {
   .seatInteractionActions { grid-template-columns: 1fr; }
   .seatProjectile { width: 38px; height: 38px; margin-left: -19px; margin-top: -19px; font-size: 24px; }
 }
-/* ===== end seat interaction + countdown precision ===== */
 
-
-/* ===== future-turn pre-action and constrained selection ===== */
 body #app #hand .card.playingCardFace.unplayable {
   opacity: .42 !important;
   filter: grayscale(.35) brightness(.72) saturate(.65) !important;
@@ -8472,12 +8399,9 @@ body #app #hand .card.playingCardFace.unplayable:hover {
   0%,100% { filter: brightness(1); }
   50% { filter: brightness(1.16); }
 }
-/* ===== end future-turn pre-action and constrained selection ===== */
 
-
-/* ===== interaction visual polish + 1:2 actions + custom card back ===== */
 :root {
-  --custom-card-back: url("data:image/webp;base64,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");
+  --custom-card-back: url("data:image/webp;base64,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");
 }
 .actions {
   display: grid !important;
@@ -8578,10 +8502,7 @@ body #app #hand .card.playingCardFace.unplayable:hover {
     margin-top: -31px !important;
   }
 }
-/* ===== end interaction visual polish + 1:2 actions + custom card back ===== */
 
-
-/* ===== strict hand visual states: only selected cards rise ===== */
 body #app #hand .card.playingCardFace,
 body #app #hand .card.playingCardFace:hover,
 body #app #hand .card.playingCardFace.hinted,
@@ -8627,10 +8548,7 @@ body #app #hand .card.playingCardFace.selected.hinted:hover {
     transform: translateY(-11px) scale(1.022) rotate(-0.35deg) !important;
   }
 }
-/* ===== end strict hand visual states ===== */
 
-
-/* ===== final draw / turn flash / interaction hit corrections ===== */
 .drawCard:not(.reveal) {
   color: transparent !important;
   font-size: 0 !important;
@@ -8640,7 +8558,6 @@ body #app #hand .card.playingCardFace.selected.hinted:hover {
   display: none !important;
 }
 
-/* 直接改变当前对手格子的底色，确保青红两种颜色都清楚可见。 */
 .seat.turnCountdownActive.turnFlashCyan {
   background: linear-gradient(180deg,#156474,#0c4053 58%,#08293c) !important;
   border-color: #82fbff !important;
@@ -8664,7 +8581,6 @@ body #app #hand .card.playingCardFace.selected.hinted:hover {
   background-color: rgba(225,44,82,.38) !important;
 }
 
-/* 互动命中使用独立覆盖层，不会再被回合青红灯覆盖。 */
 .seat,
 #app > .controls {
   position: relative !important;
@@ -8709,10 +8625,7 @@ body #app #hand .card.playingCardFace.selected.hinted:hover {
   border-color: #ffe56e !important;
   box-shadow: 0 0 28px #ffd83dcc !important;
 }
-/* ===== end final draw / turn flash / interaction hit corrections ===== */
 
-
-/* ===== selected cards: vertical movement only ===== */
 body #app #hand .card.playingCardFace.selected,
 body #app #hand .card.playingCardFace.selected:hover,
 body #app #hand .card.playingCardFace.selected.hinted,
@@ -8730,10 +8643,7 @@ body #app #hand .card.playingCardFace.selected.hinted:hover {
     z-index: auto !important;
   }
 }
-/* ===== end selected cards: vertical movement only ===== */
 
-
-/* ===== compact mobile-safe result layout ===== */
 #overlay {
   padding: max(6px, env(safe-area-inset-top, 0px)) 7px max(6px, env(safe-area-inset-bottom, 0px)) !important;
   align-items: center !important;
@@ -8941,10 +8851,7 @@ body #app #hand .card.playingCardFace.selected.hinted:hover {
   #overlay .resultSeedActions button,
   #overlay .result > button.big { min-height: 37px !important; }
 }
-/* ===== end compact mobile-safe result layout ===== */
 
-
-/* ===== selected-card directional layering + ready timeout exit ===== */
 body #app #hand .card.playingCardFace,
 body #app #hand .card.playingCardFace:hover,
 body #app #hand .card.playingCardFace.hinted,
@@ -8966,10 +8873,7 @@ body #app #hand .card.playingCardFace.selected.hinted:hover {
     transform: translate3d(0, -11px, 0) !important;
   }
 }
-/* ===== end selected-card directional layering + ready timeout exit ===== */
 
-
-/* ===== persistent five-card module + unified control shell ===== */
 #app > .controls,
 body.arrangeMode #app.preGameReadyActive > .controls {
   display: grid !important;
@@ -9060,7 +8964,6 @@ body:not(.arrangeMode) #app > .controls > #preGameReadyBtn {
 .preGameComboBtn.currentlyBlocked small {
   color: #9fb7c7 !important;
 }
-/* Main stage and control shell stay in the same regions; modes replace module content only. */
 #table,
 #preGameReadyPanel,
 #app > .controls {
@@ -9086,10 +8989,7 @@ body:not(.arrangeMode) #app > .controls > #preGameReadyBtn {
     gap: 3px !important;
   }
 }
-/* ===== end persistent five-card module + unified control shell ===== */
 
-
-/* ===== session wallet + modular ceremony + player assets ===== */
 .randomLedgerPlayer {
   cursor: pointer !important;
   user-select: none;
@@ -9196,7 +9096,6 @@ body:not(.arrangeMode) #app > .controls > #preGameReadyBtn {
   font-weight: 800;
 }
 
-/* Opening animations share the same fixed game-content module instead of a viewport overlay. */
 #app {
   position: relative !important;
   isolation: isolate;
@@ -9285,10 +9184,7 @@ body:not(.arrangeMode) #app > .controls > #preGameReadyBtn {
   #app > #ceremony .dealArena { width: min(88%, 330px) !important; height: min(100%, 350px) !important; }
   #app > #ceremony .miniSeat { transform-origin: center; }
 }
-/* ===== end session wallet + modular ceremony + player assets ===== */
 
-
-/* ===== uniform dealer draw + history hint + deterministic sorting ===== */
 #app > #ceremony .drawRow,
 #ceremony .drawRow {
   display: grid !important;
@@ -9366,10 +9262,7 @@ body #ceremony .drawCard.playingCardFace {
     font-size: 10px !important;
   }
 }
-/* ===== end uniform dealer draw + history hint + deterministic sorting ===== */
 
-
-/* ===== deal-as-arrange shell + compact history + topbar actions ===== */
 #pileLabel {
   width: min(100%, 210px) !important;
   min-height: 0 !important;
@@ -9493,10 +9386,7 @@ body.dealTemplateMode .preReadyName {
   }
   #pileLabel { width: min(100%, 190px) !important; }
 }
-/* ===== end deal-as-arrange shell + compact history + topbar actions ===== */
 
-
-/* ===== full opening flow inside arrange hand slot + history proportions ===== */
 #dealHandModule.openingHandModule {
   width: 100% !important;
   height: 100% !important;
@@ -9513,7 +9403,6 @@ body.dealTemplateMode .preReadyName {
     radial-gradient(circle at 50% 48%, #164c6655 0, transparent 40%),
     linear-gradient(180deg,#0d2940,#081827) !important;
 }
-/* 抽庄：在手牌格里使用完整的 2×2 方格 */
 #dealHandModule.stage-draw .openingDrawGrid {
   width: 100%;
   height: 100%;
@@ -9574,7 +9463,6 @@ body.dealTemplateMode .preReadyName {
   max-height: calc(var(--playing-card-width) * var(--playing-card-height-scale)) !important;
   margin: 0 !important;
 }
-/* 续局庄家：同一格内居中使用整个区域 */
 #dealHandModule .openingDealerBoard {
   width: 100%;
   height: 100%;
@@ -9608,7 +9496,6 @@ body.dealTemplateMode .preReadyName {
   font-weight: 1000;
 }
 #dealHandModule .openingDealerHint { color:#a9d9eb;font-size:10px;font-weight:900; }
-/* 切牌：牌堆和翻开牌各占一块 */
 #dealHandModule .openingCutBoard {
   width: 100%;
   height: 100%;
@@ -9673,7 +9560,6 @@ body.dealTemplateMode .preReadyName {
   color: #c8edf3;
   font-size: 9px;
 }
-/* 派牌：四个位置围绕中央牌堆，填满手牌格 */
 #dealHandModule.stage-deal { padding: 5px !important; }
 #dealHandModule .openingDealArena {
   width: 100% !important;
@@ -9700,7 +9586,6 @@ body.dealTemplateMode .preReadyName {
   white-space: nowrap !important;
   text-overflow: ellipsis !important;
 }
-/* 历史框：前三手占主体，提示只占最下面一条 */
 #pileLabel {
   height: 58px !important;
   min-height: 58px !important;
@@ -9766,10 +9651,7 @@ body.dealTemplateMode .preReadyName {
   #dealHandModule .openingCutCard { --playing-card-width: 46px !important; width:46px !important; }
   #pileLabel { height: 54px !important; min-height:54px !important; }
 }
-/* ===== end full opening flow inside arrange hand slot + history proportions ===== */
 
-
-/* ===== opening stages use matchmaking-style central panel ===== */
 body.dealTemplateMode #preGameReadyPanel,
 body.dealTemplateMode #app.preGameReadyActive > .controls > #humanInfo,
 body.dealTemplateMode #app.preGameReadyActive > .controls > .quick,
@@ -9947,10 +9829,7 @@ body.dealTemplateMode #app.preGameReadyActive > .controls > .handWrap {
     width: clamp(54px, 15vw, 74px) !important;
   }
 }
-/* ===== end opening stages use matchmaking-style central panel ===== */
 
-
-/* ===== opening panel ratio + arrange hand centering + full-height history slot ===== */
 body.dealTemplateMode #app.preGameReadyActive > .controls > .handWrap {
   display: flex !important;
   align-items: center !important;
@@ -9980,7 +9859,6 @@ body.dealTemplateMode #app.preGameReadyActive > .controls > .handWrap {
   width: 100% !important;
   height: 100% !important;
 }
-/* 理牌界面手牌往中间放，不贴上边 */
 body.arrangeMode #app.preGameReadyActive > .controls > .handWrap {
   display: flex !important;
   align-items: center !important;
@@ -9996,7 +9874,6 @@ body.arrangeMode #app.preGameReadyActive #hand {
   padding: 10px 8px !important;
   box-sizing: border-box !important;
 }
-/* 出牌界面历史虚线格：吃满上下并占右侧约三分之一 */
 #centerPile {
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) !important;
   align-items: stretch !important;
@@ -10068,10 +9945,7 @@ body.arrangeMode #app.preGameReadyActive #hand {
     min-height: 12px !important;
   }
 }
-/* ===== end opening panel ratio + arrange hand centering + full-height history slot ===== */
 
-
-/* ===== random-match opening flow inside the matchmaking box ===== */
 .matchQueuePanel { height: 100%; }
 .matchOpeningPanel { display: none; }
 .matchScreen.opening { align-items: center !important; justify-content: center !important; }
@@ -10141,7 +10015,6 @@ body.arrangeMode #app.preGameReadyActive #hand {
   box-shadow: inset 0 0 0 1px #a5d9ff18;
   box-sizing: border-box;
 }
-/* 抽庄：四个格子真正铺满主体区域 */
 .matchOpeningDrawGrid {
   width: 100%;
   height: 100%;
@@ -10204,7 +10077,6 @@ body.arrangeMode #app.preGameReadyActive #hand {
   aspect-ratio: 5/7 !important;
   border-radius: calc(var(--playing-card-width)*.1) !important;
 }
-/* 翻牌：牌堆和结果各占一半，不缩成小窗 */
 .matchOpeningCutGrid {
   width: 100%;
   height: 100%;
@@ -10258,7 +10130,6 @@ body.arrangeMode #app.preGameReadyActive #hand {
   font-weight: 1000;
   text-shadow: 0 0 14px #65edff88;
 }
-/* 分牌：四方围绕中央牌堆并使用整块空间 */
 .matchOpeningDealGrid {
   width: 100%;
   height: 100%;
@@ -10349,10 +10220,7 @@ body.arrangeMode #app.preGameReadyActive #hand {
   .matchOpeningDealGrid { grid-template-columns:minmax(0,1fr) minmax(78px,1fr) minmax(0,1fr); grid-template-rows:minmax(54px,1fr) minmax(110px,1.45fr) minmax(54px,1fr); }
   .matchOpeningDealSeat { padding:5px; border-radius:10px; }
 }
-/* ===== end random-match opening flow inside the matchmaking box ===== */
 
-
-/* ===== match opening full playing-card face fix ===== */
 #matchOpeningPanel .matchOpeningCard.playingCardFace,
 #matchOpeningPanel .matchOpeningCutCard.playingCardFace {
   --playing-card-height-scale: 1.4444444444;
@@ -10468,10 +10336,7 @@ body.arrangeMode #app.preGameReadyActive #hand {
   min-height: calc(var(--playing-card-width) * 1.4444444444) !important;
   max-height: calc(var(--playing-card-width) * 1.4444444444) !important;
 }
-/* ===== end match opening full playing-card face fix ===== */
 
-
-/* ===== center the three recent-play rows ===== */
 #pileLabel .recentPlayList {
   justify-items: stretch !important;
 }
@@ -10503,23 +10368,17 @@ body.arrangeMode #app.preGameReadyActive #hand {
   flex: 0 1 auto !important;
   text-align: center !important;
 }
-/* ===== end center the three recent-play rows ===== */
 
-
-/* ===== stable Safari/GitHub Pages hint interaction ===== */
 #hintBtn {
   touch-action: manipulation !important;
   -webkit-user-select: none !important;
   user-select: none !important;
   -webkit-touch-callout: none !important;
 }
-/* ===== end stable Safari/GitHub Pages hint interaction ===== */
 
 </style>
 </head>
 <body>
-
-
 
 <div id="lobbyScreen"><div class="lobbyPanel"><div id="startPanel" style="display: block;">
 <div id="profilePanel" style="display: block;">
@@ -10730,7 +10589,7 @@ body.arrangeMode #app.preGameReadyActive #hand {
     <div class="quick">
       <button type="button" id="sortRank" class="ctrl sortCtrl active is-unavailable" onclick="setSortMode('rank')" aria-pressed="true" disabled="" aria-disabled="true" title="当前没有可整理的手牌"><span>大小</span></button>
       <button type="button" id="sortSuit" class="ctrl sortCtrl is-unavailable" onclick="setSortMode('suit')" aria-pressed="false" disabled="" aria-disabled="true" title="当前没有可整理的手牌"><span>花色</span></button>
-      <button id="hintBtn" class="ctrl hint is-unavailable" type="button" data-stable-hint-ready="1" data-hint-pressing="0" data-hint-suppress-click-until="0" data-hint-pointer-id="" aria-disabled="true" title="当前阶段不能提示">提示</button>
+      <button id="hintBtn" class="ctrl hint is-unavailable" type="button" onclick="showHint()" disabled="" aria-disabled="true" title="当前阶段不能提示">提示</button>
     </div>
     <div class="actions"><button type="button" id="passBtn" class="ctrl danger is-unavailable" onclick="humanPass()" disabled="" aria-disabled="true" title="仅自己回合且需要压牌时可过牌">过</button><button type="button" id="playBtn" class="ctrl primary is-unavailable" onclick="humanPlay()" disabled="" aria-disabled="true" title="选择当前可出的牌后才能操作">出牌</button></div>
     <div class="handWrap" onclick="handleHandAreaBlankClick(event)"><div id="hand"></div></div>
@@ -10817,8 +10676,6 @@ let transactionLog=[];
 let lastRenderedTransferSeq=0;
 let turnTimer = null;
 let autoPlayEnabled=false;
-let hintPressTimer=null;
-let hintLongPressed=false;
 let currentDealSeed='';
 let forcedNextSeed='';
 let seededRandom=null;
@@ -10915,8 +10772,6 @@ function playInteractionSfx(kind,phase='launch'){
 }
 function toggleSound(){soundEnabled=!soundEnabled;safeStorageSet('cd_sound',soundEnabled?'on':'off');document.getElementById('soundBtn').textContent=soundEnabled?'♪':'×';if(soundEnabled){ensureAudio();sfx('tap')}}
 
-
-
 function renderCardTracker(){
   const root=document.getElementById('cardTracker');
   if(!root)return;
@@ -10961,7 +10816,6 @@ function playingCardFaceHtml(c,extraClass=''){
   return playingCardHtml(c,`cutPlayingCard ${extraClass}`.trim());
 }
 function cardPower(c){return rankPower(c)*4+suitPower(c)}
-
 
 function normalizeSeed(seed){
   return String(seed||'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,16);
@@ -11721,7 +11575,6 @@ async function animateCutAndDeal(deck){
   stopDealTemplate();
   return {cut,dealStart};
 }
-/* Lobby and waiting room */
 const LOBBY_STORAGE_KEY='cd_lobby_profile_v2';
 const ROOM_META_PREFIX='cd_room_meta_';
 let lobbyProfile={id:'p_'+Math.random().toString(36).slice(2,10),name:'',ready:false};
@@ -11930,7 +11783,6 @@ function initLobby(){
   const room=normalizeRoomCode(url.searchParams.get('room'));if(room){document.getElementById('joinRoomInput').value=room;rememberCopiedRoomCode(room);document.querySelector('.lobbySub').textContent='输入名称后即可进入邀请房间'}}
 window.addEventListener('beforeunload',()=>sendRoomMessage({type:'leave'}));
 
-
 function clearPreGameReady(){
   if(preGameReadyTicker){clearInterval(preGameReadyTicker);preGameReadyTicker=null}
   if(preGameReadyTimeout){clearTimeout(preGameReadyTimeout);preGameReadyTimeout=null}
@@ -12051,7 +11903,6 @@ async function newGame(fullReset=false){
   if(ceremonyActive)return;
   clearTimeout(turnTimer);
   if(fullReset){roundNumber=0;previousWinner=null;dealerIndex=null;
-
 
 players.forEach(p=>{p.score=0;p.round=0});transactionLog=[];lastRenderedTransferSeq=0}
   roundNumber++;
@@ -12227,7 +12078,6 @@ function autoSkipImpossibleTurn(){
   setTimeout(nextTurn,160);
   return true;
 }
-
 
 function updateVisibleTurnTimer(){
   const el=document.getElementById('visibleTurnTimer');
@@ -12766,8 +12616,6 @@ function startSeedAIGame(level){
   newGame(true);
 }
 
-
-
 const AI_PERSONALITY_TYPES=[
   // offset用于轻微塑造个人节奏，整体仍以约15秒为中心。
   {id:'fast',offset:-2300,spread:4200,instant:.030,timeout:.006},
@@ -13292,7 +13140,6 @@ function openPlayerAssetPanel(playerIndex){
   overlay?.classList.add('show');
   overlay?.setAttribute('aria-hidden','false');
 }
-
 
 function randomMixedDifficulties(){
   const levels=['easy','normal','hard'];
@@ -13985,7 +13832,6 @@ function exitRandomMatchSession(){
   renderHomeRandomBalance();
 }
 
-
 async function copyRoundSeedAndStay(){
   if(!currentDealSeed){
     toast('当前没有牌局种子');
@@ -14117,89 +13963,15 @@ function runHumanAutoPlay(){
     if(autoPlayEnabled&&currentPlayer===0&&!gameOver)humanPlay();
   },220);
 }
-function resetHintPressState(){
-  clearTimeout(hintPressTimer);
-  hintPressTimer=null;
-  hintLongPressed=false;
-  const btn=document.getElementById('hintBtn');
-  if(!btn)return;
-  btn.classList.remove('longPressActive');
-  btn.dataset.hintPressing='0';
-  btn.dataset.hintPointerId='';
-}
-function setupHintLongPress(){
-  const btn=document.getElementById('hintBtn');
-  if(!btn)return;
-  if(btn.dataset.stableHintReady==='1'){
-    resetHintPressState();
-    return;
-  }
-  btn.dataset.stableHintReady='1';
-  btn.dataset.hintPressing='0';
-  btn.dataset.hintSuppressClickUntil='0';
-
-  const cancelPress=()=>resetHintPressState();
-
-  // 原生 click 是短按的唯一入口；不再依赖 Pointer Capture。
-  btn.addEventListener('click',()=>{
-    const suppressUntil=Number(btn.dataset.hintSuppressClickUntil||0);
-    if(Date.now()<suppressUntil)return;
-    resetHintPressState();
-    showHint();
-  });
-
-  // pointerdown 只启动长按计时，不 preventDefault，也不 setPointerCapture。
-  btn.addEventListener('pointerdown',event=>{
-    if(event.pointerType==='mouse'&&event.button!==0)return;
-    resetHintPressState();
-    btn.dataset.hintPressing='1';
-    btn.dataset.hintPointerId=String(event.pointerId);
-    btn.classList.add('longPressActive');
-    hintPressTimer=setTimeout(()=>{
-      if(btn.dataset.hintPressing!=='1')return;
-      hintLongPressed=true;
-      btn.dataset.hintSuppressClickUntil=String(Date.now()+900);
-      btn.classList.remove('longPressActive');
-      setAutoPlay(!autoPlayEnabled);
-      navigator.vibrate?.(35);
-    },650);
-  },{passive:true});
-
-  btn.addEventListener('pointerup',event=>{
-    if(btn.dataset.hintPointerId&&btn.dataset.hintPointerId!==String(event.pointerId))return;
-    const wasLong=hintLongPressed;
-    resetHintPressState();
-    if(wasLong)btn.dataset.hintSuppressClickUntil=String(Date.now()+900);
-  },{passive:true});
-
-  btn.addEventListener('pointercancel',cancelPress,{passive:true});
-  btn.addEventListener('pointerleave',event=>{
-    if(event.pointerType==='mouse'&&btn.dataset.hintPressing==='1')cancelPress();
-  },{passive:true});
-  btn.addEventListener('contextmenu',event=>event.preventDefault());
-  btn.addEventListener('selectstart',event=>event.preventDefault());
-  btn.addEventListener('dragstart',event=>event.preventDefault());
-}
 function restoreHintButtonAfterSafariResume(){
-  resetHintPressState();
   requestAnimationFrame(()=>{
-    setupHintLongPress();
     try{updateButtons()}catch(e){}
-    const btn=document.getElementById('hintBtn');
-    if(btn){
-      btn.disabled=false;
-      btn.style.removeProperty('pointer-events');
-      btn.classList.remove('longPressActive');
-    }
   });
 }
 window.addEventListener('pageshow',restoreHintButtonAfterSafariResume);
 document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='hidden')resetHintPressState();
-  else restoreHintButtonAfterSafariResume();
+  if(document.visibilityState==='visible')restoreHintButtonAfterSafariResume();
 });
-window.addEventListener('pagehide',resetHintPressState);
-window.addEventListener('blur',resetHintPressState);
 
 function currentHumanLegalPlays(){
   if(!players[0]||!Array.isArray(players[0].hand)||gameOver||ceremonyActive)return [];
@@ -14369,7 +14141,7 @@ function applyConstrainedHumanCardClick(cardId){
 
 function showHint(){
   if(preGameReadyActive)return;
-  if(hintLongPressed){hintLongPressed=false;return;}sfx('tap');
+  sfx('tap');
   if(gameOver||ceremonyActive||!players[0].hand.length)return;
 
   if(currentPlayer!==0){
@@ -14446,7 +14218,6 @@ function applyHandVisualState(count){
   handEl.dataset.minStep=String(m.minStep);
 
 }
-
 
 const PRE_GAME_COMBO_TYPES=['straightFlush','fourKind','fullHouse','flush','straight'];
 const PRE_GAME_COMBO_LABELS={
@@ -15029,17 +14800,12 @@ function mountCeremonyModule(){
 }
 mountCeremonyModule();
 initLobby();
-setupHintLongPress();
 renderHomeRandomBalance();
 document.querySelectorAll('button,.ctrl').forEach(el=>{
   el.addEventListener('contextmenu',e=>e.preventDefault());
   el.addEventListener('selectstart',e=>e.preventDefault());
 });renderCardTracker();
 
-
-
-
-/* ===== turn SOS flash hooks ===== */
 (function(){
   const seatMap={1:'west',2:'north',3:'east'};
   let sosTick=0;
@@ -15106,7 +14872,6 @@ document.querySelectorAll('button,.ctrl').forEach(el=>{
     applyTurnFlash();
   },250);
 })();
-/* ===== end turn SOS flash hooks ===== */
 
 </script>
 
