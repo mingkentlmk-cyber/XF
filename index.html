@@ -2365,12 +2365,14 @@ body {
   text-align: center;
   margin-bottom: 7px;
 }
-.startSeedRow {
+.startSeedRow,
+.joinRoomInputBox {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 92px;
   gap: 6px;
 }
-.startSeedInput {
+.startSeedInput,
+.roomCodeJoinInput {
   width: 100%;
   min-width: 0;
   height: 46px;
@@ -2383,10 +2385,13 @@ body {
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-.startSeedInput:focus {
+.startSeedInput:focus,
+.roomCodeJoinInput:focus {
   border-color: #f2ca6c;
+  outline: 0;
 }
-.startSeedRow button {
+.startSeedRow button,
+.joinRoomInputBox button {
   min-height: 46px;
   border: 2px solid #69e5d4;
   background: #1b5851;
@@ -5057,6 +5062,22 @@ body.arrangeMode #app.preGameReadyActive #hand .card {
 .roomLinkButton {
   min-height: 38px;
 }
+.joinRoomInputBox {
+  margin-top: 9px;
+  margin-bottom: 0;
+}
+.joinRoomInputBox button {
+  box-shadow: 3px 3px 0#02070b;
+}
+.roomJoinSubmit {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 7px;
+  border-width: 2px;
+  font-size: 17px;
+  font-weight: 900;
+  box-shadow: 3px 3px 0#02070b;
+}
 .difficultyBadge.pending {
   display: none !important;
 }
@@ -5805,6 +5826,141 @@ button:disabled {
   .pairSettlementRows { gap: 3px; }
   .pairSpecialSummaryLine { padding-block: 4px 1px; }
 }
+
+
+/* 最近出牌详情：点击右侧三条历史格，查看上两手实际牌面。 */
+#pileLabel {
+  cursor: pointer !important;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+}
+#pileLabel:active {
+  filter: brightness(1.18);
+}
+#playHistoryOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 140;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  background: #02080dd9;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+#playHistoryOverlay.show {
+  display: flex;
+}
+.playHistoryPanel {
+  width: min(94vw, 440px);
+  max-height: 82dvh;
+  overflow: auto;
+  padding: 12px;
+  border: 2px solid #5a8498;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #102b3b, #071722);
+  box-shadow: 7px 7px 0 #02070b;
+}
+.playHistoryHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 9px;
+}
+.playHistoryTitle {
+  color: #f2ca6c;
+  font-size: 18px;
+  font-weight: 900;
+}
+.playHistoryClose {
+  min-width: 72px;
+  min-height: 36px;
+  border: 2px solid #4c7185;
+  border-radius: 3px;
+  background: #183648;
+  color: #fff;
+  font-weight: 900;
+  box-shadow: 2px 2px 0 #02070b;
+}
+.playHistoryList {
+  display: grid;
+  gap: 8px;
+}
+.playHistoryHand {
+  padding: 9px 7px 11px;
+  border: 1px solid #31576b;
+  background: #081923;
+}
+.playHistoryMeta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.playHistoryStep {
+  color: #69e5d4;
+  font-size: 11px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+.playHistoryWho {
+  min-width: 0;
+  overflow: hidden;
+  color: #f7efda;
+  font-size: 13px;
+  font-weight: 900;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.playHistoryCards {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 4px;
+  min-height: 80px;
+  align-items: center;
+  justify-content: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 4px 8px;
+  scrollbar-width: none;
+}
+.playHistoryCards::-webkit-scrollbar {
+  display: none;
+}
+body #app #playHistoryOverlay .played.playingCardFace {
+  --playing-card-width: clamp(42px, 12vw, 50px);
+  pointer-events: none;
+  margin: 0 !important;
+  flex: none;
+}
+body #app #playHistoryOverlay .played.playingCardFace + .played.playingCardFace {
+  margin-left: 0 !important;
+}
+@media (max-width: 420px) {
+  .playHistoryPanel {
+    width: min(94vw, 460px);
+    padding: 10px;
+  }
+  .playHistoryCards {
+    justify-content: flex-start;
+  }
+  body #app #playHistoryOverlay .played.playingCardFace {
+    --playing-card-width: 46px;
+  }
+}
+.playHistoryEmpty {
+  padding: 20px 8px;
+  border: 1px dashed #3e6475;
+  color: #91adb6;
+  text-align: center;
+  font-size: 12px;
+}
+
 </style>
 </head>
 <body>
@@ -5860,7 +6016,11 @@ button:disabled {
   </div>
   <button type="button" class="multiplayerBtn" onclick="createRoom()">创建多人房间</button>
   <div class="roomJoinDivider">已有房间</div>
-  <div class="joinRow"><input type="text" id="joinRoomInput" class="lobbyInput" maxlength="8" placeholder="输入房间号"><button type="button" class="lobbyAction gold" onclick="joinRoomFromInput()">加入</button></div>
+  <div class="roomLinkBox joinRoomInputBox">
+    <input type="text" id="joinRoomInput" class="lobbyInput roomCodeJoinInput" maxlength="8" placeholder="输入房间号" autocomplete="off" autocapitalize="characters" spellcheck="false" oninput="this.value=normalizeRoomCode(this.value)" onpaste="handleRoomCodePaste(event)">
+    <button type="button" class="lobbyAction roomLinkButton" onclick="pasteRoomCodeFromClipboard()">粘贴</button>
+  </div>
+  <button type="button" class="lobbyAction gold roomJoinSubmit" onclick="joinRoomFromInput()">加入房间</button>
 </div></div></div>
 <div id="roomPanel" class="roomPanel" style="display: none;">
 <div id="passwordGate" class="passwordGate"><div class="passwordGateTitle">此房间需要密码</div><input id="joinPasswordInput" class="lobbyInput" type="password" maxlength="12" placeholder="输入房间密码"><div class="lobbyActions"><button type="button" class="lobbyAction" onclick="leaveRoom()">返回大厅</button><button type="button" class="lobbyAction primary" onclick="submitRoomPassword()">进入待机室</button></div></div>
@@ -5915,9 +6075,19 @@ button:disabled {
     <div class="seat" id="north"><div class="name">玩家</div><div class="count"></div><div class="cardbacks"></div></div>
     <div class="seat" id="west"><div class="name">玩家</div><div class="count"></div><div class="cardbacks"></div></div>
     <div class="seat" id="east"><div class="name">玩家</div><div class="count"></div><div class="cardbacks"></div></div>
-    <div id="centerPile"><div id="pileCards"></div><div id="pileLabel">等待开局</div></div>
+    <div id="centerPile"><div id="pileCards"></div><div id="pileLabel" role="button" tabindex="0" aria-label="查看上两手出牌" onclick="openRecentPlayHistory()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRecentPlayHistory()}">等待开局</div></div>
     <div id="recentTransfer">尚无过账记录</div>
     <div class="log" id="log"></div>
+  </div>
+
+  <div id="playHistoryOverlay" onclick="if(event.target===this)closeRecentPlayHistory()" aria-hidden="true">
+    <div class="playHistoryPanel" role="dialog" aria-modal="true" aria-labelledby="playHistoryTitle">
+      <div class="playHistoryHeader">
+        <div id="playHistoryTitle" class="playHistoryTitle">上两手出牌</div>
+        <button type="button" class="playHistoryClose" onclick="closeRecentPlayHistory()">关闭</button>
+      </div>
+      <div id="playHistoryList" class="playHistoryList"></div>
+    </div>
   </div>
 
   <div id="preGameReadyPanel">
@@ -6539,10 +6709,82 @@ function createRoom(){
   saveRoomMeta(activeRoomCode,{passwordEnabled:roomPasswordEnabled,password:activeRoomPassword,hostId:roomHostId,createdAt:Date.now()});
   openRoom(activeRoomCode,true);
 }
+const LAST_COPIED_ROOM_CODE_KEY='chodai_last_copied_room_code_v1';
+function normalizeRoomCode(value){
+  let raw=String(value??'').trim();
+  if(!raw)return '';
+  try{
+    const url=new URL(raw,location.href);
+    const fromUrl=url.searchParams.get('room');
+    if(fromUrl)raw=fromUrl;
+  }catch(e){
+    const match=raw.match(/[?&]room=([^&#]+)/i);
+    if(match){
+      try{raw=decodeURIComponent(match[1])}catch(err){raw=match[1]}
+    }
+  }
+  return raw.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8);
+}
+function rememberCopiedRoomCode(code){
+  const normalized=normalizeRoomCode(code);
+  if(!normalized)return;
+  try{localStorage.setItem(LAST_COPIED_ROOM_CODE_KEY,normalized)}catch(e){}
+}
+function getRememberedRoomCode(){
+  try{return normalizeRoomCode(localStorage.getItem(LAST_COPIED_ROOM_CODE_KEY)||'')}catch(e){return ''}
+}
+function applyRoomCodeToJoinInput(value,message='房间号已粘贴'){
+  const input=document.getElementById('joinRoomInput');
+  const code=normalizeRoomCode(value);
+  if(!input||!code)return false;
+  input.value=code;
+  input.dispatchEvent(new Event('input',{bubbles:true}));
+  lobbyNotice(message);
+  return true;
+}
+function handleRoomCodePaste(event){
+  const input=event.currentTarget;
+  setTimeout(()=>{
+    input.value=normalizeRoomCode(input.value);
+    if(input.value)rememberCopiedRoomCode(input.value);
+  },0);
+}
+async function pasteRoomCodeFromClipboard(){
+  const remembered=getRememberedRoomCode();
+
+  // iPhone/iPad 优先读取游戏内最近复制的房间号，避免再弹出第二个系统“粘贴”。
+  if(isIOSWebKitDevice()&&remembered){
+    applyRoomCodeToJoinInput(remembered,'已填入最近复制的房间号');
+    return;
+  }
+
+  if(window.isSecureContext&&navigator.clipboard?.readText){
+    try{
+      const code=normalizeRoomCode(await navigator.clipboard.readText());
+      if(code){
+        rememberCopiedRoomCode(code);
+        applyRoomCodeToJoinInput(code);
+        return;
+      }
+      lobbyNotice('剪贴板没有有效房间号');
+      return;
+    }catch(e){}
+  }
+
+  if(remembered){
+    applyRoomCodeToJoinInput(remembered,'已填入最近复制的房间号');
+    return;
+  }
+
+  lobbyNotice('系统限制自动读取，请直接在输入框长按粘贴');
+}
 function joinRoomFromInput(){
   if(!validateLobbyProfile())return;
-  const code=(document.getElementById('joinRoomInput').value||'').trim().toUpperCase();
+  const input=document.getElementById('joinRoomInput');
+  const code=normalizeRoomCode(input?.value||'');
+  if(input)input.value=code;
   if(code.length<4){lobbyNotice('请输入正确房间号');return}
+  rememberCopiedRoomCode(code);
   const meta=loadRoomMeta(code);activeRoomCode=code;roomPasswordEnabled=!!meta?.passwordEnabled;activeRoomPassword=meta?.password||'';
   roomHostId=meta?.hostId||'';roomAccessGranted=!roomPasswordEnabled;openRoom(code,false);
 }
@@ -6609,7 +6851,7 @@ function renderRoomRoster(){
     ? `正在等待其他玩家加入（${humans.length}/4）`
     : '房间已满；正式联机功能后续接入';
 }
-async function copyRoomLink(){const l=currentRoomLink();try{await navigator.clipboard.writeText(l);lobbyNotice('房间链接已复制')}catch(e){prompt('复制此链接',l)}}
+async function copyRoomLink(){const l=currentRoomLink();rememberCopiedRoomCode(activeRoomCode);try{await navigator.clipboard.writeText(l);lobbyNotice('房间链接已复制')}catch(e){prompt('复制此链接',l)}}
 function leaveRoom(){sendRoomMessage({type:'leave'});closeRoomChannel();activeRoomCode='';activeRoomPassword='';roomMembers.clear();roomHostId='';setLobbyRoomView(false)}
 function initLobby(){
   setLobbyRoomView(false);
@@ -6621,7 +6863,7 @@ function initLobby(){
     const startInput=document.getElementById('startSeedInput');
     if(startInput)startInput.value=sharedSeed;
   }
-  const room=url.searchParams.get('room');if(room){document.getElementById('joinRoomInput').value=room.toUpperCase();document.querySelector('.lobbySub').textContent='输入名称后即可进入邀请房间'}}
+  const room=normalizeRoomCode(url.searchParams.get('room'));if(room){document.getElementById('joinRoomInput').value=room;rememberCopiedRoomCode(room);document.querySelector('.lobbySub').textContent='输入名称后即可进入邀请房间'}}
 window.addEventListener('beforeunload',()=>sendRoomMessage({type:'leave'}));
 
 
@@ -6938,9 +7180,9 @@ function nextTurn(){
   if(gameOver)return;
   startTurnDeadline();
 
-  // 当前玩家连一副合法牌都没有时，不进入思考或操作时间。
-  // 例如只剩2张，而桌面要求5张牌型，系统立即自动过牌。
-  if(autoSkipImpossibleTurn())return;
+  // 真人与随机匹配继续保留无法回应时的即时自动过牌。
+  // 电脑对战则统一等待约2秒后，由AI正常执行出牌或过牌，避免连续动作过快。
+  if((randomMatchGameMode||players[currentPlayer].human)&&autoSkipImpossibleTurn())return;
 
   if(players[currentPlayer].human){
     sfx('turn');
@@ -6950,8 +7192,8 @@ function nextTurn(){
     if(randomMatchGameMode){
       turnTimer=setTimeout(aiTurn,randomMatchThinkDelay(currentPlayer));
     }else{
-      // 普通电脑模式直接完成判断，不制造假思考时间。
-      turnTimer=setTimeout(aiTurn,20);
+      // 电脑对战：每位电脑轮到后约2秒再行动。
+      turnTimer=setTimeout(aiTurn,2000);
     }
   }
 }
@@ -7901,9 +8143,10 @@ function executePlay(pi,combo){
   lastPlay=combo;leader=pi;passes=0;firstPlay=false;
   recentPlayHistory.unshift({
     player:players[pi].name,
-    type:typeName(combo)
+    type:typeName(combo),
+    cards:combo.cards.map(c=>({...c}))
   });
-  recentPlayHistory=recentPlayHistory.slice(0,3);
+  recentPlayHistory=recentPlayHistory.slice(0,12);
   logMsg(`${players[pi].name}出了${typeName(combo)}：${combo.cards.map(cardText).join(' ')}`);
   if(combo.type==='fourKind')awardImmediate(pi,5,'铁支',combo.cards);
   if(combo.type==='straightFlush')awardImmediate(pi,10,'同花顺',combo.cards);
@@ -7932,7 +8175,7 @@ function executePass(pi){
   selected.clear();resetHints();
   if(!lastPlay){ if(players[pi].human)toast('新一轮不能过牌'); return; }
   recentPlayHistory.unshift({player:players[pi].name,type:'过牌',pass:true});
-  recentPlayHistory=recentPlayHistory.slice(0,3);
+  recentPlayHistory=recentPlayHistory.slice(0,12);
   passes++;logMsg(`${players[pi].name}过牌`);
   if(passes>=3){
     lastPlay=null;passes=0;currentPlayer=leader;
@@ -8543,6 +8786,42 @@ function fitHandCards(){
   });
 }
 window.addEventListener('resize',()=>requestAnimationFrame(fitHandCards));
+function openRecentPlayHistory(){
+  const overlay=document.getElementById('playHistoryOverlay');
+  const list=document.getElementById('playHistoryList');
+  if(!overlay||!list)return;
+
+  const playedHands=recentPlayHistory.filter(item=>Array.isArray(item.cards)&&item.cards.length);
+  // 桌面仍有当前牌时，最新一手已直接显示在左侧，因此弹窗展示它之前的两手。
+  // 桌面已经重获自由时没有当前牌，则展示最近两手实际出牌。
+  const hands=(lastPlay?playedHands.slice(1,3):playedHands.slice(0,2));
+
+  if(!hands.length){
+    list.innerHTML='<div class="playHistoryEmpty">目前还没有可查看的上两手牌</div>';
+  }else{
+    list.innerHTML=hands.map((item,index)=>`
+      <div class="playHistoryHand">
+        <div class="playHistoryMeta">
+          <span class="playHistoryStep">${index===0?'上一手':'上两手'}</span>
+          <span class="playHistoryWho">${escapeLobbyHtml(item.player)} · ${escapeLobbyHtml(item.type)}</span>
+        </div>
+        <div class="playHistoryCards">${item.cards.map(c=>renderCard(c,'played historyPlayingCard')).join('')}</div>
+      </div>
+    `).join('');
+  }
+
+  overlay.classList.add('show');
+  overlay.setAttribute('aria-hidden','false');
+}
+function closeRecentPlayHistory(){
+  const overlay=document.getElementById('playHistoryOverlay');
+  if(!overlay)return;
+  overlay.classList.remove('show');
+  overlay.setAttribute('aria-hidden','true');
+}
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape')closeRecentPlayHistory();
+});
 function renderPile(){
   const shown=lastPlay?sortComboCards(lastPlay):[];
   document.getElementById('pileCards').innerHTML=shown.map(c=>renderCard(c,'played')).join('');
@@ -8555,7 +8834,7 @@ function renderPile(){
     return;
   }
 
-  label.innerHTML=recentPlayHistory.map((item,index)=>`
+  label.innerHTML=recentPlayHistory.slice(0,3).map((item,index)=>`
     <div class="recentPlayItem ${index===0?'latest':''} ${item.pass?'pass':''}"
       title="${escapeLobbyHtml(item.player)} · ${escapeLobbyHtml(item.type)}">
       <span class="recentPlayPlayer">${escapeLobbyHtml(item.player)}</span>
