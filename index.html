@@ -292,6 +292,78 @@ body.dealPreviewMode .card.dealIncoming{animation:dealIntoHand .34s cubic-bezier
   100%{opacity:1;transform:translateY(0) rotate(0) scale(1)}
 }
 
+
+/* 分牌阶段：所有主要格子强制完全不透明 */
+body.dealPreviewMode #table,
+body.dealPreviewMode #centerPile,
+body.dealPreviewMode #pileCards,
+body.dealPreviewMode #pileLabel,
+body.dealPreviewMode .seat,
+body.dealPreviewMode .handWrap,
+body.dealPreviewMode .controls{
+  isolation:isolate;
+  opacity:1!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+
+body.dealPreviewMode #centerPile{
+  position:relative;
+  overflow:hidden;
+  background:#061b25!important;
+  box-shadow:none!important;
+}
+
+body.dealPreviewMode #centerPile::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background:#061b25;
+  opacity:1;
+  pointer-events:none;
+}
+
+body.dealPreviewMode #pileCards,
+body.dealPreviewMode #pileLabel{
+  position:relative;
+  z-index:1;
+}
+
+body.dealPreviewMode #pileCards{
+  background:#082631!important;
+}
+
+body.dealPreviewMode #pileLabel{
+  background:#061923!important;
+}
+
+body.dealPreviewMode .seat{
+  position:relative;
+  overflow:hidden;
+  background:#082334!important;
+  box-shadow:none!important;
+}
+
+body.dealPreviewMode .seat::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  background:#082334;
+  opacity:1;
+  border-radius:inherit;
+}
+
+body.dealPreviewMode .handWrap{
+  background:#061923!important;
+  box-shadow:none!important;
+}
+
+body.dealPreviewMode .controls{
+  background:#041018!important;
+}
+
 /* Modals, settlement, overlays */
 #overlay{position:fixed;inset:0;z-index:110;display:flex;align-items:center;justify-content:center;padding:calc(10px + var(--safe-top)) 10px calc(10px + var(--safe-bottom));background:#01070ceB;overflow:hidden}
 .modal{width:min(100%,520px);max-height:94dvh;overflow:auto;padding:12px;background:#0a2230;border:2px solid var(--line2);border-radius:12px;box-shadow:0 16px 44px #000d;scrollbar-width:none}.modal::-webkit-scrollbar{display:none}.modal h1,.result h1{margin:0 0 8px;color:var(--gold);font-size:21px;text-align:center}.modal p{color:#b7cbd2;font-size:12px;line-height:1.5}.choice{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.choice button{min-height:58px;border:1px solid var(--line);border-radius:7px;background:#102c3b;color:#fff}.choice button.selected{border-color:var(--gold);background:#73591c}.big{width:100%;margin-top:10px}
@@ -368,6 +440,56 @@ body.dealPreviewMode .card.dealIncoming{animation:dealIntoHand .34s cubic-bezier
 @media (min-width:700px){#app{width:min(700px,100%);margin:auto}.controls{padding-left:28px;padding-right:28px}.lobbyPanel{width:min(560px,100%)}}
 @media (prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
 
+
+/* iPhone Safari 底部安全区：控制栏延伸到底并保持实心 */
+.controls{
+  position:relative;
+  isolation:isolate;
+  background:#041018!important;
+  opacity:1!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  padding-bottom:calc(6px + env(safe-area-inset-bottom))!important;
+}
+
+.controls::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:calc(env(safe-area-inset-bottom) * -1);
+  height:env(safe-area-inset-bottom);
+  background:#041018;
+  pointer-events:none;
+  z-index:-1;
+}
+
+.actions{
+  position:relative;
+  z-index:2;
+  background:#041018!important;
+  opacity:1!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+
+body.dealPreviewMode .controls,
+body.dealPreviewMode .actions{
+  background:#041018!important;
+  opacity:1!important;
+}
+
+body.dealPreviewMode .controls::after{
+  background:#041018!important;
+}
+
+/* 防止根背景从底部安全区露出 */
+html,
+body,
+#app{
+  background:#041018;
+}
+
 </style></head>
 <body>
 <div id="lobbyScreen"><div class="lobbyPanel"><div id="startPanel" style="display: block;">
@@ -418,7 +540,7 @@ body.dealPreviewMode .card.dealIncoming{animation:dealIntoHand .34s cubic-bezier
 <button class="randomMatchBtn" onclick="startSimulatedMatchmaking('standard')" type="button">随机匹配<small>60秒理牌 · 40秒出牌</small></button>
 <button class="randomMatchBtn quickMatchBtn" onclick="startSimulatedMatchmaking('quick')" type="button">快速局<small>25秒理牌 · 15秒出牌</small></button>
 </div>
-<div class="homeRandomBalance"><span>随机匹配累计</span><strong id="homeRandomBalanceValue" class="pos">+1728</strong></div>
+<div class="homeRandomBalance"><span>随机匹配累计</span><strong id="homeRandomBalanceValue" class="pos">+1762</strong></div>
 </section>
 <section aria-label="开房间" class="lobbySection roomLobbySection">
 <div class="modeTitle">开房间</div>
@@ -649,6 +771,7 @@ let hintCombos = [];
 let hintIndex = -1;
 let queuedHumanAction=null;
 let preActionPassAvailable=false;
+let humanPassedPlaySignature='';
 let preActionPreviewActive=false;
 let preActionOriginalSelected=[];
 let preActionPreviewContext='';
@@ -3687,6 +3810,9 @@ function validateHumanPreActionAfterPlay(){
     if(lastPlay&&leader===0){
       return cancelHumanPreActionForChangedTable('当前桌面重新变成你出的牌，预过牌已取消',false);
     }
+    if(humanAlreadyPassedCurrentPlay()){
+      return cancelHumanPreActionForChangedTable('这手牌已经过牌，预过牌已取消',false);
+    }
     // 桌面暂时自由时继续保留预过牌，等待后续玩家出牌。
     return false;
   }
@@ -3702,6 +3828,7 @@ function validateHumanPreActionAfterPlay(){
 
 function executePlay(pi,combo){
   clearTimeout(turnTimer);turnTimer=null;clearTurnDeadline();sfx('play');
+  if(pi===0)humanPassedPlaySignature='';
   const preserveHumanPlan=pi!==0&&hasHumanPreAction();
   if(!preserveHumanPlan)selected.clear();
   resetHints();
@@ -3745,11 +3872,17 @@ function executePass(pi){
   if(!preserveHumanPlan)selected.clear();
   resetHints();
   if(!lastPlay){ if(players[pi].human)toast('新一轮不能过牌'); return; }
+
+  if(pi===0)humanPassedPlaySignature=currentTablePlaySignature();
+
   recentPlayHistory.unshift({player:players[pi].name,type:'过牌',pass:true});
   recentPlayHistory=recentPlayHistory.slice(0,12);
   passes++;logMsg(`${players[pi].name}过牌`);
   if(passes>=3){
-    lastPlay=null;passes=0;currentPlayer=leader;
+    lastPlay=null;
+    humanPassedPlaySignature='';
+    passes=0;
+    currentPlayer=leader;
     logMsg(`${players[leader].name}获得新一轮出牌权`);
   }else currentPlayer=(pi+1)%4;
   nextTurn();
@@ -3797,6 +3930,10 @@ function humanPass(){
     }
     if(lastPlay&&leader===0){
       toast('目前仍是你出的牌，尚未有人压牌，不需要预过牌');
+      return;
+    }
+    if(humanAlreadyPassedCurrentPlay()){
+      toast('这手牌你已经过牌，不能重复预过');
       return;
     }
     beginHumanPreActionPreview('response');
@@ -4392,6 +4529,16 @@ function clearHumanPreAction(restore=false){
   const playBtn=document.getElementById('playBtn');
   if(playBtn)playBtn.classList.remove('preActionReady','preActionQueued','preActionPass');
 }
+function currentTablePlaySignature(){
+  if(!lastPlay)return '';
+  const ids=(lastPlay.cards||[]).map(c=>c.id).slice().sort().join('|');
+  return `${leader}:${lastPlay.type}:${ids}`;
+}
+function humanAlreadyPassedCurrentPlay(){
+  const sig=currentTablePlaySignature();
+  return !!sig&&humanPassedPlaySignature===sig;
+}
+
 function queueHumanPreAction(type,cardIds=[]){
   if(!preActionPreviewActive)beginHumanPreActionPreview();
   queuedHumanAction={
@@ -5044,7 +5191,8 @@ function updateButtons(){
   const canPlay=mine&&selectionLegal;
   const canPrePlay=waiting&&!!lastPlay&&selectionLegal;
   const ownPlayStillControlsTable=!!lastPlay&&leader===0;
-  const canPrePass=waiting&&!ownPlayStillControlsTable;
+  const alreadyPassedThisPlay=humanAlreadyPassedCurrentPlay();
+  const canPrePass=waiting&&!ownPlayStillControlsTable&&!alreadyPassedThisPlay;
   const queuedPlay=queuedHumanAction?.type==='play';
   const queuedPass=queuedHumanAction?.type==='pass';
 
