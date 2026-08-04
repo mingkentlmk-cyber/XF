@@ -1375,6 +1375,60 @@ body.dealPreviewMode .seat:active{
   filter:brightness(1.12);
 }
 
+
+/* 全部历史记录弹窗 */
+.playHistoryPanel{
+  max-height:min(82dvh,720px);
+  display:grid;
+  grid-template-rows:auto minmax(0,1fr);
+  overflow:hidden;
+}
+
+.playHistoryList{
+  min-height:0;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  padding-right:2px;
+}
+
+.playHistoryHand{
+  flex-shrink:0;
+}
+
+
+.seatViewHandBtn{
+  display:none;
+  width:100%;
+  min-height:44px;
+  margin:0 0 7px;
+  place-items:center;
+  border:1px solid var(--gold);
+  border-radius:7px;
+  background:linear-gradient(180deg,#765d23,#4b3913);
+  color:#ffe9aa;
+  font-size:13px;
+  font-weight:900;
+}
+body.inspectHandMode .handWrap{
+  border-color:var(--gold)!important;
+  background:radial-gradient(circle at 50% 90%,#3d3418 0,#1f1b10 58%,#0b0a08 100%)!important;
+  box-shadow:inset 0 0 24px #f2c96833!important;
+}
+body.inspectHandMode #hand .card{cursor:default!important}
+.actions.inspectReturnMode{grid-template-columns:1fr!important}
+.actions.inspectReturnMode #playBtn{
+  grid-column:1/-1;
+  width:100%;
+  border-color:var(--gold)!important;
+  background:linear-gradient(180deg,#8a6d28,#5d4718)!important;
+  color:#fff3bd;
+}
+body.inspectHandMode .quick .ctrl{
+  opacity:.45;
+  pointer-events:none;
+}
+body.inspectHandMode .preGameComboButtons{visibility:hidden!important}
+
 </style></head>
 <body>
 <div id="lobbyScreen"><div class="lobbyPanel"><div id="startPanel" style="display: block;">
@@ -1425,7 +1479,7 @@ body.dealPreviewMode .seat:active{
 <button class="randomMatchBtn" onclick="startSimulatedMatchmaking('standard')" type="button">随机匹配<small>60秒理牌 · 40秒出牌</small></button>
 <button class="randomMatchBtn quickMatchBtn" onclick="startSimulatedMatchmaking('quick')" type="button">快速局<small>25秒理牌 · 15秒出牌</small></button>
 </div>
-<div class="homeRandomBalance"><span>随机匹配累计</span><strong id="homeRandomBalanceValue" class="pos">+1459</strong></div>
+<div class="homeRandomBalance"><span>随机匹配累计</span><strong id="homeRandomBalanceValue" class="pos">+1479</strong></div>
 </section>
 <section aria-label="开房间" class="lobbySection roomLobbySection">
 <div class="modeTitle">开房间</div>
@@ -1535,14 +1589,14 @@ body.dealPreviewMode .seat:active{
 <div aria-label="与上方玩家互动" class="seat" id="north" onclick="openSeatInteractionMenu(2)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openSeatInteractionMenu(2)}" role="button" tabindex="0"><div class="name">玩家</div><div class="count"></div><div class="cardbacks"></div></div>
 <div aria-label="与左侧玩家互动" class="seat" id="west" onclick="openSeatInteractionMenu(1)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openSeatInteractionMenu(1)}" role="button" tabindex="0"><div class="name">玩家</div><div class="count"></div><div class="cardbacks"></div></div>
 <div aria-label="与右侧玩家互动" class="seat" id="east" onclick="openSeatInteractionMenu(3)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openSeatInteractionMenu(3)}" role="button" tabindex="0"><div class="name">玩家</div><div class="count"></div><div class="cardbacks"></div></div>
-<div id="centerPile" onclick="developerForceFromPlayArea(event)" title="GOD模式：点击出牌区让当前电脑行动"><div id="pileCards"></div><div aria-label="查看前三手完整资讯" id="pileLabel" onclick="openRecentPlayHistory()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRecentPlayHistory()}" role="button" tabindex="0">等待开局</div></div>
+<div id="centerPile" onclick="developerForceFromPlayArea(event)" title="GOAT模式：点击出牌区让当前电脑行动"><div id="pileCards"></div><div aria-label="查看前三手完整资讯" id="pileLabel" onclick="openRecentPlayHistory()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRecentPlayHistory()}" role="button" tabindex="0">等待开局</div></div>
 <div id="recentTransfer">尚无过账记录</div>
 <div class="log" id="log"></div>
 </div>
 <div aria-hidden="true" id="playHistoryOverlay" onclick="if(event.target===this)closeRecentPlayHistory()">
 <div aria-labelledby="playHistoryTitle" aria-modal="true" class="playHistoryPanel" role="dialog">
 <div class="playHistoryHeader">
-<div class="playHistoryTitle" id="playHistoryTitle">前三手记录</div>
+<div class="playHistoryTitle" id="playHistoryTitle">本局全部记录</div>
 <button class="playHistoryClose" onclick="closeRecentPlayHistory()" type="button">关闭</button>
 </div>
 <div class="playHistoryList" id="playHistoryList"></div>
@@ -1556,6 +1610,7 @@ body.dealPreviewMode .seat:active{
 <button class="seatInteractionBtn tomato" onclick="chooseSeatInteraction('tomato')" type="button">丢番茄</button>
 <button class="seatInteractionBtn like" onclick="chooseSeatInteraction('like')" type="button">点赞</button>
 </div>
+<button class="seatViewHandBtn" id="seatViewHandBtn" onclick="viewSelectedPlayerHand()" type="button">查看手牌</button>
 <button class="seatInteractionClose" onclick="closeSeatInteractionMenu()" type="button">取消</button>
 </div>
 </div>
@@ -3052,7 +3107,7 @@ function playerPreGameReady(){
 
   preGameReadyStates[0]=true;
 
-  // GOD开发模式：玩家按下READY后，不再等待其他三家，
+  // GOAT开发模式：玩家按下READY后，不再等待其他三家，
   // 直接视为全部准备完成并开始牌局。
   if(developerMode){
     preGameReadyStates=[true,true,true,true];
@@ -3385,7 +3440,7 @@ function updateVisibleTurnTimer(){
   if(ceremonyActive||gameOver){
     visible=false;
   }
-  // 理牌阶段：只有非GOD且本模式确实有理牌倒数时才显示。
+  // 理牌阶段：只有非GOAT且本模式确实有理牌倒数时才显示。
   else if(preGameReadyActive){
     if(!developerMode&&preGameReadyTimed){
       visible=true;
@@ -3393,7 +3448,7 @@ function updateVisibleTurnTimer(){
       warning=preGameReadySeconds<=(randomMatchSpeed==='quick'?5:10);
     }
   }
-  // GOD正式出牌阶段始终显示无限。
+  // GOAT正式出牌阶段始终显示无限。
   else if(developerMode){
     visible=true;
     unlimited=true;
@@ -3422,7 +3477,7 @@ function startTurnDeadline(){
   clearTurnDeadline();
   if(gameOver)return;
 
-  // GOD开发模式下所有玩家都不限时。
+  // GOAT开发模式下所有玩家都不限时。
   // 不建立任何自动倒数，也不会让电脑自行行动。
   if(developerMode){
     turnSecondsLeft=0;
@@ -3837,6 +3892,7 @@ let randomMatchMidDepartureTimer=null;
 let randomMatchMidDepartureRound=0;
 let seatInteractionTarget=null;
 let seatInteractionTimer=null;
+let inspectedHandPlayerIndex=null;
 function randomMatchClock(kind){return RANDOM_MATCH_CLOCKS[randomMatchSpeed]?.[kind]??RANDOM_MATCH_CLOCKS.standard[kind]}
 
 function setAIDifficulty(level){
@@ -3941,20 +3997,20 @@ function startSeedAIGame(level){
   // 暗号不再绑定难度：四个“种子开局”按钮都能触发，只领取金额、不进入游戏。
   if(claimGiveMe1000Reward())return;
 
-  const godRequested=seed==='GOD';
-  if(godRequested){
-    // GOD只开启开发模式，不立即进入牌局。
+  const goatRequested=seed==='GOAT';
+  if(goatRequested){
+    // GOAT只开启开发模式，不立即进入牌局。
     // 开启后继续停留在大厅，让开发者重新选择任意游戏模式。
     setDeveloperMode(true);
     seedAIGameMode=false;
     forcedNextSeed='';
     if(input){
       input.value='';
-      input.placeholder='GOD开发模式已开启';
+      input.placeholder='GOAT开发模式已开启';
     }
     const sub=document.querySelector('.lobbySub');
-    if(sub)sub.textContent='GOD开发模式已开启 · 请选择要测试的游戏模式';
-    lobbyNotice('GOD开发模式已开启，请选择游戏模式');
+    if(sub)sub.textContent='GOAT开发模式已开启 · 请选择要测试的游戏模式';
+    lobbyNotice('GOAT开发模式已开启，请选择游戏模式');
     return;
   }
 
@@ -4761,7 +4817,7 @@ function autoPassAfterAbsoluteMax(pi,combo){
         pass:true,
         auto:true
       });
-      recentPlayHistory=recentPlayHistory.slice(0,12);
+      
       passes=index+1;
       currentPlayer=passPlayer;
       logMsg(`${players[passPlayer].name}无法压过最大牌，自动过牌`);
@@ -4870,7 +4926,7 @@ function executePlay(pi,combo){
     type:typeName(combo),
     cards:combo.cards.map(c=>({...c}))
   });
-  recentPlayHistory=recentPlayHistory.slice(0,12);
+  
   logMsg(`${players[pi].name}出了${typeName(combo)}：${combo.cards.map(cardText).join(' ')}`);
   if(combo.type==='fourKind')awardImmediate(pi,5,'铁支',combo.cards);
   if(combo.type==='straightFlush')awardImmediate(pi,10,'同花顺',combo.cards);
@@ -4904,7 +4960,7 @@ function executePass(pi){
   if(pi===0)humanPassedPlaySignature=currentTablePlaySignature();
 
   recentPlayHistory.unshift({player:players[pi].name,type:'过牌',pass:true});
-  recentPlayHistory=recentPlayHistory.slice(0,12);
+  
   passes++;logMsg(`${players[pi].name}过牌`);
   if(passes>=3){
     lastPlay=null;
@@ -5951,20 +6007,33 @@ function renderHandCardMarkup(c,hintIds,playableIds){
   return renderCard(c,cls);
 }
 function renderHand(fromHint=false){
-  const hand=sortedHand(players[0].hand||[]);
+  const viewIndex=inspectedHandPlayerIndex==null?0:inspectedHandPlayerIndex;
+  const hand=sortedHand(players[viewIndex]?.hand||[]);
   applyHandVisualState(hand.length);
-  const hintIds=fromHint&&hintIndex>=0&&hintCombos[hintIndex]
+  const isInspecting=viewIndex!==0;
+  const hintIds=!isInspecting&&fromHint&&hintIndex>=0&&hintCombos[hintIndex]
     ?new Set(hintCombos[hintIndex].cards.map(c=>c.id))
     :new Set();
-  const playableIds=preGameReadyActive?new Set(hand.map(c=>c.id)):playableHumanCardIds();
+  const playableIds=isInspecting
+    ?new Set(hand.map(c=>c.id))
+    :(preGameReadyActive?new Set(hand.map(c=>c.id)):playableHumanCardIds());
   const handEl=document.getElementById('hand');
   if(!handEl)return;
   handEl.classList.remove('hasCollection');
-  handEl.innerHTML=hand.map(c=>renderHandCardMarkup(c,hintIds,playableIds)).join('');
-  renderPreGameComboButtons();
+  handEl.innerHTML=hand.map(c=>isInspecting?renderCard(c,'card inspectedCard'):renderHandCardMarkup(c,hintIds,playableIds)).join('');
+  if(isInspecting){
+    const comboButtons=document.getElementById('preGameComboButtons');
+    if(comboButtons){
+      comboButtons.innerHTML='';
+      comboButtons.classList.add('empty');
+    }
+  }else{
+    renderPreGameComboButtons();
+  }
   requestAnimationFrame(fitHandCards);
 }
 function handleHandClick(event){
+  if(inspectedHandPlayerIndex!=null)return;
   const card=event.target.closest('#hand .card');
   if(!card)return;
   const id=card.dataset.id;
@@ -6023,13 +6092,13 @@ function openRecentPlayHistory(){
   const list=document.getElementById('playHistoryList');
   if(!overlay||!list)return;
 
-  const hands=recentPlayHistory.slice(0,3);
+  const hands=recentPlayHistory.slice();
 
   if(!hands.length){
-    list.innerHTML='<div class="playHistoryEmpty">目前还没有可查看的前三手记录</div>';
+    list.innerHTML='<div class="playHistoryEmpty">目前还没有历史记录</div>';
   }else{
     list.innerHTML=hands.map((item,index)=>{
-      const step=index===0?'最新一手':index===1?'前二手':'前三手';
+      const step=index===0?'最新一手':`往前第 ${index+1} 手`;
       const isPass=!!item.pass;
       const cardsHtml=Array.isArray(item.cards)&&item.cards.length
         ? `<div class="playHistoryCards">${item.cards.map(c=>renderCard(c,'played historyPlayingCard')).join('')}</div>`
@@ -6180,26 +6249,32 @@ function renderAll(){
   renderPile();
   renderTurnBanner();
 
+  const viewIndex=inspectedHandPlayerIndex==null?0:inspectedHandPlayerIndex;
   const humanCount=document.getElementById('humanCount');
-  if(humanCount)humanCount.textContent=`${players[0].hand.length}张`;
+  if(humanCount)humanCount.textContent=`${players[viewIndex]?.hand?.length||0}张`;
 
   const humanInfo=document.getElementById('humanInfo');
-  const isHumanTurn=!preGameReadyActive&&!ceremonyActive&&!gameOver&&currentPlayer===0;
+  const isHumanTurn=inspectedHandPlayerIndex==null&&!preGameReadyActive&&!ceremonyActive&&!gameOver&&currentPlayer===0;
   if(humanInfo){
     humanInfo.classList.toggle('active',isHumanTurn);
   }
   const handWrap=document.querySelector('.handWrap');
   if(handWrap)handWrap.classList.toggle('playerTurnActive',isHumanTurn);
 
+  const humanName=document.querySelector('#humanInfo .humanName');
+  if(humanName)humanName.textContent=inspectedHandPlayerIndex==null?'手牌':players[viewIndex]?.name||'玩家';
+
   const humanTurnText=document.getElementById('humanTurnText');
   if(humanTurnText){
-    humanTurnText.textContent=preGameReadyActive
-      ? '理牌中'
-      : gameOver
-        ? '本局结束'
-        : currentPlayer===0
-          ? '到你'
-          : '等待';
+    humanTurnText.textContent=inspectedHandPlayerIndex!=null
+      ? '查看手牌'
+      : preGameReadyActive
+        ? '理牌中'
+        : gameOver
+          ? '本局结束'
+          : currentPlayer===0
+            ? '到你'
+            : '等待';
   }
 
   updateButtons();
@@ -6213,6 +6288,40 @@ function renderAll(){
   renderBalanceBar();
 }
 function updateButtons(){
+  const actions=document.querySelector('.actions');
+  const passBtn=document.getElementById('passBtn');
+  const playBtn=document.getElementById('playBtn');
+
+  if(inspectedHandPlayerIndex!=null){
+    if(actions)actions.classList.add('inspectReturnMode');
+    if(passBtn){
+      passBtn.style.display='none';
+      passBtn.disabled=true;
+    }
+    if(playBtn){
+      playBtn.style.display='grid';
+      playBtn.disabled=false;
+      playBtn.textContent='返回自己的手牌';
+      playBtn.onclick=exitInspectedHand;
+      playBtn.classList.remove('preActionReady','preActionQueued','preActionPass');
+    }
+    ['sortRank','sortSuit','hintBtn'].forEach(id=>{
+      const btn=document.getElementById(id);
+      if(btn)btn.disabled=true;
+    });
+    return;
+  }
+
+  if(actions)actions.classList.remove('inspectReturnMode');
+  if(passBtn){
+    passBtn.style.display='';
+    passBtn.onclick=humanPass;
+  }
+  if(playBtn){
+    playBtn.style.display='';
+    playBtn.onclick=humanPlay;
+  }
+
   const mine=currentPlayer===0&&!gameOver&&!ceremonyActive;
   const waiting=!mine&&!gameOver&&!ceremonyActive&&!preGameReadyActive;
   const handReady=players[0].hand.length>0&&!gameOver&&!ceremonyActive;
@@ -6231,7 +6340,6 @@ function updateButtons(){
   setControlAvailability(document.getElementById('sortSuit'),handReady,'有手牌时可理牌','当前没有可整理的手牌');
   setControlAvailability(document.getElementById('hintBtn'),handReady&&!preGameReadyActive,'按当前桌面状态提示','当前阶段不能提示');
 
-  const playBtn=document.getElementById('playBtn');
   const playEnabled=canPlay||canPrePlay||queuedPlay;
   setControlAvailability(
     playBtn,
@@ -6246,7 +6354,6 @@ function updateButtons(){
     playBtn.textContent=queuedPlay?'已预出':canPrePlay?'预出牌':'出牌';
   }
 
-  const passBtn=document.getElementById('passBtn');
   const canPassNow=mine&&!!lastPlay;
   const passEnabled=canPassNow||canPrePass||queuedPass;
   setControlAvailability(
@@ -6334,7 +6441,12 @@ function openSeatInteractionMenu(targetIndex){
   const title=document.getElementById('seatInteractionTitle');
   const sub=document.getElementById('seatInteractionSub');
   if(title)title.textContent=`与 ${players[targetIndex].name} 互动`;
-  if(sub)sub.textContent='选择要发送的互动';
+  if(sub)sub.textContent=developerMode?'可互动或查看该玩家手牌':'选择要发送的互动';
+  const viewBtn=document.getElementById('seatViewHandBtn');
+  if(viewBtn){
+    viewBtn.style.display=developerMode?'grid':'none';
+    viewBtn.textContent=`查看 ${players[targetIndex].name} 手牌`;
+  }
   overlay?.classList.add('show');
   overlay?.setAttribute('aria-hidden','false');
 }
@@ -6402,6 +6514,26 @@ function performSeatInteraction(fromIndex,toIndex,kind,showToastMsg=true){
   },620);
   setTimeout(()=>node.remove(),850);
 }
+function viewSelectedPlayerHand(){
+  if(!developerMode||seatInteractionTarget==null)return;
+  const target=seatInteractionTarget;
+  closeSeatInteractionMenu();
+  inspectedHandPlayerIndex=target;
+  document.body.classList.add('inspectHandMode');
+  selected.clear();
+  resetHints();
+  renderAll();
+}
+
+function exitInspectedHand(){
+  if(inspectedHandPlayerIndex==null)return;
+  inspectedHandPlayerIndex=null;
+  document.body.classList.remove('inspectHandMode');
+  selected.clear();
+  resetHints();
+  renderAll();
+}
+
 function chooseSeatInteraction(kind){
   if(seatInteractionTarget==null)return;
   const target=seatInteractionTarget;
