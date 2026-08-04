@@ -1,4 +1,4 @@
-<html lang="zh-CN"><head>
+<html lang="zh-CN" style="--app-height: 657px;"><head>
 <meta charset="utf-8">
 <meta content="#061722" name="theme-color"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" name="viewport">
 <title>锄大D</title>
@@ -38,7 +38,7 @@ input{appearance:none;-webkit-appearance:none;border-radius:0}
 #lobbyScreen:not([style*="display: none"])~#app,
 #matchScreen.show~#app{display:none}
 #lobbyScreen:not([style*="display: none"])~#overlay{display:none!important}
-#app{height:100svh;max-height:100dvh;display:grid;grid-template-rows:54px 46px minmax(0,1fr) clamp(302px,46svh,376px);overflow:hidden;background:radial-gradient(circle at 50% 28%,#0d3441 0,#061923 45%,#02090f 100%);border:2px solid var(--line2)}
+#app{height:var(--app-height);max-height:var(--app-height);display:grid;grid-template-rows:54px 46px minmax(0,1fr) clamp(302px,46svh,376px);overflow:hidden;background:radial-gradient(circle at 50% 28%,#0d3441 0,#061923 45%,#02090f 100%);border:2px solid var(--line2)}
 
 /* Common controls */
 .smallbtn,.lobbyAction,.multiplayerBtn,.randomMatchBtn,.seedDifficultyBtn,.rankedLockedBtn,.ctrl,.big,.readyNextBtn,#preGameReadyBtn,.seatInteractionBtn,.seatInteractionClose,.playerAssetClose,.playHistoryClose,.matchCancel,.resultSeedActions button,.randomResultActions button,.skipActions button{
@@ -126,7 +126,7 @@ body.developerMode .startSeedInput{border-color:var(--gold);box-shadow:0 0 0 2px
 
 /* Matchmaking and opening */
 .matchScreen{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:calc(12px + var(--safe-top)) 12px calc(12px + var(--safe-bottom));background:#02090ff2}
-.matchScreen.show{display:flex}.matchBox{width:min(100%,480px);max-height:94svh;overflow:hidden;padding:14px;background:#081d28;border:2px solid var(--line2);border-radius:12px;box-shadow:0 16px 46px #000d}.matchTitle,.matchOpeningTitle{text-align:center;font-size:24px;color:var(--gold)}.matchLabel,.matchOpeningLabel{width:max-content;max-width:100%;margin:7px auto;padding:4px 8px;border:1px solid var(--gold);border-radius:5px;color:#ffe39a;font-size:10px}.matchTimer,.matchOpeningProgress{text-align:center;margin-bottom:10px;color:#b9d1d8;font-size:13px}.matchSlots{display:grid;gap:7px}.matchSlot{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;padding:9px;border:1px solid var(--line);background:#071923;border-radius:7px}.matchSlot.waiting{opacity:.58}.matchName{font-size:16px}.matchState{margin-top:2px;font-size:9px;color:var(--muted)}.matchPing{color:var(--cyan);font-size:11px}.matchCancel{width:100%;margin-top:10px;border-color:var(--red)}
+.matchScreen.show{display:flex}.matchBox{width:min(100%,480px);max-height:100%;overflow:hidden;padding:14px;background:#081d28;border:2px solid var(--line2);border-radius:12px;box-shadow:0 16px 46px #000d}.matchTitle,.matchOpeningTitle{text-align:center;font-size:24px;color:var(--gold)}.matchLabel,.matchOpeningLabel{width:max-content;max-width:100%;margin:7px auto;padding:4px 8px;border:1px solid var(--gold);border-radius:5px;color:#ffe39a;font-size:10px}.matchTimer,.matchOpeningProgress{text-align:center;margin-bottom:10px;color:#b9d1d8;font-size:13px}.matchSlots{display:grid;gap:7px}.matchSlot{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;padding:9px;border:1px solid var(--line);background:#071923;border-radius:7px}.matchSlot.waiting{opacity:.58}.matchName{font-size:16px}.matchState{margin-top:2px;font-size:9px;color:var(--muted)}.matchPing{color:var(--cyan);font-size:11px}.matchCancel{width:100%;margin-top:10px;border-color:var(--red)}
 .matchDots:after{content:"";animation:matchDots 1.2s steps(4,end) infinite}
 @keyframes matchDots{0%{content:""}25%{content:"."}50%{content:".."}75%,100%{content:"..."}}
 #matchOpeningPanel{display:none}.matchScreen.opening #matchQueuePanel{display:none}.matchScreen.opening #matchOpeningPanel{display:grid;grid-template-rows:auto auto auto minmax(0,1fr);height:min(82dvh,680px)}
@@ -205,8 +205,10 @@ body.developerMode #randomMidExitBtn{
 }
 #west{grid-area:left}#north{grid-area:north}#east{grid-area:right}
 .seat{display:grid;grid-template-rows:1fr 1fr;align-items:center;min-width:0;padding:5px 7px;border:1px solid var(--line);border-radius:7px;background:linear-gradient(180deg,#102c3b,#071923);overflow:hidden;cursor:pointer}.seat.active{border-color:var(--cyan);background:linear-gradient(180deg,#16483f,#092921);box-shadow:0 0 13px #62e1d244}.seat .name{min-width:0;font-size:15px;line-height:1.1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.seat .name span{vertical-align:middle}.aiTakeoverBadge{display:inline-block;margin-left:4px;padding:2px 4px;border:1px solid var(--gold);border-radius:3px;color:#ffe49a;font-size:8px}.seat .count{display:flex;align-items:center;justify-content:space-between;gap:5px;min-width:0;color:#bfd1d8;font-size:11px}.countText{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.seatBalance{display:grid;place-items:center;min-width:36px;height:20px;padding:0 5px;border:1px solid var(--line);border-radius:4px;background:#04121b;font-size:11px}.last{display:inline-block;margin-left:3px;padding:1px 4px;border-radius:3px;background:#cf4d5f;color:#fff;font-size:8px}.cardbacks{display:none}
-#centerPile{grid-area:pile;display:grid;grid-template-columns:minmax(0,3fr) minmax(86px,1fr);gap:3px;align-items:stretch;min-height:0;padding:3px;border:1px solid #2d5667;border-radius:9px;background:radial-gradient(circle at 50% 42%,#0e3a45 0,#071b24 62%,#041018 100%);overflow:hidden}
-body.arrangeMode #centerPile{grid-template-columns:minmax(0,3fr) minmax(92px,1fr);padding:5px}
+#centerPile{grid-area:pile;display:grid;grid-template-columns:minmax(0,2fr) minmax(86px,1fr);gap:3px;align-items:stretch;min-height:0;padding:0;border:0;border-radius:0;background:transparent;overflow:hidden}
+#pileCards{min-width:0;border:1px solid #2d5667;border-radius:9px;background:radial-gradient(circle at 50% 42%,#0e3a45 0,#071b24 62%,#041018 100%);overflow:hidden}
+#pileLabel{min-width:0;border:1px solid #2d5667;border-radius:9px;background:#061923;overflow:hidden}
+body.arrangeMode #centerPile{grid-template-columns:minmax(0,2fr) minmax(92px,1fr);padding:0}
 body.arrangeMode #pileLabel{display:flex}
 body.arrangeMode #pileCards{display:grid;place-items:stretch;overflow:hidden}
 .readyTableBoard{display:grid;width:100%;height:100%;min-height:0;padding:4px}
@@ -263,7 +265,7 @@ body:not(.arrangeMode) #pileCards.absoluteMaxStrike .played{position:relative;le
 .quick{grid-area:quick;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px}.ctrl{display:grid;place-items:center;min-width:0;height:100%;padding:0 3px;font-size:17px;font-weight:900}.sortCtrl.active{background:linear-gradient(180deg,#ae8531,#725418);border-color:var(--gold)}.hint{border-color:#4da79d;color:#c9fff7}.hint.autoOn{background:linear-gradient(180deg,#277268,#154b45);border-color:var(--cyan);animation:autoGlow 1.2s ease-in-out infinite}@keyframes autoGlow{50%{box-shadow:0 0 14px #62e1d278}}
 .handWrap{position:relative;grid-area:hand;min-height:0;overflow:hidden;padding:6px 8px;background:radial-gradient(circle at 50% 90%,#0e3a38 0,#061923 58%,#041018);border:1px solid #244d5d;border-radius:8px}.handWrap.playerTurnActive{border-color:var(--cyan);box-shadow:inset 0 0 18px #62e1d21d}.handWrap.turnCountdownActive{animation:turnUrgencyHandFull 1s steps(2,end) infinite}#hand{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-width:0;overflow:visible}
 .preGameComboButtons{grid-area:combo;display:grid;grid-template-columns:repeat(var(--combo-type-count,1),minmax(0,1fr));gap:3px;min-height:0}.preGameComboButtons.empty{visibility:hidden}.preGameComboBtn{min-width:0;height:34px;padding:0 3px;border:1px solid var(--line);border-radius:5px;background:#102d3b;color:#dcecf0;font-size:10px;font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.preGameComboBtn small{margin-left:3px;color:var(--gold)}.preGameComboBtn.active{border-color:var(--gold);background:#6e551d}.preGameComboBtn.currentlyBlocked{opacity:.45}.preGameComboEmpty{height:100%}
-.actions{grid-area:actions;display:grid;grid-template-columns:2fr 3fr;gap:2px}.actions .ctrl{font-size:21px}.actions .primary{background:linear-gradient(180deg,#2e9e6d,#186447);border-color:#68d69e}.actions .danger{background:linear-gradient(180deg,#8d3544,#5e1f2a)}.preActionReady{border-color:var(--cyan)!important}.preActionQueued{animation:queuedPulse 1s ease-in-out infinite}@keyframes queuedPulse{50%{filter:brightness(1.25)}}
+.actions{grid-area:actions;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:2px}.actions .ctrl{font-size:21px}.actions .primary{background:linear-gradient(180deg,#2e9e6d,#186447);border-color:#68d69e}.actions .danger{background:linear-gradient(180deg,#8d3544,#5e1f2a)}.preActionReady{border-color:var(--cyan)!important}.preActionQueued{animation:queuedPulse 1s ease-in-out infinite}@keyframes queuedPulse{50%{filter:brightness(1.25)}}
 #preGameReadyBtn{display:none;grid-area:actions;width:100%;font-size:20px}
 
 /* Arrange / ready phase */
@@ -366,7 +368,7 @@ body.dealPreviewMode .controls{
 
 /* Modals, settlement, overlays */
 #overlay{position:fixed;inset:0;z-index:110;display:flex;align-items:center;justify-content:center;padding:calc(10px + var(--safe-top)) 10px calc(10px + var(--safe-bottom));background:#01070ceB;overflow:hidden}
-.modal{width:min(100%,520px);max-height:94dvh;overflow:auto;padding:12px;background:#0a2230;border:2px solid var(--line2);border-radius:12px;box-shadow:0 16px 44px #000d;scrollbar-width:none}.modal::-webkit-scrollbar{display:none}.modal h1,.result h1{margin:0 0 8px;color:var(--gold);font-size:21px;text-align:center}.modal p{color:#b7cbd2;font-size:12px;line-height:1.5}.choice{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.choice button{min-height:58px;border:1px solid var(--line);border-radius:7px;background:#102c3b;color:#fff}.choice button.selected{border-color:var(--gold);background:#73591c}.big{width:100%;margin-top:10px}
+.modal{width:min(100%,520px);max-height:100%;overflow:auto;padding:12px;background:#0a2230;border:2px solid var(--line2);border-radius:12px;box-shadow:0 16px 44px #000d;scrollbar-width:none}.modal::-webkit-scrollbar{display:none}.modal h1,.result h1{margin:0 0 8px;color:var(--gold);font-size:21px;text-align:center}.modal p{color:#b7cbd2;font-size:12px;line-height:1.5}.choice{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.choice button{min-height:58px;border:1px solid var(--line);border-radius:7px;background:#102c3b;color:#fff}.choice button.selected{border-color:var(--gold);background:#73591c}.big{width:100%;margin-top:10px}
 .result{display:grid;gap:6px}.compactResult{gap:5px}.result table{width:100%;border-collapse:collapse;font-size:11px}.result th,.result td{padding:6px 3px;border-bottom:1px solid #ffffff18;text-align:center}.balanceTable{background:#061721;border:1px solid var(--line);border-radius:7px;overflow:hidden}
 .selfSettlementCard{padding:8px;border:1px solid var(--cyan);border-radius:8px;background:#0b2928}.settlementSelfRemaining,.settlementRoundNet{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px;border-bottom:1px solid #ffffff15}.settlementRoundNet{border-bottom:0}.settlementRoundNet strong{font-size:20px}.pairSettlementLegend,.pairSettlementMain,.pairSettlementSpecial{display:grid;grid-template-columns:minmax(0,1fr) 58px 14px 44px;align-items:center;column-gap:3px}.pairSettlementLegend{padding:5px 6px;border-top:1px solid #ffffff18;color:var(--muted);font-size:9px}.pairSettlementLegend span:nth-child(2),.pairSettlementLegend span:nth-child(3),.pairSettlementLegend span:nth-child(4){text-align:center}.pairSettlementLine{padding:5px 6px;border-top:1px solid #ffffff12;background:#071d27;font-size:11px}.pairOpponentName{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pairOpponentRemain{text-align:center;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}.pairEquals{display:block;text-align:center;color:var(--muted);font-weight:900}.pairSettlementAmount{display:block;text-align:center;font-weight:900;white-space:nowrap;font-variant-numeric:tabular-nums}.pairSettlementSpecial{margin-top:4px;padding-top:4px;border-top:1px dashed #ffffff16;color:var(--muted);font-size:9px}.pairSpecialLabel{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#d7e7ec}.pairSpecialDelta{text-align:center;font-weight:900;white-space:nowrap;font-variant-numeric:tabular-nums}.pairSpecialTotal{font-size:11px}.pairSettlementRows{display:grid;gap:2px}.resultSeedActions,.randomResultActions{display:grid;gap:6px;margin-top:2px}.resultSeedActions{grid-template-columns:1fr 1.25fr}.resultSeedActions.threeWay{grid-template-columns:1fr 1.25fr 1fr}.randomResultActions{grid-template-columns:1.25fr 1fr}.resultSeedActions button,.randomResultActions button{min-width:0;padding:7px 4px;font-size:12px}
 .ledgerList{display:grid;gap:5px;max-height:190px;overflow:auto}.ledgerEntry{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:6px;align-items:center;padding:6px;border:1px solid var(--line);border-radius:6px;background:#061923;font-size:10px}.ledgerSeq{color:#819da8}.ledgerSeq b{display:block}.ledgerReason{min-width:0}.route{display:flex;align-items:center;gap:4px;font-size:11px;font-weight:900}.ledgerReason small{display:block;margin-top:2px;color:var(--muted);line-height:1.3}.ledgerAmount{font-size:15px;color:var(--gold)}
@@ -409,8 +411,8 @@ body.dealPreviewMode .controls{
   .topbar{grid-template-columns:minmax(58px,1fr) minmax(62px,76px) 36px 44px 36px}
   .title{font-size:18px}.mainBalance strong{font-size:18px}.smallbtn{font-size:11px}
   #table{grid-template-rows:36px 54px minmax(0,1fr) 18px;gap:2px;padding:2px}
-  #centerPile{grid-template-columns:minmax(0,3fr) minmax(76px,1fr);gap:2px;padding:2px}
-  body.arrangeMode #centerPile{grid-template-columns:minmax(0,3fr) minmax(84px,1fr);padding:3px}
+  #centerPile{grid-template-columns:minmax(0,2fr) minmax(76px,1fr);gap:2px;padding:0}
+  body.arrangeMode #centerPile{grid-template-columns:minmax(0,2fr) minmax(84px,1fr);padding:0}
   .readyTableBoard{padding:2px}
   .readyPlayerBox{padding:18px}
   .readyPlayerName{font-size:24px}
@@ -490,6 +492,673 @@ body,
   background:#041018;
 }
 
+
+.absoluteMaxFlash.visualOnly{
+  display:block;
+  background:
+    radial-gradient(circle at 50% 48%,#fff0a566 0 8%,#f2c96844 18%,transparent 68%);
+}
+.absoluteMaxFlash.visualOnly::before,
+.absoluteMaxFlash.visualOnly::after{
+  content:"";
+  position:absolute;
+  inset:10%;
+  border:1px solid #f2c96888;
+  border-radius:12px;
+  animation:absoluteMaxRing .7s ease forwards;
+}
+.absoluteMaxFlash.visualOnly::after{
+  inset:20%;
+  animation-delay:.08s;
+}
+@keyframes absoluteMaxRing{
+  0%{opacity:0;transform:scale(.72)}
+  30%{opacity:1}
+  100%{opacity:0;transform:scale(1.18)}
+}
+
+
+/* 下方按钮统一贴合：与上方三个玩家格对齐 */
+.controls{
+  gap:0!important;
+  row-gap:0!important;
+  column-gap:0!important;
+}
+
+.quick{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:0!important;
+  margin:0!important;
+  padding:0!important;
+}
+
+.actions{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(0,2fr)!important;
+  gap:0!important;
+  margin:0!important;
+  padding:0!important;
+}
+
+/* 第一排三个按钮互相贴合 */
+.quick .ctrl{
+  margin:0!important;
+  border-radius:0!important;
+  border-right-width:0!important;
+}
+
+.quick .ctrl:first-child{
+  border-radius:7px 0 0 0!important;
+}
+
+.quick .ctrl:last-child{
+  border-right-width:1px!important;
+  border-radius:0 7px 0 0!important;
+}
+
+/* 第二排两个按钮紧贴第一排，同时保持 1:2 */
+.actions .ctrl{
+  margin:0!important;
+  border-radius:0!important;
+  border-top-width:0!important;
+  border-right-width:0!important;
+}
+
+.actions .ctrl:first-child{
+  border-radius:0 0 0 7px!important;
+}
+
+.actions .ctrl:last-child{
+  border-right-width:1px!important;
+  border-radius:0 0 7px 0!important;
+}
+
+/* 避免按钮禁用或预操作状态重新产生视觉缝隙 */
+.quick .ctrl:disabled,
+.actions .ctrl:disabled{
+  margin:0!important;
+  opacity:1;
+}
+
+body.arrangeMode .quick,
+body.arrangeMode .actions,
+body.dealPreviewMode .quick,
+body.dealPreviewMode .actions{
+  gap:0!important;
+}
+
+
+/* Safari 稳定视口修复 */
+:root{
+  --app-height:var(--app-height);
+}
+
+html,
+body{
+  width:100%;
+  height:100%;
+  min-height:100%;
+  margin:0;
+  overflow:hidden;
+  background:#041018;
+}
+
+body{
+  position:fixed;
+  inset:0;
+  overscroll-behavior:none;
+  -webkit-text-size-adjust:100%;
+}
+
+#app{
+  width:100%;
+  height:var(--app-height)!important;
+  min-height:0!important;
+  max-height:var(--app-height)!important;
+  overflow:hidden;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+
+/* 安全区只在 #app 处理，避免底部重复加高 */
+.controls{
+  padding-bottom:0!important;
+}
+
+.controls::after{
+  display:none!important;
+}
+
+/* 正式游戏、理牌、分牌全部由剩余空间自适应 */
+#table,
+.controls,
+.handWrap,
+#centerPile,
+#pileCards,
+#pileLabel{
+  min-height:0;
+  box-sizing:border-box;
+}
+
+body.arrangeMode #app,
+body.dealPreviewMode #app{
+  height:var(--app-height)!important;
+  max-height:var(--app-height)!important;
+}
+
+/* 开牌选庄与切牌弹层不再使用 svh/dvh 固定高度 */
+#matchOpeningOverlay,
+.matchOpeningOverlay{
+  position:fixed!important;
+  inset:0!important;
+  width:100%!important;
+  height:var(--app-height)!important;
+  max-height:var(--app-height)!important;
+  padding:
+    calc(10px + env(safe-area-inset-top))
+    10px
+    calc(10px + env(safe-area-inset-bottom))!important;
+  box-sizing:border-box;
+  overflow:hidden!important;
+}
+
+.matchOpeningPanel,
+.matchOpeningBox,
+#matchOpeningPanel{
+  width:100%!important;
+  height:100%!important;
+  max-height:none!important;
+  min-height:0!important;
+  box-sizing:border-box;
+  overflow:hidden!important;
+}
+
+.matchOpeningBody,
+#matchOpeningBody,
+.matchOpeningStage{
+  min-height:0!important;
+  overflow:hidden!important;
+}
+
+.matchOpeningDrawGrid,
+.matchOpeningCutGrid,
+.matchOpeningDealGrid{
+  width:100%;
+  height:100%;
+  min-height:0;
+}
+
+/* Safari 工具栏展开时，牌只在自己的容器内缩放，不向下溢出 */
+#hand{
+  min-height:0;
+  max-height:100%;
+  overflow:visible;
+}
+
+.handWrap{
+  overflow:hidden!important;
+}
+
+/* 防止按钮/手牌被底部工具栏二次挤压 */
+.actions,
+.quick,
+.preGameComboButtons,
+#preGameReadyBtn{
+  flex-shrink:0;
+}
+
+
+/* 按钮分栏与上方三名玩家格严格对齐 */
+.controls{
+  padding-left:2px!important;
+  padding-right:2px!important;
+  column-gap:2px!important;
+  row-gap:2px!important;
+}
+
+.quick{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:2px!important;
+  margin:0!important;
+  padding:0!important;
+}
+
+.actions{
+  grid-template-columns:minmax(0,1fr) minmax(0,2fr)!important;
+  gap:2px!important;
+  margin:0!important;
+  padding:0!important;
+}
+
+/* 恢复每个按钮独立边框与圆角，不再紧贴成一整块 */
+.quick .ctrl,
+.actions .ctrl{
+  margin:0!important;
+  border-width:1px!important;
+  border-radius:7px!important;
+}
+
+/* 第一排三格分界与上方三个玩家格一致 */
+.quick .ctrl:first-child,
+.quick .ctrl:nth-child(2),
+.quick .ctrl:last-child{
+  border-radius:7px!important;
+}
+
+/* 第二排左1/3、右2/3，分界线对齐上方第一个玩家格右边 */
+.actions .ctrl:first-child,
+.actions .ctrl:last-child{
+  border-radius:7px!important;
+}
+
+body.arrangeMode .quick,
+body.arrangeMode .actions,
+body.dealPreviewMode .quick,
+body.dealPreviewMode .actions{
+  gap:2px!important;
+}
+
+
+/* iPhone Safari：统一所有格子间距并防止重叠 */
+:root{
+  --ui-gap:2px;
+  --ui-radius:7px;
+  --ui-border:1px;
+}
+
+*,
+*::before,
+*::after{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  width:100%;
+  height:100%;
+  margin:0;
+  overflow:hidden;
+  background:#041018;
+}
+
+#app{
+  width:100%;
+  min-width:0;
+  min-height:0;
+  overflow:hidden;
+}
+
+/* 所有主要网格统一 2px 间距 */
+#table,
+.controls,
+.quick,
+.actions,
+.preGameComboButtons,
+.matchOpeningDrawGrid,
+.matchOpeningDealGrid,
+.matchOpeningCutGrid,
+.readyTableBoard,
+.preReadyList,
+.readyList,
+.matchOpeningCutGrid{
+  gap:var(--ui-gap)!important;
+}
+
+/* 外层左右留白统一 */
+#table,
+.controls{
+  padding-left:var(--ui-gap)!important;
+  padding-right:var(--ui-gap)!important;
+}
+
+/* 所有格子不允许超出自己的网格轨道 */
+#turnBanner,
+.seat,
+#centerPile,
+#pileCards,
+#pileLabel,
+#recentTransfer,
+#humanInfo,
+.quick,
+.actions,
+.handWrap,
+.preGameComboButtons,
+.matchOpeningDrawSlot,
+.matchOpeningDealSeat,
+.matchOpeningCutZone,
+.readyPlayerBox,
+.readyTableBoard,
+.preReadyPlayer,
+.readyPlayer{
+  min-width:0!important;
+  min-height:0!important;
+  max-width:100%;
+  overflow:hidden;
+}
+
+/* 统一格子边框和圆角 */
+#turnBanner,
+.seat,
+#pileCards,
+#pileLabel,
+#recentTransfer,
+#humanInfo,
+.handWrap,
+.quick .ctrl,
+.actions .ctrl,
+.preGameComboBtn,
+.matchOpeningDrawSlot,
+.matchOpeningDealSeat,
+.matchOpeningCutZone,
+.readyPlayerBox,
+.preReadyPlayer,
+.readyPlayer{
+  border-width:var(--ui-border)!important;
+  border-radius:var(--ui-radius)!important;
+}
+
+/* 玩家区、按钮区、出牌区严格使用同一列线 */
+#table{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  column-gap:var(--ui-gap)!important;
+  row-gap:var(--ui-gap)!important;
+}
+
+.quick{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  column-gap:var(--ui-gap)!important;
+  row-gap:0!important;
+}
+
+.actions{
+  grid-template-columns:minmax(0,1fr) minmax(0,2fr)!important;
+  column-gap:var(--ui-gap)!important;
+  row-gap:0!important;
+}
+
+/* 中央出牌区 2:1，缝隙与玩家格一致 */
+#centerPile{
+  grid-template-columns:minmax(0,2fr) minmax(0,1fr)!important;
+  gap:var(--ui-gap)!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+}
+
+/* 避免内部元素用 margin 穿出格子造成重叠 */
+#pileCards > *,
+#pileLabel > *,
+#hand > *,
+.quick > *,
+.actions > *,
+.preGameComboButtons > *{
+  max-width:100%;
+}
+
+.card,
+.played,
+.matchOpeningCard,
+.matchOpeningCardBack,
+.matchOpeningDeck,
+.matchOpeningFlyingCard,
+.dealTableDeck{
+  flex-shrink:0;
+}
+
+/* Safari 动态工具栏与安全区 */
+@supports (height:100dvh){
+  #app{
+    height:var(--app-height,100dvh)!important;
+    max-height:var(--app-height,100dvh)!important;
+  }
+}
+
+@supports (-webkit-touch-callout:none){
+  body{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+  }
+
+  #app{
+    height:var(--app-height,100dvh)!important;
+    max-height:var(--app-height,100dvh)!important;
+    padding-top:env(safe-area-inset-top);
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+
+  .controls{
+    padding-bottom:var(--ui-gap)!important;
+  }
+
+  .handWrap{
+    overflow:hidden!important;
+  }
+}
+
+/* 小屏 iPhone 再压缩高度，但不改变间距 */
+@media (max-width:430px){
+  #table,
+  .controls{
+    padding-left:var(--ui-gap)!important;
+    padding-right:var(--ui-gap)!important;
+  }
+
+  .seat,
+  #humanInfo,
+  .quick .ctrl,
+  .actions .ctrl{
+    min-width:0!important;
+  }
+
+  .seat .name,
+  .seat .count,
+  #humanTurnText{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+}
+
+
+/* 修复理牌阶段 READY 消失与牌形按钮重叠 */
+body.arrangeMode .controls{
+  position:relative;
+  display:grid!important;
+  grid-template-areas:
+    "info"
+    "quick"
+    "hand"
+    "combo"
+    "actions"!important;
+  grid-template-rows:
+    32px
+    44px
+    minmax(0,1fr)
+    34px
+    52px!important;
+  height:100%!important;
+  min-height:0!important;
+  overflow:hidden!important;
+  gap:var(--ui-gap,2px)!important;
+}
+
+/* 手牌只能占自己的 hand 轨道 */
+body.arrangeMode .handWrap{
+  grid-area:hand!important;
+  min-height:0!important;
+  max-height:100%!important;
+  overflow:hidden!important;
+  position:relative;
+  z-index:1;
+}
+
+/* 牌形按钮固定在独立一行，不允许压到 READY */
+body.arrangeMode .preGameComboButtons{
+  grid-area:combo!important;
+  display:grid!important;
+  min-height:34px!important;
+  max-height:34px!important;
+  height:34px!important;
+  overflow:hidden!important;
+  position:relative;
+  z-index:3;
+  gap:var(--ui-gap,2px)!important;
+}
+
+body.arrangeMode .preGameComboBtn{
+  min-height:0!important;
+  height:34px!important;
+  max-height:34px!important;
+  overflow:hidden!important;
+}
+
+/* 正式过牌/出牌按钮在理牌阶段彻底移除，不占位 */
+body.arrangeMode .actions{
+  display:none!important;
+}
+
+/* READY 独占最底下一行并始终可见 */
+body.arrangeMode #preGameReadyBtn{
+  grid-area:actions!important;
+  display:grid!important;
+  place-items:center!important;
+  position:relative!important;
+  z-index:5!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:52px!important;
+  height:52px!important;
+  max-height:52px!important;
+  margin:0!important;
+  padding:0 8px!important;
+  opacity:1!important;
+  visibility:visible!important;
+  pointer-events:auto!important;
+  overflow:hidden!important;
+}
+
+/* 分牌阶段按钮只作为不可点击状态显示，也不和牌形行重叠 */
+body.dealPreviewMode .controls{
+  grid-template-areas:
+    "info"
+    "quick"
+    "hand"
+    "combo"
+    "actions"!important;
+  grid-template-rows:
+    32px
+    44px
+    minmax(0,1fr)
+    34px
+    52px!important;
+}
+
+body.dealPreviewMode .preGameComboButtons{
+  grid-area:combo!important;
+  min-height:34px!important;
+  max-height:34px!important;
+  height:34px!important;
+  overflow:hidden!important;
+}
+
+body.dealPreviewMode #preGameReadyBtn{
+  grid-area:actions!important;
+  display:grid!important;
+  min-height:52px!important;
+  height:52px!important;
+  max-height:52px!important;
+  position:relative!important;
+  z-index:5!important;
+}
+
+/* 小屏 Safari 也保留完整的 combo 与 READY 两行 */
+@media (max-width:430px){
+  body.arrangeMode .controls,
+  body.dealPreviewMode .controls{
+    grid-template-rows:
+      30px
+      42px
+      minmax(0,1fr)
+      32px
+      50px!important;
+  }
+
+  body.arrangeMode .preGameComboButtons,
+  body.arrangeMode .preGameComboBtn,
+  body.dealPreviewMode .preGameComboButtons{
+    min-height:32px!important;
+    height:32px!important;
+    max-height:32px!important;
+  }
+
+  body.arrangeMode #preGameReadyBtn,
+  body.dealPreviewMode #preGameReadyBtn{
+    min-height:50px!important;
+    height:50px!important;
+    max-height:50px!important;
+  }
+}
+
+
+/* 分牌阶段：底部只显示一整条“分牌中” */
+body.dealPreviewMode .actions{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
+body.dealPreviewMode #preGameReadyBtn{
+  grid-area:actions!important;
+  display:grid!important;
+  place-items:center!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:52px!important;
+  height:52px!important;
+  max-height:52px!important;
+  margin:0!important;
+  padding:0 8px!important;
+  border-radius:7px!important;
+  opacity:1!important;
+  visibility:visible!important;
+  pointer-events:none!important;
+  background:linear-gradient(180deg,#2b9468,#176145)!important;
+  border:1px solid #69d6a0!important;
+  color:#fff!important;
+  font-size:21px!important;
+  font-weight:1000!important;
+  z-index:6!important;
+}
+
+/* 分牌中不显示任何牌形按钮内容，但保留独立轨道避免布局跳动 */
+body.dealPreviewMode .preGameComboButtons{
+  grid-area:combo!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+  min-height:34px!important;
+  height:34px!important;
+  max-height:34px!important;
+}
+
+@media (max-width:430px){
+  body.dealPreviewMode #preGameReadyBtn{
+    min-height:50px!important;
+    height:50px!important;
+    max-height:50px!important;
+  }
+
+  body.dealPreviewMode .preGameComboButtons{
+    min-height:32px!important;
+    height:32px!important;
+    max-height:32px!important;
+  }
+}
+
 </style></head>
 <body>
 <div id="lobbyScreen"><div class="lobbyPanel"><div id="startPanel" style="display: block;">
@@ -540,7 +1209,7 @@ body,
 <button class="randomMatchBtn" onclick="startSimulatedMatchmaking('standard')" type="button">随机匹配<small>60秒理牌 · 40秒出牌</small></button>
 <button class="randomMatchBtn quickMatchBtn" onclick="startSimulatedMatchmaking('quick')" type="button">快速局<small>25秒理牌 · 15秒出牌</small></button>
 </div>
-<div class="homeRandomBalance"><span>随机匹配累计</span><strong id="homeRandomBalanceValue" class="pos">+1762</strong></div>
+<div class="homeRandomBalance"><span>随机匹配累计</span><strong id="homeRandomBalanceValue" class="pos">+1726</strong></div>
 </section>
 <section aria-label="开房间" class="lobbySection roomLobbySection">
 <div class="modeTitle">开房间</div>
@@ -696,8 +1365,8 @@ body,
 <button class="ctrl hint is-unavailable" id="hintBtn" onclick="showHint()" type="button" disabled="" aria-disabled="true" title="当前阶段不能提示">提示</button>
 </div>
 <div class="actions"><button class="ctrl danger is-unavailable" id="passBtn" onclick="humanPass()" type="button" disabled="" aria-disabled="true" title="目前无需过牌">过</button><button class="ctrl primary is-unavailable" id="playBtn" onclick="humanPlay()" type="button" disabled="" aria-disabled="true" title="选择当前可出的牌后才能操作">出牌</button></div>
-<div class="handWrap" onclick="handleHandAreaBlankClick(event)"><div id="hand"></div></div>
-<div aria-label="五张牌型快速选择" class="preGameComboButtons" id="preGameComboButtons"></div>
+<div class="handWrap" onclick="handleHandAreaBlankClick(event)"><div id="hand" data-preferred-width="100" data-min-step="72"></div></div>
+<div aria-label="五张牌型快速选择" class="preGameComboButtons moduleSlot empty" id="preGameComboButtons" style="--combo-type-count: 1;"><div class="preGameComboEmpty" aria-hidden="true"></div></div>
 <button id="preGameReadyBtn" onclick="playerPreGameReady()" type="button">READY</button>
 </div>
 <div id="ceremony"><div class="ceremonyBox"><div class="ceremonyTitle" id="ceremonyTitle"></div><div id="ceremonyBody"></div></div></div></div>
@@ -715,6 +1384,42 @@ body,
 </div>
 <div class="toast" id="toast"></div>
 <script>
+
+function syncSafariViewportHeight(){
+  const viewport=window.visualViewport;
+  const height=Math.round(viewport?.height||window.innerHeight||document.documentElement.clientHeight);
+  document.documentElement.style.setProperty('--app-height',`${height}px`);
+
+  requestAnimationFrame(()=>{
+    if(typeof fitHandCards==='function')fitHandCards();
+    if(typeof renderHand==='function'&&!ceremonyActive)renderHand();
+  });
+}
+
+let safariViewportResizeFrame=0;
+function scheduleSafariViewportSync(){
+  cancelAnimationFrame(safariViewportResizeFrame);
+  safariViewportResizeFrame=requestAnimationFrame(syncSafariViewportHeight);
+}
+
+window.addEventListener('resize',scheduleSafariViewportSync,{passive:true});
+window.addEventListener('orientationchange',()=>{
+  setTimeout(syncSafariViewportHeight,120);
+  setTimeout(syncSafariViewportHeight,420);
+},{passive:true});
+
+if(window.visualViewport){
+  window.visualViewport.addEventListener('resize',scheduleSafariViewportSync,{passive:true});
+  window.visualViewport.addEventListener('scroll',scheduleSafariViewportSync,{passive:true});
+}
+
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden)setTimeout(syncSafariViewportHeight,50);
+});
+
+syncSafariViewportHeight();
+
+
 const SUITS = [
   {key:'D',symbol:'♦',name:'方块',power:0,color:'red'},
   {key:'C',symbol:'♣',name:'梅花',power:1,color:'black'},
@@ -1657,6 +2362,7 @@ function beginIntegratedDealPreview(){
   if(readyBtn){
     readyBtn.textContent='分牌中';
     readyBtn.disabled=true;
+    readyBtn.setAttribute('aria-label','分牌中');
   }
 
   selected.clear();
@@ -3650,27 +4356,66 @@ function aiTurn(){
   executePlay(pi,best.combo);
 }
 
-function isAbsoluteMaximumPlay(combo,playerIndex){
-  if(!combo||playerIndex===undefined||playerIndex===null)return false;
+function theoreticalUnknownPoolForPlayer(playerIndex){
+  // 从出牌者视角，只排除自己看得到的牌：
+  // 1. 自己当前手牌
+  // 2. 已经公开打出的牌
+  // 其余牌一律视为可能仍在其他玩家手中。
+  const knownIds=new Set([
+    ...(players[playerIndex]?.hand||[]).map(c=>c.id),
+    ...playedCardIds
+  ]);
 
-  const needed=combo.cards.length;
+  const fullDeck=[];
+  for(const suit of SUITS){
+    for(const rank of RANKS){
+      fullDeck.push({
+        id:`${rank.key}${suit.key}`,
+        rank:rank.key,
+        suit:suit.key
+      });
+    }
+  }
+  return fullDeck.filter(c=>!knownIds.has(c.id));
+}
 
-  // 改为检查“目前所有玩家剩余手牌”。
-  // 只要另外三家已经没有任何相同张数、并且能够压过这手牌的组合，
-  // 这手牌就是当前剩余的最大牌，触发压全场流程。
-  for(let i=0;i<players.length;i++){
-    if(i===playerIndex)continue;
+function theoreticalBeatingPlayExists(pool,target){
+  const needed=target.cards.length;
+  if(pool.length<needed)return false;
 
-    const hand=players[i]?.hand||[];
-    if(hand.length<needed)continue;
+  // 逐组检查并在找到第一手理论上能压过的牌时立即停止。
+  // 不读取任何对手真实手牌，只使用未知牌池。
+  const picked=[];
+  let found=false;
 
-    for(const set of combinations(hand,needed)){
-      const candidate=classify(set);
-      if(candidate&&beats(candidate,combo))return false;
+  function search(start){
+    if(found)return;
+    if(picked.length===needed){
+      const candidate=classify(picked);
+      if(candidate&&beats(candidate,target))found=true;
+      return;
+    }
+
+    const remain=needed-picked.length;
+    for(let i=start;i<=pool.length-remain&&!found;i++){
+      picked.push(pool[i]);
+      search(i+1);
+      picked.pop();
     }
   }
 
-  return true;
+  search(0);
+  return found;
+}
+
+function isAbsoluteMaximumPlay(combo,playerIndex){
+  if(!combo||playerIndex===undefined||playerIndex===null)return false;
+
+  const unknownPool=theoreticalUnknownPoolForPlayer(playerIndex);
+
+  // 只有在出牌者不知道别人牌的情况下，
+  // 未知牌池也完全不可能组成任何能压过的合法牌型，才触发压全场。
+  return !theoreticalBeatingPlayExists(unknownPool,combo);
 }
 function showAbsoluteMaximumImpact(combo){
   const pile=document.getElementById('pileCards');
@@ -3680,7 +4425,6 @@ function showAbsoluteMaximumImpact(combo){
     pile.classList.remove('absoluteMaxStrike');
     void pile.offsetWidth;
     pile.classList.add('absoluteMaxStrike');
-    // 只让刚打出的牌动一次，动画结束后立刻清除。
     setTimeout(()=>pile.classList.remove('absoluteMaxStrike'),560);
   }
 
@@ -3689,9 +4433,10 @@ function showAbsoluteMaximumImpact(combo){
     void center.offsetWidth;
     center.classList.add('absoluteMaxImpact');
 
+    // 只使用无文字的光效层。
     const flash=document.createElement('div');
-    flash.className='absoluteMaxFlash';
-    flash.innerHTML=`<strong>当前最大${typeName(combo)}压场</strong>`;
+    flash.className='absoluteMaxFlash visualOnly';
+    flash.setAttribute('aria-hidden','true');
     center.appendChild(flash);
 
     setTimeout(()=>{
@@ -3699,6 +4444,9 @@ function showAbsoluteMaximumImpact(combo){
       flash.remove();
     },760);
   }
+
+  // 用音效加强压场反馈，不再弹出文字说明。
+  sfx('turn');
 }
 function autoPassAfterAbsoluteMax(pi,combo){
   if(absoluteMaxSequenceActive)return;
@@ -3710,8 +4458,7 @@ function autoPassAfterAbsoluteMax(pi,combo){
   resetHints();
   currentPlayer=(pi+1)%4;
 
-  logMsg(`${players[pi].name}打出当前剩余最大${typeName(combo)}`);
-  toast(`当前剩余最大${typeName(combo)}，其余三家自动过牌`);
+  logMsg(`${players[pi].name}打出${typeName(combo)}并压完全场`);
   renderAll();
   showAbsoluteMaximumImpact(combo);
 
@@ -3755,7 +4502,7 @@ function autoPassAfterAbsoluteMax(pi,combo){
           document.getElementById('centerPile')?.classList.remove('absoluteMaxImpact');
 
           logMsg(`${players[pi].name}压完全场，重新自由出牌`);
-          toast(`${players[pi].name}重新获得自由出牌`);
+          sfx('turn');
           renderAll();
           nextTurn();
         },260);
@@ -5447,6 +6194,44 @@ document.querySelectorAll('button,.ctrl').forEach(el=>{
       return result;
     };
   }
+})();
+
+
+(function(){
+  let layoutFrame=0;
+
+  function stabilizeIPhoneLayout(){
+    cancelAnimationFrame(layoutFrame);
+    layoutFrame=requestAnimationFrame(()=>{
+      const vh=Math.round(window.visualViewport?.height||window.innerHeight||document.documentElement.clientHeight);
+      document.documentElement.style.setProperty('--app-height',`${vh}px`);
+
+      if(typeof fitHandCards==='function')fitHandCards();
+    });
+  }
+
+  window.addEventListener('resize',stabilizeIPhoneLayout,{passive:true});
+  window.addEventListener('orientationchange',()=>{
+    setTimeout(stabilizeIPhoneLayout,100);
+    setTimeout(stabilizeIPhoneLayout,350);
+  },{passive:true});
+
+  if(window.visualViewport){
+    window.visualViewport.addEventListener('resize',stabilizeIPhoneLayout,{passive:true});
+    window.visualViewport.addEventListener('scroll',stabilizeIPhoneLayout,{passive:true});
+  }
+
+  if('ResizeObserver' in window){
+    const observer=new ResizeObserver(stabilizeIPhoneLayout);
+    const app=document.getElementById('app');
+    const handWrap=document.querySelector('.handWrap');
+    const table=document.getElementById('table');
+    if(app)observer.observe(app);
+    if(handWrap)observer.observe(handWrap);
+    if(table)observer.observe(table);
+  }
+
+  stabilizeIPhoneLayout();
 })();
 
 </script>
