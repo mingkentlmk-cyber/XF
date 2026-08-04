@@ -1159,6 +1159,222 @@ body.dealPreviewMode .preGameComboButtons{
   }
 }
 
+
+/* 压全场：所有冲击、光圈严格裁切在出牌格内部 */
+#pileCards{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden!important;
+}
+
+#pileCards.absoluteMaxImpact{
+  animation:absoluteMaxPileImpact .52s ease;
+}
+
+#pileCards .absoluteMaxFlash{
+  position:absolute!important;
+  inset:0!important;
+  border-radius:inherit;
+  overflow:hidden;
+}
+
+@keyframes absoluteMaxPileImpact{
+  35%{
+    filter:brightness(1.22);
+    box-shadow:inset 0 0 30px #f2c96888;
+  }
+  70%{
+    filter:brightness(1.08);
+  }
+  100%{
+    filter:brightness(1);
+    box-shadow:none;
+  }
+}
+
+/* 互动：只闪接收者格子 */
+.seat,
+.handWrap{
+  position:relative;
+  isolation:isolate;
+}
+
+.seatInteractionHitOverlay{
+  position:absolute!important;
+  inset:0!important;
+  z-index:8!important;
+  border-radius:inherit;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.seatInteractionHitOverlay.red{
+  background:#ff526652!important;
+  box-shadow:inset 0 0 28px #ff5266!important;
+}
+
+.seatInteractionHitOverlay.yellow{
+  background:#ffe26a42!important;
+  box-shadow:inset 0 0 28px #ffe26a!important;
+}
+
+/* 对手：只闪对应玩家格；玩家：手牌区背景整体一起闪 */
+.seat.interactionFlashTomato{
+  animation:interactionSeatTomato .36s ease;
+}
+
+.seat.interactionFlashLike{
+  animation:interactionSeatLike .36s ease;
+}
+
+.handWrap.interactionFlashTomato{
+  animation:interactionHandTomato .42s ease;
+}
+
+.handWrap.interactionFlashLike{
+  animation:interactionHandLike .42s ease;
+}
+
+@keyframes interactionSeatTomato{
+  0%,100%{filter:none}
+  45%{
+    background:#5a1f2b;
+    box-shadow:inset 0 0 30px #ff5266,0 0 12px #ff526655;
+    filter:brightness(1.2);
+  }
+}
+
+@keyframes interactionSeatLike{
+  0%,100%{filter:none}
+  45%{
+    background:#5a4a18;
+    box-shadow:inset 0 0 30px #ffe26a,0 0 12px #ffe26a55;
+    filter:brightness(1.2);
+  }
+}
+
+@keyframes interactionHandTomato{
+  0%,100%{
+    background:radial-gradient(circle at 50% 90%,#0e3a38 0,#061923 58%,#041018);
+  }
+  45%{
+    background:radial-gradient(circle at 50% 78%,#7b2536 0,#4c1d29 48%,#170d12 100%);
+    box-shadow:inset 0 0 42px #ff5266,0 0 14px #ff526655;
+  }
+}
+
+@keyframes interactionHandLike{
+  0%,100%{
+    background:radial-gradient(circle at 50% 90%,#0e3a38 0,#061923 58%,#041018);
+  }
+  45%{
+    background:radial-gradient(circle at 50% 78%,#75601d 0,#493c18 48%,#17140c 100%);
+    box-shadow:inset 0 0 42px #ffe26a,0 0 14px #ffe26a55;
+  }
+}
+
+
+/* 顶部退出按钮：与音量键同尺寸，位于玩家区与音量之间 */
+.topExitBtn{
+  display:none;
+  width:40px;
+  min-width:40px;
+  min-height:40px;
+  padding:0;
+  font-size:13px;
+  color:#ffd8dc;
+  border-color:#d66b79;
+  background:linear-gradient(180deg,#6d2934,#4e1c25);
+}
+
+.randomMatchMode .topbar{
+  grid-template-columns:minmax(0,1fr) 40px 40px!important;
+}
+
+.randomMatchMode #randomLedgerBar{order:1}
+.randomMatchMode .topExitBtn{
+  order:2;
+  display:grid;
+}
+.randomMatchMode .soundBtn{order:3}
+
+/* 原回合栏退出键彻底移除 */
+#randomMidExitBtn{display:none!important}
+
+/* 种子/电脑模式主页按钮继续保留原位置 */
+body:not(.randomMatchMode) .computerHomeBtn{
+  display:grid;
+}
+
+/* 通用退出确认弹窗 */
+#sessionExitConfirm{
+  position:fixed;
+  inset:0;
+  z-index:180;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  background:#01070ce8;
+}
+
+#sessionExitConfirm.show{display:flex}
+
+.sessionExitBox{
+  width:min(100%,390px);
+  padding:16px;
+  border:2px solid var(--line2);
+  border-radius:11px;
+  background:#0a2230;
+  box-shadow:0 16px 46px #000c;
+}
+
+.sessionExitTitle{
+  text-align:center;
+  font-size:22px;
+  font-weight:1000;
+  color:var(--gold);
+}
+
+.sessionExitText{
+  margin:10px 0 14px;
+  color:#bfd1d8;
+  font-size:12px;
+  line-height:1.5;
+  text-align:center;
+}
+
+.sessionExitActions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+}
+
+.sessionExitActions button{
+  min-height:46px;
+  border:1px solid var(--line);
+  border-radius:7px;
+  background:linear-gradient(180deg,#17384a,#0b2230);
+  color:#fff;
+  font-weight:900;
+}
+
+.sessionExitActions .danger{
+  border-color:#d66b79;
+  background:linear-gradient(180deg,#8d3544,#5e1f2a);
+}
+
+
+/* 分牌阶段玩家格可互动 */
+body.dealPreviewMode .seat{
+  pointer-events:auto!important;
+  cursor:pointer!important;
+}
+
+body.dealPreviewMode .seat:active{
+  filter:brightness(1.12);
+}
+
 </style></head>
 <body>
 <div id="lobbyScreen"><div class="lobbyPanel"><div id="startPanel" style="display: block;">
@@ -1209,7 +1425,7 @@ body.dealPreviewMode .preGameComboButtons{
 <button class="randomMatchBtn" onclick="startSimulatedMatchmaking('standard')" type="button">随机匹配<small>60秒理牌 · 40秒出牌</small></button>
 <button class="randomMatchBtn quickMatchBtn" onclick="startSimulatedMatchmaking('quick')" type="button">快速局<small>25秒理牌 · 15秒出牌</small></button>
 </div>
-<div class="homeRandomBalance"><span>随机匹配累计</span><strong id="homeRandomBalanceValue" class="pos">+1726</strong></div>
+<div class="homeRandomBalance"><span>随机匹配累计</span><strong id="homeRandomBalanceValue" class="pos">+1459</strong></div>
 </section>
 <section aria-label="开房间" class="lobbySection roomLobbySection">
 <div class="modeTitle">开房间</div>
@@ -1290,6 +1506,16 @@ body.dealPreviewMode .preGameComboButtons{
 </div>
 </div>
 </div>
+<div aria-hidden="true" id="sessionExitConfirm" onclick="if(event.target===this)closeSessionExitConfirm()">
+  <div class="sessionExitBox" role="dialog" aria-modal="true" aria-labelledby="sessionExitTitle">
+    <div class="sessionExitTitle" id="sessionExitTitle">退出游戏？</div>
+    <div class="sessionExitText" id="sessionExitText">确定离开当前牌局吗？</div>
+    <div class="sessionExitActions">
+      <button type="button" onclick="closeSessionExitConfirm()">继续游戏</button>
+      <button type="button" class="danger" id="sessionExitConfirmBtn" onclick="confirmSessionExit()">确认退出</button>
+    </div>
+  </div>
+</div>
 <div class="lobbyToast" id="lobbyToast"></div>
 <div id="app">
 <div class="topbar">
@@ -1297,14 +1523,15 @@ body.dealPreviewMode .preGameComboButtons{
 <div class="mainBalance zero" id="mainBalance"><small>我的主金额</small><strong id="myBalance">0</strong></div>
 <div class="roundTag">AI TEST · <span id="roundTag">第0场</span></div>
 <button class="smallbtn ledgerBtn" onclick="openLedger()" type="button">账</button>
-<button class="smallbtn computerHomeBtn" id="computerHomeBtn" onclick="returnComputerToLobby()" type="button">主页</button>
+<button class="smallbtn computerHomeBtn" id="computerHomeBtn" onclick="openComputerHomeConfirm()" type="button">主页</button>
+<button class="smallbtn topExitBtn" id="topExitBtn" onclick="openTopExitConfirm()" type="button">退</button>
 <button class="smallbtn soundBtn" id="soundBtn" onclick="toggleSound()" type="button">♪</button>
 <div id="randomLedgerBar"></div>
 <div id="turnCountdown">40</div>
 </div>
 <div id="cardTracker"><div class="trackerRank"><div class="trackerLabel">2</div><div class="trackerLights"><span class="trackerLight  " title="♠2"></span><span class="trackerLight  redSuit" title="♥2"></span><span class="trackerLight  " title="♣2"></span><span class="trackerLight  redSuit" title="♦2"></span></div></div><div class="trackerRank"><div class="trackerLabel">A</div><div class="trackerLights"><span class="trackerLight  " title="♠A"></span><span class="trackerLight  redSuit" title="♥A"></span><span class="trackerLight  " title="♣A"></span><span class="trackerLight  redSuit" title="♦A"></span></div></div><div class="trackerRank"><div class="trackerLabel">K</div><div class="trackerLights"><span class="trackerLight  " title="♠K"></span><span class="trackerLight  redSuit" title="♥K"></span><span class="trackerLight  " title="♣K"></span><span class="trackerLight  redSuit" title="♦K"></span></div></div><div class="trackerRank"><div class="trackerLabel">Q</div><div class="trackerLights"><span class="trackerLight  " title="♠Q"></span><span class="trackerLight  redSuit" title="♥Q"></span><span class="trackerLight  " title="♣Q"></span><span class="trackerLight  redSuit" title="♦Q"></span></div></div><div class="trackerRank"><div class="trackerLabel">J</div><div class="trackerLights"><span class="trackerLight  " title="♠J"></span><span class="trackerLight  redSuit" title="♥J"></span><span class="trackerLight  " title="♣J"></span><span class="trackerLight  redSuit" title="♦J"></span></div></div><div class="trackerRank"><div class="trackerLabel">10</div><div class="trackerLights"><span class="trackerLight  " title="♠10"></span><span class="trackerLight  redSuit" title="♥10"></span><span class="trackerLight  " title="♣10"></span><span class="trackerLight  redSuit" title="♦10"></span></div></div><div class="trackerRank"><div class="trackerLabel">9</div><div class="trackerLights"><span class="trackerLight  " title="♠9"></span><span class="trackerLight  redSuit" title="♥9"></span><span class="trackerLight  " title="♣9"></span><span class="trackerLight  redSuit" title="♦9"></span></div></div><div class="trackerRank"><div class="trackerLabel">8</div><div class="trackerLights"><span class="trackerLight  " title="♠8"></span><span class="trackerLight  redSuit" title="♥8"></span><span class="trackerLight  " title="♣8"></span><span class="trackerLight  redSuit" title="♦8"></span></div></div><div class="trackerRank"><div class="trackerLabel">7</div><div class="trackerLights"><span class="trackerLight  " title="♠7"></span><span class="trackerLight  redSuit" title="♥7"></span><span class="trackerLight  " title="♣7"></span><span class="trackerLight  redSuit" title="♦7"></span></div></div><div class="trackerRank"><div class="trackerLabel">6</div><div class="trackerLights"><span class="trackerLight  " title="♠6"></span><span class="trackerLight  redSuit" title="♥6"></span><span class="trackerLight  " title="♣6"></span><span class="trackerLight  redSuit" title="♦6"></span></div></div><div class="trackerRank"><div class="trackerLabel">5</div><div class="trackerLights"><span class="trackerLight  " title="♠5"></span><span class="trackerLight  redSuit" title="♥5"></span><span class="trackerLight  " title="♣5"></span><span class="trackerLight  redSuit" title="♦5"></span></div></div><div class="trackerRank"><div class="trackerLabel">4</div><div class="trackerLights"><span class="trackerLight  " title="♠4"></span><span class="trackerLight  redSuit" title="♥4"></span><span class="trackerLight  " title="♣4"></span><span class="trackerLight  redSuit" title="♦4"></span></div></div><div class="trackerRank"><div class="trackerLabel">3</div><div class="trackerLights"><span class="trackerLight  " title="♠3"></span><span class="trackerLight  redSuit" title="♥3"></span><span class="trackerLight  " title="♣3"></span><span class="trackerLight  redSuit" title="♦3"></span></div></div></div>
 <div id="table">
-<div id="turnBanner"><div id="turnBannerText"><span id="turnMain">等待开局</span><span class="turnSub" id="turnSub"></span></div><div id="visibleTurnTimer" title="开发模式：所有玩家无限时间">40s</div><button id="randomMidExitBtn" onclick="openRandomMatchExitConfirm()" type="button">退出</button></div>
+<div id="turnBanner"><div id="turnBannerText"><span id="turnMain">等待开局</span><span class="turnSub" id="turnSub"></span></div><div id="visibleTurnTimer" title="开发模式：所有玩家无限时间">40s</div></div>
 <div aria-label="与上方玩家互动" class="seat" id="north" onclick="openSeatInteractionMenu(2)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openSeatInteractionMenu(2)}" role="button" tabindex="0"><div class="name">玩家</div><div class="count"></div><div class="cardbacks"></div></div>
 <div aria-label="与左侧玩家互动" class="seat" id="west" onclick="openSeatInteractionMenu(1)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openSeatInteractionMenu(1)}" role="button" tabindex="0"><div class="name">玩家</div><div class="count"></div><div class="cardbacks"></div></div>
 <div aria-label="与右侧玩家互动" class="seat" id="east" onclick="openSeatInteractionMenu(3)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openSeatInteractionMenu(3)}" role="button" tabindex="0"><div class="name">玩家</div><div class="count"></div><div class="cardbacks"></div></div>
@@ -1772,6 +1999,71 @@ function setSkipConfirmContent(title,text,confirmText){
   if(textEl)textEl.textContent=text;
   if(confirmBtn)confirmBtn.textContent=confirmText;
 }
+let pendingSessionExitAction=null;
+
+function openSessionExitConfirm({title='退出游戏？',text='确定离开当前牌局吗？',confirmText='确认退出',action=null}={}){
+  pendingSessionExitAction=typeof action==='function'?action:null;
+  const root=document.getElementById('sessionExitConfirm');
+  if(!root)return;
+  const titleEl=document.getElementById('sessionExitTitle');
+  const textEl=document.getElementById('sessionExitText');
+  const confirmBtn=document.getElementById('sessionExitConfirmBtn');
+  if(titleEl)titleEl.textContent=title;
+  if(textEl)textEl.textContent=text;
+  if(confirmBtn)confirmBtn.textContent=confirmText;
+  root.classList.add('show');
+  root.setAttribute('aria-hidden','false');
+}
+
+function closeSessionExitConfirm(){
+  const root=document.getElementById('sessionExitConfirm');
+  if(root){
+    root.classList.remove('show');
+    root.setAttribute('aria-hidden','true');
+  }
+  pendingSessionExitAction=null;
+}
+
+function confirmSessionExit(){
+  const action=pendingSessionExitAction;
+  closeSessionExitConfirm();
+  if(action)action();
+}
+
+function openTopExitConfirm(){
+  if(randomMatchGameMode){
+    if(ceremonyActive){
+      toast('开局流程中，请稍候');
+      return;
+    }
+    const remain=players[0]?.hand?.length||0;
+    const pay=remainingCardSettlementAmount(remain);
+    openSessionExitConfirm({
+      title:'退出随机匹配？',
+      text:`你还剩${remain}张牌，退出后将按当前规则结算，并返回主页。`,
+      confirmText:'结算并退出',
+      action:()=>settleRandomMatchEarlyExit()
+    });
+    return;
+  }
+
+  openComputerHomeConfirm();
+}
+
+function openComputerHomeConfirm(){
+  if(randomMatchGameMode){
+    openTopExitConfirm();
+    return;
+  }
+
+  openSessionExitConfirm({
+    title:'返回主页？',
+    text:'当前种子电脑对局会结束，并返回游戏主页。',
+    confirmText:'去主页',
+    action:()=>returnComputerToLobbyNow()
+  });
+}
+
 function openRandomMatchExitConfirm(){
   if(!randomMatchGameMode)return;
   if(ceremonyActive){toast('开局流程中，请稍候');return}
@@ -2369,6 +2661,9 @@ function beginIntegratedDealPreview(){
   resetHints();
   renderAll();
   renderIntegratedDealTable(0);
+
+  // 随机匹配从分牌阶段开始即可丢番茄或点赞。
+  scheduleSeatInteraction();
 
   const main=document.getElementById('turnMain');
   const sub=document.getElementById('turnSub');
@@ -4419,33 +4714,22 @@ function isAbsoluteMaximumPlay(combo,playerIndex){
 }
 function showAbsoluteMaximumImpact(combo){
   const pile=document.getElementById('pileCards');
-  const center=document.getElementById('centerPile');
+  if(!pile)return;
 
-  if(pile){
-    pile.classList.remove('absoluteMaxStrike');
-    void pile.offsetWidth;
-    pile.classList.add('absoluteMaxStrike');
-    setTimeout(()=>pile.classList.remove('absoluteMaxStrike'),560);
-  }
+  pile.classList.remove('absoluteMaxStrike','absoluteMaxImpact');
+  void pile.offsetWidth;
+  pile.classList.add('absoluteMaxStrike','absoluteMaxImpact');
 
-  if(center){
-    center.classList.remove('absoluteMaxImpact');
-    void center.offsetWidth;
-    center.classList.add('absoluteMaxImpact');
+  const flash=document.createElement('div');
+  flash.className='absoluteMaxFlash visualOnly';
+  flash.setAttribute('aria-hidden','true');
+  pile.appendChild(flash);
 
-    // 只使用无文字的光效层。
-    const flash=document.createElement('div');
-    flash.className='absoluteMaxFlash visualOnly';
-    flash.setAttribute('aria-hidden','true');
-    center.appendChild(flash);
+  setTimeout(()=>{
+    pile.classList.remove('absoluteMaxStrike','absoluteMaxImpact');
+    flash.remove();
+  },760);
 
-    setTimeout(()=>{
-      center.classList.remove('absoluteMaxImpact');
-      flash.remove();
-    },760);
-  }
-
-  // 用音效加强压场反馈，不再弹出文字说明。
   sfx('turn');
 }
 function autoPassAfterAbsoluteMax(pi,combo){
@@ -4484,9 +4768,7 @@ function autoPassAfterAbsoluteMax(pi,combo){
       sfx('pass');
 
       const pile=document.getElementById('pileCards');
-      const center=document.getElementById('centerPile');
-      pile?.classList.remove('absoluteMaxStrike');
-      center?.classList.remove('absoluteMaxImpact');
+      pile?.classList.remove('absoluteMaxStrike','absoluteMaxImpact');
 
       renderAll();
 
@@ -4498,8 +4780,7 @@ function autoPassAfterAbsoluteMax(pi,combo){
           currentPlayer=pi;
           absoluteMaxSequenceActive=false;
 
-          document.getElementById('pileCards')?.classList.remove('absoluteMaxStrike');
-          document.getElementById('centerPile')?.classList.remove('absoluteMaxImpact');
+          document.getElementById('pileCards')?.classList.remove('absoluteMaxStrike','absoluteMaxImpact');
 
           logMsg(`${players[pi].name}压完全场，重新自由出牌`);
           sfx('turn');
@@ -5163,9 +5444,9 @@ function handleHandAreaBlankClick(event){
   updateButtons();
   toast('已取消选牌');
 }
-function returnComputerToLobby(){
+function returnComputerToLobbyNow(){
   seedAIGameMode=false;
-  if(randomMatchGameMode){openRandomMatchExitConfirm();return;}
+  if(randomMatchGameMode){openTopExitConfirm();return;}
   clearTimeout(turnTimer);turnTimer=null;
   clearTurnDeadline();
   clearResultReadyTimers();
@@ -5183,6 +5464,9 @@ function returnComputerToLobby(){
   setLobbyRoomView(false);
   players.forEach(p=>{p.score=0;p.round=0});
   renderHomeRandomBalance();
+}
+function returnComputerToLobby(){
+  openComputerHomeConfirm();
 }
 function resetMatch(){
   if(randomMatchGameMode)return;
@@ -5997,7 +6281,7 @@ document.getElementById('soundBtn').textContent=soundEnabled?'♪':'×';
 document.getElementById('overlay').style.display='none';
 document.getElementById('hand').addEventListener('click',handleHandClick);
 function getSeatElementByIndex(index){
-  if(index===0)return document.querySelector('#app > .controls')||document.querySelector('.handWrap')||document.getElementById('humanInfo');
+  if(index===0)return document.querySelector('.handWrap')||document.getElementById('humanInfo');
   return document.getElementById(index===1?'west':index===2?'north':'east');
 }
 function getSeatInteractionPoint(index){
@@ -6031,8 +6315,16 @@ function ensureSeatInteractionFx(){
 }
 function canUseSeatInteraction(targetIndex){
   if(targetIndex<1||targetIndex>3)return false;
-  if(ceremonyActive||preGameReadyActive||gameOver)return false;
+
+  const dealing=document.body.classList.contains('dealPreviewMode');
+
+  // 分牌动画开始后即可互动。
+  // 其他开局动画、理牌等待、结算阶段仍禁止。
+  if(gameOver)return false;
+  if(ceremonyActive&&!dealing)return false;
+  if(preGameReadyActive&&!dealing)return false;
   if(document.getElementById('lobbyScreen')?.style.display!=='none')return false;
+
   return true;
 }
 function openSeatInteractionMenu(targetIndex){
@@ -6061,14 +6353,23 @@ function createInteractionImpact(kind,point){
   layer.appendChild(impact);
   setTimeout(()=>impact.remove(),520);
 }
-function pulseSeatInteractionTarget(index,kind,duration=220){
+function pulseSeatInteractionTarget(index,kind,duration=360){
   const targetEl=getSeatElementByIndex(index);
   if(!targetEl)return;
+
   targetEl.querySelectorAll(':scope > .seatInteractionHitOverlay').forEach(el=>el.remove());
+  targetEl.classList.remove('interactionFlashTomato','interactionFlashLike');
+  void targetEl.offsetWidth;
+  targetEl.classList.add(kind==='tomato'?'interactionFlashTomato':'interactionFlashLike');
+
   const overlay=document.createElement('span');
   overlay.className=`seatInteractionHitOverlay ${kind==='tomato'?'red':'yellow'}`;
   targetEl.appendChild(overlay);
-  setTimeout(()=>overlay.remove(),duration+30);
+
+  setTimeout(()=>{
+    overlay.remove();
+    targetEl.classList.remove('interactionFlashTomato','interactionFlashLike');
+  },duration);
 }
 function performSeatInteraction(fromIndex,toIndex,kind,showToastMsg=true){
   const icon='';
@@ -6115,11 +6416,15 @@ function clearSeatInteractionTimer(){
 }
 function scheduleSeatInteraction(){
   clearSeatInteractionTimer();
-  if(!randomMatchGameMode||ceremonyActive||preGameReadyActive||gameOver)return;
+  const dealing=document.body.classList.contains('dealPreviewMode');
+  if(!randomMatchGameMode||(ceremonyActive&&!dealing)||(preGameReadyActive&&!dealing)||gameOver)return;
+
   const delay=(randomMatchSpeed==='quick'?4200:6200)+Math.floor(Math.random()*(randomMatchSpeed==='quick'?4200:7200));
   seatInteractionTimer=setTimeout(()=>{
     seatInteractionTimer=null;
-    if(!randomMatchGameMode||ceremonyActive||preGameReadyActive||gameOver)return;
+
+    const stillDealing=document.body.classList.contains('dealPreviewMode');
+    if(!randomMatchGameMode||(ceremonyActive&&!stillDealing)||(preGameReadyActive&&!stillDealing)||gameOver)return;
     const sourceCandidates=[1,2,3].filter(i=>players[i]);
     if(!sourceCandidates.length)return;
     const fromIndex=sourceCandidates[Math.floor(Math.random()*sourceCandidates.length)];
