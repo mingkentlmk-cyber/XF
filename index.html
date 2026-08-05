@@ -47,8 +47,107 @@ body.turboMatchMode .matchOpeningFlyingCard.fly-bottom{animation-duration:.11s!i
   font-size:9px!important;
   line-height:1!important;
 }
+
+/* ===== 2 / 3 / 4 人模式 ===== */
+.playerCountPicker{position:fixed;inset:0;z-index:175;display:none;align-items:center;justify-content:center;padding:18px;background:#01070ce8}
+.playerCountPicker.show{display:flex}
+.playerCountBox{width:min(100%,430px);padding:15px;border:2px solid var(--line2);border-radius:12px;background:#081e2a;box-shadow:0 18px 48px #000d}
+.playerCountTitle{text-align:center;color:var(--gold);font-size:23px;font-weight:1000}
+.playerCountHint{margin-top:5px;text-align:center;color:var(--muted);font-size:11px}
+.playerCountGrid{display:grid;grid-template-columns:1fr;gap:8px;margin-top:13px}
+.playerCountGrid button,.playerCountCancel,.threeOpeningActions button{min-height:58px;border:1px solid var(--line);border-radius:7px;background:linear-gradient(180deg,#17384a,#0b2230);color:#fff;font-weight:900}
+.playerCountGrid button{display:grid;place-items:center;gap:3px}
+.playerCountGrid b{font-size:20px;color:var(--cyan)}
+.playerCountGrid small{font-size:10px;color:var(--muted)}
+.playerCountGrid button:nth-child(2){border-color:var(--gold)}
+.playerCountGrid button:nth-child(3){border-color:#69d6a0}
+.playerCountCancel{width:100%;min-height:44px;margin-top:9px;border-color:#7f4851;background:linear-gradient(180deg,#5e2832,#3b1820)}
+body.players-2 #west{grid-area:north!important}
+body.players-2 #north,body.players-2 #east,body.players-3 #east{display:none!important}
+body.players-3 #north{grid-area:right!important}
+body.players-2 .matchOpeningDrawSlot.left,body.players-2 .matchOpeningDealSeat.left{grid-column:2!important;grid-row:1!important}
+body.players-2 .matchOpeningDrawSlot.top,body.players-2 .matchOpeningDrawSlot.right,body.players-2 .matchOpeningDealSeat.top,body.players-2 .matchOpeningDealSeat.right{display:none!important}
+body.players-3 .matchOpeningDrawSlot.top,body.players-3 .matchOpeningDealSeat.top{grid-column:3!important;grid-row:2!important}
+body.players-3 .matchOpeningDrawSlot.right,body.players-3 .matchOpeningDealSeat.right{display:none!important}
+.inactiveSeat{display:none!important}
+/* 三人理牌：中间底牌放入右侧历史区，玩家出牌格保持与其他座位相同结构 */
+.threeReadyHistory{display:grid;grid-template-rows:auto minmax(0,1fr) auto;place-items:center;gap:2px;width:100%;height:100%;min-height:0;padding:3px 2px}
+.threeReadyHistoryTitle{color:var(--gold);font-size:8px;line-height:1;white-space:nowrap}
+.threeReadyHistoryCard{display:grid;place-items:center;min-height:0;width:100%}
+.threeReadyHistoryCard .historyPlayingCard{width:clamp(34px,10vw,46px);max-height:100%}
+.threeReadyHistoryState{color:var(--muted);font-size:7px;line-height:1;white-space:nowrap}
+.threeOpeningChoice{gap:10px}
+.threeOpeningText,.twoLegNotice{padding:9px;border:1px dashed var(--line);border-radius:7px;background:#061923;color:#bfd1d8;font-size:11px;line-height:1.5;text-align:center}
+.threeMiddleCard{display:grid;place-items:center;gap:7px;padding:10px;border:1px solid var(--gold);border-radius:8px;background:#17160d;color:#ffe7a1}
+.threeMiddleCard .historyPlayingCard{width:58px}
+.threeOpeningActions{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.threeOpeningActions button{padding:8px 6px;font-size:12px}
+.twoLegNotice{border-color:var(--cyan);color:#c9fff7}
+body.players-2 #randomLedgerBar{grid-template-columns:1fr!important}
+body.players-3 #randomLedgerBar{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+body.players-2 .preReadyList,body.players-2 .readyList{grid-template-columns:1fr 1fr}
+@media(max-width:360px){.threeOpeningActions{grid-template-columns:1fr}.playerCountGrid button{min-height:54px}}
+
+
+/* 三人模式：方块3与中间底牌互换动画 */
+.threeSwapLayer{position:fixed;inset:0;z-index:260;pointer-events:none;overflow:hidden;background:radial-gradient(circle at 50% 48%,#62e1d20e,transparent 48%)}
+.threeSwapCard{position:absolute;width:clamp(54px,15vw,70px);aspect-ratio:9/13;transform:translate(-50%,-50%);will-change:transform,opacity,filter;filter:drop-shadow(0 8px 12px #000b)}
+.threeSwapCard .playingCardFace{width:100%;height:100%}
+.threeSwapCard.swapD3{z-index:2}
+.threeSwapCard.swapCenter{z-index:3}
+.threeSwapBurst{position:absolute;left:50%;top:48%;width:24px;height:24px;border:2px solid var(--cyan);border-radius:50%;transform:translate(-50%,-50%) scale(.3);opacity:0;animation:threeSwapBurst .58s ease-out .18s forwards}
+.threeSwapCaption{position:absolute;left:50%;top:calc(48% + 76px);transform:translateX(-50%);padding:6px 10px;border:1px solid var(--cyan);border-radius:999px;background:#061923e8;color:#c9fff7;font-size:11px;font-weight:1000;white-space:nowrap;opacity:0;animation:threeSwapCaption .7s ease .08s forwards}
+@keyframes threeSwapBurst{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}35%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(7)}}
+@keyframes threeSwapCaption{0%{opacity:0;transform:translate(-50%,8px)}30%,82%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-4px)}}
+
+
+/* ===== 多人房型选择 + 待机室控制格统一 ===== */
+.waitingHeader,.roomHeader,.roomPanel .roomLinkBox{display:grid!important;grid-template-columns:minmax(0,1fr) 82px!important;align-items:stretch!important;gap:7px!important;min-height:58px}
+.waitingHeader>div:first-child,.roomHeader>div:first-child,.roomPanel .roomLink{min-width:0;display:flex;flex-direction:column;justify-content:center}
+.roomSecurity,.roomLeaveButton,.roomPanel .roomLinkButton{width:82px!important;min-width:82px!important;height:46px!important;min-height:46px!important;margin:auto 0!important;padding:0 6px!important;display:grid!important;place-items:center!important;border-radius:6px!important;text-align:center!important;font-size:12px!important;font-weight:900!important}
+.roomSecurity{border:1px solid var(--line)!important;background:linear-gradient(180deg,#17384a,#0b2230)!important;color:#d8edf2!important}
+.roomSecurity.locked{border-color:var(--gold)!important;color:#ffe39a!important;background:linear-gradient(180deg,#6e571f,#493812)!important}
+.roomPanel .roomLinkBox{margin-top:8px;padding:6px;border:1px solid var(--line);border-radius:7px;background:#0b2634;min-height:58px!important}.roomPanel .roomLink{height:46px;justify-content:center;padding:0 9px}
+.waitingSub{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.roomTypeInline{display:inline-grid;place-items:center;min-height:20px;padding:2px 6px;border:1px solid var(--cyan);border-radius:4px;background:#103b37;color:#c8fff8;font-size:9px;font-weight:900}
+.roomRoster.roomPlayers2{grid-template-columns:1fr 1fr}.roomRoster.roomPlayers3{grid-template-columns:1fr 1fr}.roomRoster.roomPlayers3 .roomPlayer:last-child{grid-column:1/-1}.roomRoster.roomPlayers4{grid-template-columns:1fr 1fr}
+
+
+/* ===== 待机室标题重排：房型标题 + 房间号，移除重复房间号码栏 ===== */
+.waitingHeader{grid-template-columns:minmax(0,1fr) 82px!important}
+.waitingHeader .waitingTitle{font-size:18px!important;color:var(--gold)!important}
+.waitingHeader .waitingTitle.locked{color:#ffe39a!important}
+.roomCodeInline{display:inline-block;color:var(--cyan);font-size:13px;font-weight:1000;letter-spacing:1.5px;white-space:nowrap}
+.waitingHeader .roomLeaveButton,.roomPanel .roomLinkButton{width:82px!important;min-width:82px!important;height:46px!important;min-height:46px!important}
+
+
+/* ===== 待机室离开／复制按钮像素级对齐 ===== */
+.roomPanel .waitingHeader,
+.roomPanel .roomLinkBox{
+  grid-template-columns:minmax(0,1fr) 82px!important;
+  gap:7px!important;
+  padding:10px!important;
+  min-height:68px!important;
+  align-items:center!important;
+}
+.roomPanel .waitingHeader .roomLeaveButton,
+.roomPanel .roomLinkBox .roomLinkButton{
+  width:82px!important;
+  min-width:82px!important;
+  max-width:82px!important;
+  height:46px!important;
+  min-height:46px!important;
+  max-height:46px!important;
+  margin:0!important;
+  padding:0!important;
+  justify-self:end!important;
+  align-self:center!important;
+  box-sizing:border-box!important;
+}
+.roomPanel .roomLinkBox{margin-top:8px!important}
+.roomPanel .roomLink{height:46px!important;min-height:46px!important}
+
 </style></head>
-<body>
+<body class="players-4">
 <div id="lobbyScreen"><div class="lobbyPanel"><div id="startPanel" style="display: block;">
 <div id="profilePanel" style="display: block;">
 <div class="lobbyHeaderRow">
@@ -61,14 +160,16 @@ body.turboMatchMode .matchOpeningFlyingCard.fly-bottom{animation-duration:.11s!i
 <div class="tutorialPopover">
 <div class="tutorialSection">
 <div class="tutorialHeading">游戏玩法</div>
-<p>4人各13张。首场持有方块3的玩家先出，第一手必须包含方块3；之后由上一场赢家先出。</p>
+<p>支持2人、3人、4人。4人各13张；3人各17张并翻开1张底牌；2人将52张分成四副13张手牌，同一批牌连续玩两局。</p>
+<p>2人第一局有方块3者先出；双方都没有方块3时由持有全场最小牌者先出。第二局使用封存的另外26张牌，由上一局赢家自由先出。</p>
+<p>3人持有方块3者可直接自由出牌，或用方块3换取中间底牌并把自由出牌权交给下一家。</p>
 <p>可出单张、对子、三张；五张牌可出顺子、同花、葫芦、铁支和同花顺。</p>
 <p>跟牌必须张数相同并且更大。连续三家过牌后，最后出牌者获得自由出牌。</p>
 </div>
 <div class="tutorialSection">
 <div class="tutorialHeading">金额计算</div>
-<p>赢家向每名输家收取：剩1–9张＝张数＋2；剩10–12张＝张数×2＋2；剩13张＝41。</p>
-<p>输家之间对扣：剩牌差×倍率。最高剩牌1–9张×1、10–12张×2、13张×3。</p>
+<p>赢家向每名输家收取：剩1–9张＝张数＋2；剩10–12张＝张数×2＋2；剩13–16张＝张数×3＋2；剩17张＝17×4＋2（17草）。</p>
+<p>输家之间对扣：剩牌差×倍率。最高剩牌1–9张×1、10–12张×2、13–16张×3、17张×4。</p>
 <p>铁支：其余每家付5；同花顺：其余每家付10。开局四张2或一条龙直接胜，其他每家付41。</p>
 </div>
 </div>
@@ -94,11 +195,11 @@ body.turboMatchMode .matchOpeningFlyingCard.fly-bottom{animation-duration:.11s!i
 <section aria-label="随机匹配" class="lobbySection randomLobbySection">
 <div class="modeTitle">随机匹配</div>
 <div class="randomMatchChoices">
-<button class="randomMatchBtn" onclick="startSimulatedMatchmaking('standard')" type="button">随机匹配<small>60秒理牌 · 30秒出牌</small></button>
-<button class="randomMatchBtn quickMatchBtn" onclick="startSimulatedMatchmaking('quick')" type="button">快速局<small>30秒理牌 · 15秒出牌</small></button>
-<button class="randomMatchBtn turboMatchBtn" onclick="startSimulatedMatchmaking('turbo')" type="button">急速局<small>20秒理牌 · 10秒出牌</small></button>
+<button class="randomMatchBtn" onclick="chooseRandomMatchSpeed('standard')" type="button">随机匹配<small>60秒理牌 · 30秒出牌</small></button>
+<button class="randomMatchBtn quickMatchBtn" onclick="chooseRandomMatchSpeed('quick')" type="button">快速局<small>30秒理牌 · 15秒出牌</small></button>
+<button class="randomMatchBtn turboMatchBtn" onclick="chooseRandomMatchSpeed('turbo')" type="button">急速局<small>20秒理牌 · 10秒出牌</small></button>
 </div>
-<div class="homeRandomBalance"><span>随机匹配累计</span><strong id="homeRandomBalanceValue" class="pos">+1383</strong></div>
+<div class="homeRandomBalance"><span>随机匹配累计</span><strong id="homeRandomBalanceValue" class="pos">+1105</strong></div>
 </section>
 <section aria-label="开房间" class="lobbySection roomLobbySection">
 <div class="modeTitle">开房间</div>
@@ -145,13 +246,25 @@ body.turboMatchMode .matchOpeningFlyingCard.fly-bottom{animation-duration:.11s!i
 <div class="roomPanel" id="roomPanel" style="display: none;">
 <div class="passwordGate" id="passwordGate"><div class="passwordGateTitle">此房间需要密码</div><input class="lobbyInput" id="joinPasswordInput" maxlength="12" placeholder="输入房间密码" type="password"><div class="lobbyActions"><button class="lobbyAction" onclick="leaveRoom()" type="button">返回大厅</button><button class="lobbyAction primary" onclick="submitRoomPassword()" type="button">进入待机室</button></div></div>
 <div id="waitingRoomContent">
-<div class="waitingHeader"><div><div class="waitingTitle">房间待机室</div><div class="waitingSub"><span>等待真人玩家加入</span></div></div><div class="roomSecurity" id="roomSecurityText">公开房间</div></div>
-<div class="roomHeader"><div><div class="fieldLabel">房间号码</div><div class="roomCode" id="roomCodeText">------</div></div><button class="lobbyAction roomLeaveButton" onclick="leaveRoom()" type="button">离开</button></div>
+<div class="waitingHeader"><div><div class="waitingTitle" id="roomSecurityText">公开房间</div><div class="waitingSub"><span>房间号</span><span class="roomCodeInline" id="roomCodeText">------</span><span class="roomTypeInline" id="roomTypeText">4人房</span></div></div><button class="lobbyAction roomLeaveButton" onclick="leaveRoom()" type="button">离开</button></div>
 <div class="roomLinkBox"><div class="roomLink" id="roomLinkText"></div><button class="lobbyAction roomLinkButton" onclick="copyRoomLink()" type="button">复制</button></div>
 <div class="fieldLabel">玩家位置 <span id="roomCountText">1/4</span><span class="waitOnlyBadge">等待模式</span></div><div class="roomRoster" id="roomRoster"></div>
 <div class="startHint" id="startHint">房间只用于等待玩家；当前版本不会在这里开始牌局</div>
 </div></div>
 
+
+<div aria-hidden="true" class="playerCountPicker" id="playerCountPicker" onclick="if(event.target===this)closePlayerCountPicker()">
+  <div class="playerCountBox" role="dialog" aria-modal="true" aria-labelledby="playerCountSpeedLabel">
+    <div class="playerCountTitle" id="playerCountSpeedLabel">选择人数</div>
+    <div class="playerCountHint">速度确定后，选择本桌人数</div>
+    <div class="playerCountGrid">
+      <button type="button" onclick="confirmPlayerCountSelection(4)"><b>4人</b><small>经典规则 · 每人13张</small></button>
+      <button type="button" onclick="confirmPlayerCountSelection(3)"><b>3人</b><small>每人17张 · 1张底牌</small></button>
+      <button type="button" onclick="confirmPlayerCountSelection(2)"><b>2人</b><small>分一次牌 · 连玩两局</small></button>
+    </div>
+    <button type="button" class="playerCountCancel" id="playerCountCancelBtn" onclick="closePlayerCountPicker()">返回选择速度</button>
+  </div>
+</div>
 <div class="matchScreen" id="matchScreen">
 <div class="matchBox" id="matchBox">
 <div class="matchQueuePanel" id="matchQueuePanel">
@@ -1822,6 +1935,7 @@ let lobbyProfile={id:'p_'+Math.random().toString(36).slice(2,10),name:'',ready:f
 let activeRoomCode='',activeRoomPassword='',roomPasswordEnabled=false,roomAccessGranted=true;
 let roomChannel=null,roomHeartbeat=null,roomHostId='';
 let roomMembers=new Map();
+let activeRoomPlayerCount=4,pendingPlayerCountPurpose='random',pendingRoomCreation=null;
 function lobbyNotice(msg){
 const el=document.getElementById('lobbyToast');el.textContent=msg;el.classList.add('show');
 setTimeout(()=>el.classList.remove('show'),1500);
@@ -1845,7 +1959,7 @@ function randomRoomCode(){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let o='';fo
 function roomMetaKey(c){return ROOM_META_PREFIX+c}
 function saveRoomMeta(c,m){try{safeStorageSet(roomMetaKey(c),JSON.stringify(m))}catch(e){}}
 function loadRoomMeta(c){try{return JSON.parse(safeStorageGet(roomMetaKey(c),'')||'null')}catch(e){return null}}
-function currentRoomLink(){const u=new URL(location.href);u.searchParams.set('room',activeRoomCode);return u.toString()}
+function currentRoomLink(){const u=new URL(location.href);u.searchParams.set('room',activeRoomCode);u.searchParams.set('players',String(activeRoomPlayerCount));return u.toString()}
 function setLobbyRoomView(inRoom){
 const start=document.getElementById('startPanel');
 const profile=document.getElementById('profilePanel');
@@ -1860,9 +1974,26 @@ function createRoom(){
 if(!validateLobbyProfile())return;
 const pw=(document.getElementById('createPasswordInput').value||'').trim();
 if(roomPasswordEnabled&&(pw.length<4||pw.length>12)){lobbyNotice('密码需为4至12位');return}
-activeRoomCode=randomRoomCode();activeRoomPassword=roomPasswordEnabled?pw:'';
+pendingRoomCreation={passwordEnabled:roomPasswordEnabled,password:roomPasswordEnabled?pw:''};
+pendingPlayerCountPurpose='room';
+const picker=document.getElementById('playerCountPicker');
+const label=document.getElementById('playerCountSpeedLabel');
+const hint=picker?.querySelector('.playerCountHint');
+const cancel=document.getElementById('playerCountCancelBtn');
+if(label)label.textContent='创建房间 · 选择人数';
+if(hint)hint.textContent='选择本房间允许加入的玩家人数';
+if(cancel)cancel.textContent='返回创建房间';
+picker?.classList.add('show');
+picker?.setAttribute('aria-hidden','false');
+}
+function finalizeCreateRoom(count){
+const setup=pendingRoomCreation||{passwordEnabled:false,password:''};
+activeRoomPlayerCount=[2,3,4].includes(Number(count))?Number(count):4;
+roomPasswordEnabled=!!setup.passwordEnabled;
+activeRoomCode=randomRoomCode();activeRoomPassword=roomPasswordEnabled?setup.password:'';
 roomHostId=lobbyProfile.id;roomAccessGranted=true;
-saveRoomMeta(activeRoomCode,{passwordEnabled:roomPasswordEnabled,password:activeRoomPassword,hostId:roomHostId,createdAt:Date.now()});
+saveRoomMeta(activeRoomCode,{passwordEnabled:roomPasswordEnabled,password:activeRoomPassword,hostId:roomHostId,playerCount:activeRoomPlayerCount,createdAt:Date.now()});
+pendingRoomCreation=null;
 openRoom(activeRoomCode,true);
 }
 const LAST_COPIED_ROOM_CODE_KEY='chodai_last_copied_room_code_v1';
@@ -1937,6 +2068,7 @@ if(input)input.value=code;
 if(code.length<4){lobbyNotice('请输入正确房间号');return}
 rememberCopiedRoomCode(code);
 const meta=loadRoomMeta(code);activeRoomCode=code;roomPasswordEnabled=!!meta?.passwordEnabled;activeRoomPassword=meta?.password||'';
+activeRoomPlayerCount=[2,3,4].includes(Number(meta?.playerCount))?Number(meta.playerCount):4;
 roomHostId=meta?.hostId||'';roomAccessGranted=!roomPasswordEnabled;openRoom(code,false);
 }
 function openRoom(code,isHost){
@@ -1949,6 +2081,7 @@ setLobbyRoomView(true);
 document.getElementById('roomCodeText').textContent=code;document.getElementById('roomLinkText').textContent=currentRoomLink();
 document.getElementById('roomSecurityText').textContent=roomPasswordEnabled?'密码房间':'公开房间';
 document.getElementById('roomSecurityText').classList.toggle('locked',roomPasswordEnabled);
+const roomTypeEl=document.getElementById('roomTypeText');if(roomTypeEl)roomTypeEl.textContent=`${activeRoomPlayerCount}人房`;
 const gated=!isHost&&roomPasswordEnabled&&!roomAccessGranted;
 document.getElementById('passwordGate').classList.toggle('show',gated);
 document.getElementById('waitingRoomContent').style.display=gated?'none':'block';
@@ -1964,9 +2097,10 @@ roomAccessGranted=true;document.getElementById('passwordGate').classList.remove(
 roomMembers.set(lobbyProfile.id,{...lobbyProfile,lastSeen:Date.now(),host:false});sendRoomMessage({type:'join',member:{...lobbyProfile,host:false}});sendRoomMessage({type:'who'});renderRoomRoster()
 }
 function closeRoomChannel(){if(roomHeartbeat){clearInterval(roomHeartbeat);roomHeartbeat=null}if(roomChannel){roomChannel.close();roomChannel=null}}
-function sendRoomMessage(p){if(roomChannel)roomChannel.postMessage({...p,room:activeRoomCode,sender:lobbyProfile.id,time:Date.now()})}
+function sendRoomMessage(p){if(roomChannel)roomChannel.postMessage({...p,room:activeRoomCode,sender:lobbyProfile.id,playerCount:activeRoomPlayerCount,time:Date.now()})}
 function receiveRoomMessage(m){
 if(!m||m.room!==activeRoomCode||m.sender===lobbyProfile.id)return;
+if([2,3,4].includes(Number(m.playerCount))){activeRoomPlayerCount=Number(m.playerCount);const roomTypeEl=document.getElementById('roomTypeText');if(roomTypeEl)roomTypeEl.textContent=`${activeRoomPlayerCount}人房`;}
 if(['join','heartbeat','profile'].includes(m.type)){const x={...m.member,lastSeen:Date.now()};roomMembers.set(x.id,x);if(x.host)roomHostId=x.id;renderRoomRoster();if(m.type==='join')sendRoomMessage({type:'profile',member:{...lobbyProfile,host:lobbyProfile.id===roomHostId}})}
 else if(m.type==='who')sendRoomMessage({type:'profile',member:{...lobbyProfile,host:lobbyProfile.id===roomHostId}});
 else if(m.type==='leave'){roomMembers.delete(m.sender);renderRoomRoster()}
@@ -1979,9 +2113,9 @@ const humans=[...roomMembers.values()].sort((a,b)=>{
 if(a.id===roomHostId)return-1;
 if(b.id===roomHostId)return 1;
 return(a.name||'').localeCompare(b.name||'');
-}).slice(0,4);
+}).slice(0,activeRoomPlayerCount);
 const out=[];
-for(let i=0;i<4;i++){
+for(let i=0;i<activeRoomPlayerCount;i++){
 const m=humans[i];
 if(m){
 out.push(`<div class="roomPlayer ${m.id===lobbyProfile.id?'localPlayer':''}"><div class="roomPlayerBody">
@@ -1996,18 +2130,18 @@ out.push(`<div class="roomPlayer waitingPlayer"><div class="roomPlayerBody">
       </div></div>`);
 }
 }
-document.getElementById('roomRoster').innerHTML=out.join('');
-document.getElementById('roomCountText').textContent=`${humans.length}/4`;
+const roster=document.getElementById('roomRoster');if(roster){roster.classList.remove('roomPlayers2','roomPlayers3','roomPlayers4');roster.classList.add(`roomPlayers${activeRoomPlayerCount}`);roster.innerHTML=out.join('');}
+document.getElementById('roomCountText').textContent=`${humans.length}/${activeRoomPlayerCount}`;
 const startHint=document.getElementById('startHint');
 if(startHint){
 startHint.classList.remove('waitingHint');
-startHint.textContent=humans.length<4
-?`正在等待真人玩家加入（${humans.length}/4）`
+startHint.textContent=humans.length<activeRoomPlayerCount
+?`正在等待真人玩家加入（${humans.length}/${activeRoomPlayerCount}）`
 :'房间已满；正式联机功能后续接入';
 }
 }
 async function copyRoomLink(){const l=currentRoomLink();rememberCopiedRoomCode(activeRoomCode);try{await navigator.clipboard.writeText(l);lobbyNotice('房间链接已复制')}catch(e){prompt('复制此链接',l)}}
-function leaveRoom(){sendRoomMessage({type:'leave'});closeRoomChannel();activeRoomCode='';activeRoomPassword='';roomMembers.clear();roomHostId='';setLobbyRoomView(false)}
+function leaveRoom(){sendRoomMessage({type:'leave'});closeRoomChannel();activeRoomCode='';activeRoomPassword='';activeRoomPlayerCount=4;roomMembers.clear();roomHostId='';setLobbyRoomView(false)}
 function initLobby(){
 setLobbyRoomView(false);
 loadLobbyProfile();
@@ -2779,7 +2913,7 @@ const removedMask=maskForCards(combo.cards,planner.indexById);
 const remainMask=planner.fullMask^removedMask;
 const remain=removeComboFromHand(hand,combo);
 const afterTurns=planner.minTurns(remainMask);
-const nearestThreat=Math.min(...players.map((p,i)=>i===pi?99:p.hand.length));
+const nearestThreat=Math.min(...activeOpponentIndices(pi).map(i=>players[i].hand.length));
 const twosUsed=combo.cards.filter(c=>c.rank==='2').length;
 const remainTwoValue=twoControlValue(remain);
 const twoValueLoss=strategy.initialTwoValue-remainTwoValue;
@@ -3117,7 +3251,7 @@ delay+=usesSpadeTwo
 if(Math.random()<0.035){
 delay+=5000+Math.floor(Math.random()*3501);
 }
-const danger=Math.min(...players.filter((_,x)=>x!==i).map(x=>x.hand.length));
+const danger=Math.min(...activeOpponentIndices(i).map(index=>players[index].hand.length));
 if(danger<=2)delay+=800+Math.floor(Math.random()*1600);
 return Math.min(delay,22000);
 }
@@ -3129,7 +3263,7 @@ return 120+Math.floor(Math.random()*480);
 }
 if(isSinglePlay&&!usesTwo){
 let delay=4000+Math.floor(Math.random()*5001);
-const danger=Math.min(...players.filter((_,x)=>x!==i).map(x=>x.hand.length));
+const danger=Math.min(...activeOpponentIndices(i).map(index=>players[index].hand.length));
 if(danger<=2)delay+=500+Math.floor(Math.random()*1200);
 return Math.min(delay,15000);
 }
@@ -3150,7 +3284,7 @@ delay+=usesSpadeTwo
 ?3500+Math.floor(Math.random()*3501)
 :2200+Math.floor(Math.random()*3001);
 }
-const opponentDanger=Math.min(...players.filter((_,x)=>x!==i).map(x=>x.hand.length));
+const opponentDanger=Math.min(...activeOpponentIndices(i).map(index=>players[index].hand.length));
 if(opponentDanger<=2)delay+=700+Math.floor(Math.random()*1800);
 if(hand.length<=3)delay+=400+Math.floor(Math.random()*1200);
 return Math.max(4500,Math.min(Math.round(delay),36000));
@@ -3557,7 +3691,7 @@ score+=handStructureValue(remain)*.8;
 score+=twoControlValue(remain)*.65;
 if(combo.type==='fullHouse'&&tripleRankOfFullHouse(combo)==='2')score-=150;
 if(combo.type==='fourKind'||combo.type==='straightFlush'){
-if(Math.min(...players.filter((_,i)=>i!==pi).map(p=>p.hand.length))>3)score-=45;
+if(Math.min(...activeOpponentIndices(pi).map(index=>players[index].hand.length))>3)score-=45;
 }
 if(remain.length===0)score+=10000;
 if(after===1)score+=350;
@@ -3583,7 +3717,7 @@ const choice=normalAIChoice(pi,legal);
 if(lastPlay&&choice){
 const remain=removeComboFromHand(hand,choice);
 const loss=handStructureValue(hand)-handStructureValue(remain);
-const threat=Math.min(...players.filter((_,i)=>i!==pi).map(p=>p.hand.length));
+const threat=Math.min(...activeOpponentIndices(pi).map(index=>players[index].hand.length));
 if(lastPlay.cards.length<5&&loss>35&&threat>3&&Math.random()<0.45){
 executePass(pi);return;
 }
@@ -3604,21 +3738,17 @@ return;
 executePlay(pi,best.combo);
 }
 function theoreticalUnknownPoolForPlayer(playerIndex){
-const knownIds=new Set([
-...(players[playerIndex]?.hand||[]).map(c=>c.id),
-...playedCardIds
-]);
+/* “压完全场”是所有玩家都能看到的公开反馈，所以只能根据全桌公开信息判断。
+   出牌者尚未打出的手牌，对其他玩家同样属于未知牌，必须继续视为可能存在。
+   例如出红心2但自己还握有黑桃2时，黑桃2仍在未知池中，不得触发压全场。 */
+const publicOutIds=new Set(playedCardIds||[]);
 const fullDeck=[];
 for(const suit of SUITS){
 for(const rank of RANKS){
-fullDeck.push({
-id:`${rank.key}${suit.key}`,
-rank:rank.key,
-suit:suit.key
-});
+fullDeck.push({id:`${rank.key}${suit.key}`,rank:rank.key,suit:suit.key});
 }
 }
-return fullDeck.filter(c=>!knownIds.has(c.id));
+return fullDeck.filter(c=>!publicOutIds.has(c.id));
 }
 function theoreticalBeatingPlayExists(pool,target){
 const needed=target.cards.length;
@@ -5364,6 +5494,630 @@ const app=document.getElementById('app');
 const ceremony=document.getElementById('ceremony');
 if(app&&ceremony&&ceremony.parentElement!==app)app.appendChild(ceremony);
 }
+/* ===== 2 / 3 / 4 人模式扩展 ===== */
+let activePlayerCount=4;
+let pendingRandomMatchSpeed='standard';
+let twoPlayerReserveHands=[[],[]];
+let twoPlayerLeg=1;
+let twoPlayerSecondLegPending=false;
+let threePlayerMiddleCard=null;
+let threePlayerOpeningHolder=-1;
+let openingRequiredCardId='';
+
+function activePlayerIndices(){return Array.from({length:activePlayerCount},(_,i)=>i)}
+function activeOpponentIndices(playerIndex=0){return activePlayerIndices().filter(i=>i!==playerIndex)}
+function activePlayers(){return activePlayerIndices().map(i=>players[i])}
+function isActivePlayerIndex(index){return Number.isInteger(index)&&index>=0&&index<activePlayerCount}
+function nextActivePlayer(index,step=1){return((index+step)%activePlayerCount+activePlayerCount)%activePlayerCount}
+function activePassTarget(){return Math.max(1,activePlayerCount-1)}
+function startingHandSize(){return activePlayerCount===3?17:13}
+function currentModeLabel(){return`${activePlayerCount}人局`}
+function currentTwoPlayerLegLabel(){return activePlayerCount===2?` · 第${twoPlayerLeg}/2局`:''}
+function setActivePlayerCount(count){
+activePlayerCount=[2,3,4].includes(Number(count))?Number(count):4;
+document.body.classList.remove('players-2','players-3','players-4');
+document.body.classList.add(`players-${activePlayerCount}`);
+document.body.dataset.playerCount=String(activePlayerCount);
+players.forEach((p,i)=>{p.active=i<activePlayerCount;if(i>=activePlayerCount){p.hand=[];p.round=0}});
+if(currentPlayer>=activePlayerCount)currentPlayer=0;
+if(leader>=activePlayerCount)leader=0;
+if(previousWinner!=null&&previousWinner>=activePlayerCount)previousWinner=0;
+dealCounts=[0,0,0,0];
+renderAll?.();
+}
+function chooseRandomMatchSpeed(speed='standard'){
+if(!validateLobbyProfile())return;
+pendingPlayerCountPurpose='random';
+pendingRandomMatchSpeed=['standard','quick','turbo'].includes(speed)?speed:'standard';
+const picker=document.getElementById('playerCountPicker');
+const label=document.getElementById('playerCountSpeedLabel');
+const hint=picker?.querySelector('.playerCountHint');
+const cancel=document.getElementById('playerCountCancelBtn');
+if(label)label.textContent=`${pendingRandomMatchSpeed==='turbo'?'急速局':pendingRandomMatchSpeed==='quick'?'快速局':'标准局'} · 选择人数`;
+if(hint)hint.textContent='速度确定后，选择本桌人数';
+if(cancel)cancel.textContent='返回选择速度';
+picker?.classList.add('show');
+picker?.setAttribute('aria-hidden','false');
+}
+function closePlayerCountPicker(){
+const picker=document.getElementById('playerCountPicker');
+picker?.classList.remove('show');
+picker?.setAttribute('aria-hidden','true');
+if(pendingPlayerCountPurpose==='room')pendingRoomCreation=null;
+}
+function confirmPlayerCountSelection(count){
+const purpose=pendingPlayerCountPurpose;
+const roomSetup=pendingRoomCreation;
+const picker=document.getElementById('playerCountPicker');
+picker?.classList.remove('show');
+picker?.setAttribute('aria-hidden','true');
+if(purpose==='room'){
+  pendingRoomCreation=roomSetup;
+  finalizeCreateRoom(count);
+}else{
+  startSimulatedMatchmaking(pendingRandomMatchSpeed,count);
+}
+}
+
+function assignRandomPersonalities(){
+const pool=[...AI_PERSONALITY_TYPES];
+playerPersonalities=[null,null,null,null];
+for(const i of activeOpponentIndices(0)){
+playerPersonalities[i]=pool.splice(Math.floor(Math.random()*pool.length),1)[0]||AI_PERSONALITY_TYPES[2];
+}
+}
+function randomMixedDifficulties(){
+const result=['human','normal','normal','normal'];
+for(const i of activeOpponentIndices(0)){
+const r=Math.random();result[i]=r<.28?'easy':r<.72?'normal':'hard';
+}
+return result;
+}
+function standardMixedDifficulties(){
+const pool=['easy','normal','hard'];
+for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]]}
+const result=['human','normal','normal','normal'];
+activeOpponentIndices(0).forEach((index,offset)=>result[index]=pool[offset%pool.length]);
+return result;
+}
+function configuredAIDifficulties(level){
+if(level==='standard')return standardMixedDifficulties();
+const result=['human','normal','normal','normal'];
+activeOpponentIndices(0).forEach(i=>result[i]=level);
+return result;
+}
+
+function renderMatchSlots(joined){
+const root=document.getElementById('matchSlots');
+if(!root)return;
+const slots=[];
+slots.push(`<div class="matchSlot"><div><div class="matchName">${escapeLobbyHtml(lobbyProfile.name||'你')}</div><div class="matchState">你 · 已进入${activePlayerCount}人队列</div></div><div class="matchPing">READY</div></div>`);
+for(let i=0;i<activePlayerCount-1;i++){
+if(i<joined){
+const ping=28+Math.floor(Math.random()*76);
+slots.push(`<div class="matchSlot"><div><div class="matchName">${escapeLobbyHtml(simulatedAliases[i])}</div><div class="matchState">已加入</div></div><div class="matchPing">${ping}ms</div></div>`);
+}else{
+slots.push(`<div class="matchSlot waiting"><div><div class="matchName">等待加入</div><div class="matchState">匹配中</div></div><div class="matchPing waitingSignalHost">${unifiedWaitIndicatorHTML('WAIT','匹配中')}</div></div>`);
+}
+}
+root.innerHTML=slots.join('');
+}
+function startSimulatedMatchmaking(speed='standard',playerCount=4){
+if(!validateLobbyProfile())return;
+setActivePlayerCount(playerCount);
+randomMatchSpeed=['standard','quick','turbo'].includes(speed)?speed:'standard';
+clearSimulatedTimers();
+simulatedMatchActive=true;
+simulatedAliases=pickUniqueAliases(activePlayerCount-1);
+playerAIDifficulties=randomMixedDifficulties();
+assignRandomPersonalities();
+randomMatchPrincipalAtEntry=loadRandomMatchBalance();
+randomMatchSettlementCommitted=true;
+randomMatchSessionScores=[0,0,0,0];
+initializeRandomMatchAssets();
+document.getElementById('matchScreen').classList.add('show');
+const matchLabel=document.getElementById('matchLabel');
+if(matchLabel)matchLabel.textContent=`模拟匹配 · ${randomMatchModeLabel()} · ${currentModeLabel()} · 理牌${randomMatchClock('arrange')}秒 · 出牌${randomMatchClock('turn')}秒`;
+renderMatchSlots(0);
+const displayedStart=9+Math.floor(Math.random()*3);
+const displayedEnd=4+Math.floor(Math.random()*3);
+const countdownSteps=Math.max(3,displayedStart-displayedEnd);
+const totalWait=countdownSteps*1000+250+Math.floor(Math.random()*651);
+const joinTimes=[];
+for(let i=0;i<activePlayerCount-1;i++)joinTimes.push(Math.max(650,Math.floor(totalWait*((i+1)/(activePlayerCount-1)*.82+Math.random()*.08))));
+joinTimes[joinTimes.length-1]=totalWait;
+const started=Date.now();
+const timerEl=document.getElementById('matchTimer');
+const updateEstimatedCountdown=()=>{
+if(!timerEl)return;
+const elapsedSteps=Math.floor((Date.now()-started)/1000);
+const seconds=Math.max(displayedEnd,displayedStart-elapsedSteps);
+timerEl.innerHTML=`<span>预计倒数</span>${unifiedWaitIndicatorHTML(`${seconds}s`,`预计剩余 ${seconds} 秒`)}`;
+};
+updateEstimatedCountdown();
+const ticker=setInterval(()=>{if(!simulatedMatchActive){clearInterval(ticker);return}updateEstimatedCountdown()},250);
+simulatedMatchTimers.push(ticker);
+joinTimes.forEach((time,index)=>{
+simulatedMatchTimers.push(setTimeout(()=>{
+renderMatchSlots(index+1);
+if(index===joinTimes.length-1){
+clearInterval(ticker);
+if(timerEl)timerEl.textContent='匹配成功，正在进入';
+simulatedMatchTimers.push(setTimeout(beginSimulatedMatchGame,400+Math.random()*350));
+}
+},time));
+});
+}
+function beginSimulatedMatchGame(){
+if(!simulatedMatchActive)return;
+seedAIGameMode=false;simulatedMatchActive=false;clearSimulatedTimers();
+document.getElementById('matchScreen').classList.add('show');
+document.getElementById('lobbyScreen').style.display='none';
+roundNumber=0;previousWinner=null;dealerIndex=null;transactionLog=[];lastRenderedTransferSeq=0;recentPlayHistory=[];roundSpecialPlays=[];
+twoPlayerReserveHands=[[],[]];twoPlayerLeg=1;twoPlayerSecondLegPending=false;threePlayerMiddleCard=null;openingRequiredCardId='';
+initializeRandomMatchRosterLifecycle();randomMatchSettlementCommitted=false;setAIDifficulty('normal');setRandomMatchGameMode(true);
+players[0].name=lobbyProfile.name||'你';
+activeOpponentIndices(0).forEach((i,offset)=>players[i].name=simulatedAliases[offset]||`玩家${i+1}`);
+for(let i=activePlayerCount;i<4;i++)players[i].name=`空位${i+1}`;
+players.forEach((p,i)=>{p.score=randomMatchSessionScores[i]||0;p.round=0;p.hand=[]});
+newGame(false);
+}
+
+function initializeRandomMatchRosterLifecycle(){
+const longTable=Math.random()<.04;
+randomMatchSeatRounds=[0,0,0,0];randomMatchSeatStayTargets=[Infinity,Infinity,Infinity,Infinity];
+for(const i of activeOpponentIndices(0))randomMatchSeatStayTargets[i]=drawRandomMatchStayTarget(longTable);
+randomMatchPendingReplacements.clear();randomMatchNewJoinSeats.clear();randomMatchAIProxySeats.clear();randomMatchRosterChangedNextRound=false;randomMatchRosterNotices=[];clearRandomMatchMidDeparture();
+}
+function applyRandomMatchReplacement(playerIndex){
+if(!activeOpponentIndices(0).includes(playerIndex))return false;
+const oldName=players[playerIndex].name,newName=pickReplacementAlias();
+players[playerIndex].name=newName;players[playerIndex].score=0;players[playerIndex].round=0;players[playerIndex].hand=[];
+randomMatchSessionScores[playerIndex]=0;randomMatchAssetBases[playerIndex]=createSimulatedPlayerAsset();randomMatchSeatRounds[playerIndex]=0;randomMatchSeatStayTargets[playerIndex]=drawRandomMatchStayTarget(false);
+randomMatchPendingReplacements.delete(playerIndex);randomMatchAIProxySeats.delete(playerIndex);randomMatchNewJoinSeats.add(playerIndex);randomMatchRosterChangedNextRound=true;
+playerAIDifficulties[playerIndex]=['easy','normal','hard'][Math.floor(Math.random()*3)];playerPersonalities[playerIndex]=AI_PERSONALITY_TYPES[Math.floor(Math.random()*AI_PERSONALITY_TYPES.length)];
+randomMatchRosterNotices.push(`${oldName}离开，${newName}加入`);return true;
+}
+function planRandomMatchRosterChangesAfterRound(){
+if(!randomMatchGameMode)return;
+if(activePlayerCount===2&&twoPlayerLeg===1)return;
+const candidates=[];
+for(const i of activeOpponentIndices(0)){
+randomMatchSeatRounds[i]=(randomMatchSeatRounds[i]||0)+1;
+if(randomMatchAIProxySeats.has(i)||randomMatchSeatRounds[i]>=randomMatchSeatStayTargets[i])candidates.push(i);
+}
+if(candidates.length===activePlayerCount-1&&candidates.length>1&&!candidates.some(i=>randomMatchAIProxySeats.has(i)))candidates.splice(Math.floor(Math.random()*candidates.length),1);
+candidates.forEach(i=>randomMatchPendingReplacements.add(i));
+randomMatchRosterNotices=candidates.map(i=>`${players[i].name}本场后离开`);
+}
+function triggerRandomMatchMidDeparture(playerIndex,scheduledRound){
+if(!randomMatchGameMode||gameOver||roundNumber!==scheduledRound||!activeOpponentIndices(0).includes(playerIndex))return;
+if(randomMatchAIProxySeats.has(playerIndex))return;
+randomMatchAIProxySeats.add(playerIndex);randomMatchPendingReplacements.add(playerIndex);
+const name=players[playerIndex].name;logMsg(`${name}中途离场，AI代打接管`);toast(`${name}中途离场 · AI代打`);renderAll();
+}
+function scheduleRandomMatchMidDeparture(){
+clearRandomMatchMidDeparture();if(!randomMatchGameMode||gameOver||Math.random()>=.025)return;
+const candidates=activeOpponentIndices(0).filter(i=>!randomMatchAIProxySeats.has(i));if(!candidates.length)return;
+const playerIndex=candidates[Math.floor(Math.random()*candidates.length)],scheduledRound=roundNumber;randomMatchMidDepartureRound=scheduledRound;
+const delay=randomMatchSpeed==='turbo'?3500+Math.floor(Math.random()*5500):randomMatchSpeed==='quick'?6000+Math.floor(Math.random()*9000):12000+Math.floor(Math.random()*24000);
+randomMatchMidDepartureTimer=setTimeout(()=>triggerRandomMatchMidDeparture(playerIndex,scheduledRound),delay);
+}
+
+function matchOpeningDrawHTML(){
+const names=players.map((p,i)=>matchOpeningPlayerName(i));
+return`<div class="matchOpeningDrawGrid unifiedDrawSeats">
+<div class="matchOpeningDrawSlot top" id="matchOpeningDrawSlot2"><div class="matchOpeningDrawName">${names[2]}</div><div class="matchOpeningDrawCardBox"><div class="matchOpeningCardBack" id="matchOpeningDraw2"></div></div></div>
+<div class="matchOpeningDrawSlot left" id="matchOpeningDrawSlot1"><div class="matchOpeningDrawName">${names[1]}</div><div class="matchOpeningDrawCardBox"><div class="matchOpeningCardBack" id="matchOpeningDraw1"></div></div></div>
+<div class="matchOpeningDrawSlot right" id="matchOpeningDrawSlot3"><div class="matchOpeningDrawName">${names[3]}</div><div class="matchOpeningDrawCardBox"><div class="matchOpeningCardBack" id="matchOpeningDraw3"></div></div></div>
+<div class="matchOpeningDrawSlot bottom" id="matchOpeningDrawSlot0"><div class="matchOpeningDrawName">${names[0]}</div><div class="matchOpeningDrawCardBox"><div class="matchOpeningCardBack" id="matchOpeningDraw0"></div></div></div></div>`;
+}
+async function animateDealerDraw(){
+const draw=shuffle(buildStableSeedDeck(),createDealRandom('DEALER_DRAW')).slice(0,activePlayerCount);
+setMatchOpeningStage('draw','抽牌决定庄家',`${activePlayerCount}人各翻一张牌 · 最大者做庄`,`0/${activePlayerCount}`,matchOpeningDrawHTML());
+await ceremonySleep(420);
+for(let order=0;order<activePlayerCount;order++){
+const i=order,back=document.getElementById('matchOpeningDraw'+i);
+if(back){const box=back.parentElement;back.classList.add('flipOut');sfx('flip');await ceremonySleep(160);if(box)box.innerHTML=playingCardHtml(draw[i],'matchOpeningCard flipIn',`id="matchOpeningDraw${i}"`)}
+const progress=document.getElementById('matchOpeningProgress');if(progress)progress.textContent=`${order+1}/${activePlayerCount}`;await ceremonySleep(190);
+}
+dealerIndex=0;for(let i=1;i<activePlayerCount;i++)if(cardPower(draw[i])>cardPower(draw[dealerIndex]))dealerIndex=i;
+document.getElementById('matchOpeningDrawSlot'+dealerIndex)?.classList.add('dealerWinner');
+const title=document.getElementById('matchOpeningTitle'),label=document.getElementById('matchOpeningLabel');
+if(title)title.textContent=`${players[dealerIndex].name} 做庄`;if(label)label.textContent='最高牌已确认 · 准备翻牌决定发牌起点';sfx('turn');await ceremonySleep(720);
+}
+function renderIntegratedDealTable(totalDealt=0){
+const pile=document.getElementById('pileCards'),recent=document.getElementById('pileLabel');
+if(pile){const left=Math.max(0,52-totalDealt);pile.classList.remove('absoluteMaxStrike');pile.style.display='flex';pile.style.alignItems='center';pile.style.justifyContent='center';pile.innerHTML=`<div class="dealTableDeck" id="dealTableDeck" data-left="${left}"></div>`}
+if(recent){
+const hint=activePlayerCount===2?'四副牌一次分完 · 其中26张封存给第二局':activePlayerCount===3?'三人各17张 · 中间翻开1张':'你的牌会逐张进入下方手牌';
+recent.innerHTML=`<div class="recentPlayList"><div class="recentPlayItem latest"><span class="recentPlayPlayer">正在分牌</span></div><div class="recentPlayItem"><span class="recentPlayType">${totalDealt}/52</span></div><div class="recentPlayHint">${hint}</div></div>`;
+}
+}
+function beginIntegratedDealPreview(){
+hideMatchOpeningStage();ceremonyActive=true;openingTemplateStage='deal';document.body.classList.add('dealPreviewMode');document.body.classList.remove('arrangeMode');document.getElementById('preGameReadyPanel')?.classList.remove('show');document.getElementById('app')?.classList.remove('preGameReadyActive');
+const readyBtn=document.getElementById('preGameReadyBtn');if(readyBtn){readyBtn.textContent='分牌中';readyBtn.disabled=true;readyBtn.setAttribute('aria-label','分牌中')}
+selected.clear();resetHints();renderAll();renderIntegratedDealTable(0);scheduleSeatInteraction();
+const main=document.getElementById('turnMain'),sub=document.getElementById('turnSub'),humanTurn=document.getElementById('humanTurnText');if(main)main.textContent='正在分牌';if(sub)sub.textContent=activePlayerCount===2?'正在分四副牌':activePlayerCount===3?'正在分牌并翻开底牌':'你的牌会逐张进入下方手牌';if(humanTurn)humanTurn.textContent=`收牌中 0/${startingHandSize()}`;updateButtons();
+}
+function updateIntegratedDealPreview(playerIndex,newCard,totalDealt){
+openingTemplateStage='deal';renderSeats();renderIntegratedDealTable(totalDealt);
+const main=document.getElementById('turnMain'),sub=document.getElementById('turnSub'),humanTurn=document.getElementById('humanTurnText'),humanCount=document.getElementById('humanCount');
+if(main)main.textContent='正在分牌';if(sub)sub.textContent=playerIndex===0?`收到 ${cardText(newCard)}`:`正在派给 ${players[playerIndex].name}`;if(humanTurn)humanTurn.textContent=`收牌中 ${dealCounts[0]||0}/${startingHandSize()}`;if(humanCount)humanCount.textContent=`${dealCounts[0]||0}张`;
+const deck=document.getElementById('dealTableDeck');if(deck){deck.classList.remove('dealTablePulse');void deck.offsetWidth;deck.classList.add('dealTablePulse')}
+if(playerIndex===0){renderHand();requestAnimationFrame(()=>{const incoming=document.querySelector(`#hand .card[data-id="${newCard.id}"]`);if(incoming){incoming.classList.add('dealIncoming');incoming.addEventListener('animationend',()=>incoming.classList.remove('dealIncoming'),{once:true})}})}
+}
+async function animateCutAndDeal(deck){
+const cutRandom=createDealRandom('CUT_CARD'),cutCard=deck[Math.floor(cutRandom()*deck.length)],cut=cutValueFromCard(cutCard),dealStart=(dealerIndex+((cut-1)%activePlayerCount))%activePlayerCount;
+setMatchOpeningStage('cut',`${players[dealerIndex].name} 翻牌决定发牌起点`,'中间开一张','翻牌',matchOpeningCutHTML(cutCard,dealStart,'idle'));
+sfx('deal');await ceremonySleep(220);const cutHalf=document.getElementById('matchOpeningCutHalf');if(cutHalf)cutHalf.classList.add('lift');await ceremonySleep(380);if(cutHalf){cutHalf.classList.remove('lift');cutHalf.classList.add('reveal')}sfx('flip');await ceremonySleep(360);
+const cutTitle=document.getElementById('matchOpeningTitle'),cutLabel=document.getElementById('matchOpeningLabel'),cutProgress=document.getElementById('matchOpeningProgress'),cutCaption=document.querySelector('.matchOpeningCutCaption');
+if(cutTitle)cutTitle.textContent='发牌起点已确定';if(cutLabel)cutLabel.textContent=`从 ${players[dealStart].name} 开始依次分牌`;if(cutProgress)cutProgress.textContent=String(cut);if(cutCaption)cutCaption.innerHTML=`<strong>从 ${escapeLobbyHtml(players[dealStart].name)} 开始分牌</strong>`;await ceremonySleep(620);
+players.forEach(p=>p.hand=[]);dealCounts=[0,0,0,0];threePlayerMiddleCard=null;twoPlayerReserveHands=[[],[]];beginIntegratedDealPreview();
+if(activePlayerCount===2){
+const packets=[[],[],[],[]];for(let i=0;i<52;i++)packets[(dealStart+i)%4].push(deck[i]);
+twoPlayerReserveHands=[packets[2].slice(),packets[3].slice()];
+for(let round=0;round<13;round++)for(let pi=0;pi<2;pi++){
+const card=packets[pi][round];players[pi].hand.push(card);dealCounts[pi]++;updateIntegratedDealPreview(pi,card,(round*2)+pi+1);if(((round*2)+pi)%2===0)sfx('deal');await ceremonySleep(pi===0?95:48);
+}
+renderIntegratedDealTable(52);
+}else if(activePlayerCount===3){
+threePlayerMiddleCard=deck[51];playedCardIds.add(threePlayerMiddleCard.id);
+for(let i=0;i<51;i++){
+const pi=(dealStart+i)%3;players[pi].hand.push(deck[i]);dealCounts[pi]++;updateIntegratedDealPreview(pi,deck[i],i+1);if(i%3===0)sfx('deal');await ceremonySleep(pi===0?82:42);
+}
+renderCardTracker();renderIntegratedDealTable(52);
+}else{
+for(let i=0;i<52;i++){
+const pi=(dealStart+i)%4;players[pi].hand.push(deck[i]);dealCounts[pi]++;updateIntegratedDealPreview(pi,deck[i],i+1);if(i%4===0)sfx('deal');await ceremonySleep(pi===0?92:44);
+}
+}
+const main=document.getElementById('turnMain'),sub=document.getElementById('turnSub'),humanTurn=document.getElementById('humanTurnText');if(main)main.textContent='分牌完成';if(sub)sub.textContent=activePlayerCount===2?'第一局使用前26张 · 后26张已封存':activePlayerCount===3?`底牌 ${cardText(threePlayerMiddleCard)} 已翻开`:'继续整理手牌后按 READY';if(humanTurn)humanTurn.textContent=`${startingHandSize()}张已到齐`;
+renderSeats();renderHand();sfx('turn');await ceremonySleep(320);endIntegratedDealPreview(randomMatchGameMode||seedAIGameMode);return{cut,dealStart};
+}
+
+function findLowestActiveCard(){
+let best=null,bestOwner=0;
+for(const i of activePlayerIndices())for(const card of players[i].hand){if(!best||cardPower(card)<cardPower(best)){best=card;bestOwner=i}}
+return{card:best,owner:bestOwner};
+}
+function configureOpeningAfterDeal(diamond3Opening,openingSeat,rosterResetOpening=false,seedReplayCarry=false){
+openingRequiredCardId='';threePlayerOpeningHolder=-1;
+if(activePlayerCount===2){
+const d3Owner=activePlayerIndices().find(i=>containsDiamond3(players[i].hand));
+if(d3Owner!==undefined){currentPlayer=d3Owner;openingRequiredCardId='3-D';mustDiamond3=true;logMsg(`${players[currentPlayer].name}持有方块3，第一手必须包含方块3`)}
+else{const lowest=findLowestActiveCard();currentPlayer=lowest.owner;openingRequiredCardId=lowest.card?.id||'';mustDiamond3=false;logMsg(`方块3在封存牌中，由${players[currentPlayer].name}持有最小牌${lowest.card?cardText(lowest.card):''}先出`)}
+return;
+}
+if(activePlayerCount===3){
+const d3Owner=activePlayerIndices().find(i=>containsDiamond3(players[i].hand));
+if(d3Owner!==undefined){currentPlayer=d3Owner;threePlayerOpeningHolder=d3Owner;mustDiamond3=false;logMsg(`${players[currentPlayer].name}持有方块3，可自由出牌或用方块3换底牌`)}
+else{const lowest=findLowestActiveCard();currentPlayer=lowest.owner;mustDiamond3=false;logMsg(`方块3位于底牌，由${players[currentPlayer].name}持有最小牌先自由出牌`)}
+return;
+}
+if(diamond3Opening){currentPlayer=players.findIndex((p,i)=>i<activePlayerCount&&containsDiamond3(p.hand));mustDiamond3=true;logMsg(rosterResetOpening?`本桌有新玩家加入，由${players[currentPlayer].name}持有方块3先出`:`第一场由${players[currentPlayer].name}持有方块3先出`)}
+else{currentPlayer=openingSeat;mustDiamond3=false;logMsg(seedReplayCarry?`种子指定由${players[currentPlayer].name}做庄并任意先出`:`第${roundNumber}场由上一场赢家${players[currentPlayer].name}任意先出`)}
+}
+async function newGame(fullReset=false){
+document.body.classList.toggle('developerMode',developerMode);document.body.classList.toggle('seedAIGameMode',seedAIGameMode);recentPlayHistory=[];roundSpecialPlays=[];
+const requestedSeedCode=normalizeSeed(forcedNextSeed),requestedSeed=parseDealSeed(requestedSeedCode);forcedNextSeed='';if(ceremonyActive)return;clearTimeout(turnTimer);
+if(fullReset){roundNumber=0;previousWinner=null;dealerIndex=null;players.forEach(p=>{p.score=0;p.round=0});transactionLog=[];lastRenderedTransferSeq=0}
+roundNumber++;twoPlayerLeg=1;twoPlayerSecondLegPending=false;twoPlayerReserveHands=[[],[]];threePlayerMiddleCard=null;openingRequiredCardId='';
+const rosterResetOpening=randomMatchGameMode&&randomMatchRosterChangedNextRound;
+let diamond3Opening=activePlayerCount===4?(roundNumber===1||rosterResetOpening):true,seedReplayCarry=false;
+if(activePlayerCount===4&&requestedSeed?.stable){diamond3Opening=requestedSeed.opening==='D';if(!diamond3Opening){previousWinner=Math.min(activePlayerCount-1,requestedSeed.seat);dealerIndex=previousWinner;seedReplayCarry=true}}
+const openingSeat=diamond3Opening?0:Math.max(0,Math.min(activePlayerCount-1,Number(previousWinner)||0));
+currentDealSeed=requestedSeedCode||generateDealSeed(diamond3Opening?'D':'W',openingSeat);seededRandom=createDealRandom('FALLBACK',currentDealSeed);const seedCodeEl=document.getElementById('currentSeedCode');if(seedCodeEl)seedCodeEl.textContent=currentDealSeed;
+playedCardIds=new Set();renderCardTracker();randomMatchRosterChangedNextRound=false;gameOver=false;firstPlay=true;lastPlay=null;passes=0;clearHumanPreAction(false);selected.clear();resetHints();players.forEach(p=>p.round=0);logMsg(`种子 ${currentDealSeed} · ${currentModeLabel()}`);clearRandomMatchMidDeparture();
+const deck=shuffle(buildStableSeedDeck(),createDealRandom('MAIN_DECK'));players.forEach(p=>p.hand=[]);dealCounts=[0,0,0,0];renderAll();
+if(diamond3Opening){mustDiamond3=true;await animateDealerDraw()}else{mustDiamond3=false;dealerIndex=openingSeat;previousWinner=openingSeat;showCarryDealerTemplate(seedReplayCarry);sfx('turn');await ceremonySleep(650)}
+await animateCutAndDeal(deck);configureOpeningAfterDeal(diamond3Opening,openingSeat,rosterResetOpening,seedReplayCarry);leader=currentPlayer;renderAll();
+if(randomMatchGameMode||seedAIGameMode){const wasRandom=randomMatchGameMode;ceremonyActive=false;const readyPromise=startPreGameReady({timed:wasRandom});hideMatchOpeningStage();await readyPromise;if(wasRandom&&!randomMatchGameMode)return}else hideMatchOpeningStage();
+const special=checkSpecialWins();if(special.length){await autoPlaySpecialOpening(special);return}
+if(activePlayerCount===3&&threePlayerOpeningHolder>=0){await resolveThreePlayerOpeningChoice();return}
+scheduleRandomMatchMidDeparture();nextTurn();
+}
+
+function threePlayerChoiceHTML(){
+const card=threePlayerMiddleCard,holder=players[threePlayerOpeningHolder];
+return`<div class="result threeOpeningChoice"><h1>方块3开局选择</h1><div class="threeOpeningText">${escapeLobbyHtml(holder?.name||'玩家')}持有方块3。可以直接自由出牌，或用方块3换取中间底牌并把出牌权交给下一家。</div><div class="threeMiddleCard">${card?playingCardHtml(card,'historyPlayingCard'):''}<span>中间底牌 ${card?cardText(card):''}</span></div><div class="threeOpeningActions"><button type="button" onclick="threePlayerChooseDirect()">直接自由出牌</button><button type="button" class="gold" onclick="threePlayerChooseExchange()">方块3换底牌并过牌</button></div></div>`;
+}
+async function resolveThreePlayerOpeningChoice(){
+if(threePlayerOpeningHolder<0){scheduleRandomMatchMidDeparture();nextTurn();return}
+if(players[threePlayerOpeningHolder].human){
+document.getElementById('modal').innerHTML=threePlayerChoiceHTML();document.getElementById('overlay').style.display='flex';return;
+}
+await sleep(650);
+const holder=threePlayerOpeningHolder,center=threePlayerMiddleCard;
+let exchange=!!center;
+try{
+const hand=players[holder].hand;
+const before=buildHandPlanner(hand).minTurns((1<<hand.length)-1);
+const d3=hand.find(c=>c.id==='3-D');
+const swapped=hand.filter(c=>c.id!=='3-D').concat(center||[]);
+const after=buildHandPlanner(swapped).minTurns((1<<swapped.length)-1);
+const threeCount=hand.filter(c=>c.rank==='3').length;
+const d3InFiveCardCombo=allFiveCombos(hand).some(combo=>combo.cards.some(c=>c.id==='3-D'));
+
+/* AI不会再默认换牌：方块3组成对子、三条、铁支或五张牌型时，会提高保留概率。 */
+let keepChance=.18;
+if(d3InFiveCardCombo)keepChance=Math.max(keepChance,.48);
+if(threeCount===2)keepChance=Math.max(keepChance,.58);
+if(threeCount===3)keepChance=Math.max(keepChance,.82);
+if(threeCount>=4)keepChance=Math.max(keepChance,.94);
+
+/* 换牌明显改善手数时仍倾向交换；破坏现有牌型时更倾向直接出牌。 */
+if(after<before)keepChance-=.28;
+else if(after>before)keepChance+=.22;
+if(center&&d3&&cardPower(center)>=cardPower(d3)+12)keepChance-=.12;
+keepChance=Math.max(.06,Math.min(.96,keepChance));
+exchange=!!center&&Math.random()>=keepChance;
+}catch(e){}
+if(exchange)threePlayerChooseExchange();else threePlayerChooseDirect();
+}
+function threePlayerChooseDirect(){
+if(activePlayerCount!==3||threePlayerOpeningHolder<0)return;
+document.getElementById('overlay').style.display='none';currentPlayer=threePlayerOpeningHolder;leader=currentPlayer;mustDiamond3=false;openingRequiredCardId='';firstPlay=true;threePlayerOpeningHolder=-1;logMsg(`${players[currentPlayer].name}选择直接自由出牌`);renderAll();scheduleRandomMatchMidDeparture();nextTurn();
+}
+let threePlayerSwapAnimating=false;
+function threePlayerSwapOrigin(holder){
+const w=window.innerWidth,h=window.innerHeight;
+if(holder===0)return{x:w*.50,y:h*.82};
+if(holder===1)return{x:w*.18,y:h*.35};
+if(holder===2)return{x:w*.82,y:h*.35};
+return{x:w*.50,y:h*.20};
+}
+async function animateThreePlayerCardSwap(holder,d3,center){
+const layer=document.createElement('div');layer.className='threeSwapLayer';
+const from=threePlayerSwapOrigin(holder),to={x:window.innerWidth*.50,y:window.innerHeight*.48};
+layer.innerHTML=`<div class="threeSwapCard swapD3">${playingCardHtml(d3,'')}</div><div class="threeSwapCard swapCenter">${playingCardHtml(center,'')}</div><div class="threeSwapBurst"></div><div class="threeSwapCaption">方块3 ⇄ ${escapeLobbyHtml(cardText(center))}</div>`;
+document.body.appendChild(layer);
+const a=layer.querySelector('.swapD3'),b=layer.querySelector('.swapCenter');
+a.style.left=from.x+'px';a.style.top=from.y+'px';
+b.style.left=to.x+'px';b.style.top=to.y+'px';
+const duration=720,easing='cubic-bezier(.2,.78,.22,1)';
+const ax=to.x-from.x,ay=to.y-from.y,bx=from.x-to.x,by=from.y-to.y;
+const animA=a.animate([
+{transform:'translate(-50%,-50%) rotate(-7deg) scale(1)',opacity:1},
+{transform:`translate(calc(-50% + ${ax*.52}px),calc(-50% + ${ay*.52-42}px)) rotate(10deg) scale(1.12)`,opacity:1,offset:.52},
+{transform:`translate(calc(-50% + ${ax}px),calc(-50% + ${ay}px)) rotate(0deg) scale(.94)`,opacity:.96}
+],{duration,easing,fill:'forwards'});
+const animB=b.animate([
+{transform:'translate(-50%,-50%) rotate(6deg) scale(1)',opacity:1},
+{transform:`translate(calc(-50% + ${bx*.48}px),calc(-50% + ${by*.48+42}px)) rotate(-11deg) scale(1.12)`,opacity:1,offset:.48},
+{transform:`translate(calc(-50% + ${bx}px),calc(-50% + ${by}px)) rotate(0deg) scale(.94)`,opacity:.96}
+],{duration,easing,fill:'forwards'});
+sfx('play');
+try{await Promise.all([animA.finished,animB.finished])}catch(e){await sleep(duration)}
+layer.animate([{opacity:1},{opacity:0}],{duration:140,fill:'forwards'});
+await sleep(145);layer.remove();
+}
+async function threePlayerChooseExchange(){
+if(threePlayerSwapAnimating||activePlayerCount!==3||threePlayerOpeningHolder<0||!threePlayerMiddleCard)return;
+threePlayerSwapAnimating=true;
+document.getElementById('overlay').style.display='none';const holder=threePlayerOpeningHolder,d3=players[holder].hand.find(c=>c.id==='3-D'),center=threePlayerMiddleCard;if(!d3){threePlayerSwapAnimating=false;threePlayerChooseDirect();return}
+try{await animateThreePlayerCardSwap(holder,d3,center)}catch(e){}
+players[holder].hand=players[holder].hand.filter(c=>c.id!=='3-D');players[holder].hand.push(center);playedCardIds.delete(center.id);playedCardIds.add(d3.id);renderCardTracker();
+recordRecentPlay({player:players[holder].name,type:'方块3换底牌',cards:[{...d3}]});logMsg(`${players[holder].name}打出方块3换走底牌 ${cardText(center)}，下一家自由出牌`);
+threePlayerMiddleCard=null;threePlayerOpeningHolder=-1;mustDiamond3=false;openingRequiredCardId='';firstPlay=false;lastPlay=null;passes=0;currentPlayer=nextActivePlayer(holder);leader=currentPlayer;selected.clear();resetHints();renderAll();threePlayerSwapAnimating=false;scheduleRandomMatchMidDeparture();nextTurn();
+}
+
+function legalFreePlay(combo,playerIndex){
+if(!combo)return false;
+if(firstPlay&&openingRequiredCardId&&!combo.cards.some(c=>c.id===openingRequiredCardId))return false;
+if(firstPlay&&mustDiamond3&&!containsDiamond3(combo.cards))return false;
+const next=nextActivePlayer(playerIndex);
+if(players[next].hand.length===1&&combo.cards.length===1){
+const legalSingles=players[playerIndex].hand.map(c=>classify([c])).filter(Boolean).sort((a,b)=>compareComboAscending(b,a));
+if(legalSingles.length&&combo.cards[0].id!==legalSingles[0].cards[0].id)return false;
+}
+return true;
+}
+function legalPlay(combo,playerIndex){
+if(!combo)return false;
+if(firstPlay&&openingRequiredCardId&&!combo.cards.some(c=>c.id===openingRequiredCardId))return false;
+if(firstPlay&&mustDiamond3&&!containsDiamond3(combo.cards))return false;
+if(lastPlay&&!beats(combo,lastPlay))return false;
+const next=nextActivePlayer(playerIndex);
+if(players[next].hand.length===1&&combo.cards.length===1){
+const legalSingles=players[playerIndex].hand.filter(c=>{const cc=classify([c]);return!lastPlay||beats(cc,lastPlay)}).sort((a,b)=>cardPower(b)-cardPower(a));
+if(legalSingles.length&&combo.cards[0].id!==legalSingles[0].id)return false;
+}
+return true;
+}
+function publicRemainingDeck(){return activePlayerIndices().flatMap(i=>players[i].hand.map(c=>({...c})))}
+function theoreticalUnknownPoolForPlayer(playerIndex){
+/* 公开动画不能利用出牌者自己的隐藏手牌。
+   所有尚未公开打出的牌——包括仍在出牌者手中的牌——都必须保留在理论未知池中。 */
+const publicOutIds=new Set(playedCardIds||[]);
+return buildStableSeedDeck()
+.filter(c=>!publicOutIds.has(c.id))
+.map(c=>({...c}));
+}
+function hintThreatLevel(playerIndex=0){const nearest=Math.min(...activeOpponentIndices(playerIndex).map(i=>players[i].hand?.length??99));return nearest<=1?2:nearest<=2?1:0}
+function hintImmediateDefenseValue(combo,playerIndex,threat){
+if(!threat)return 0;const opponentCounts=activeOpponentIndices(playerIndex).map(i=>players[i].hand?.length??99),strength=hintComboStrength(combo);let value=0;
+if(opponentCounts.some(count=>count===combo.cards.length))value+=25;if(combo.cards.length===1&&opponentCounts.some(count=>count===1))value+=strength*.75+20;else if(combo.cards.length===2&&opponentCounts.some(count=>count===2))value+=strength*.55+14;else value+=strength*.18;if(lastPlay)value+=8;return Math.round(value*10)/10;
+}
+function analyzeHintCandidate(combo,planner,hand,playerIndex,freeContext,threat,beforePlan){
+const comboMask=planner.maskForCombo(combo),remainMask=planner.fullMask^comboMask,plan=planner.analyze(remainMask),nextPlayer=nextActivePlayer(playerIndex),forcedMaxSingle=players[nextPlayer]?.hand?.length===1&&combo.cards.length===1,specialReward=combo.type==='straightFlush'?2:combo.type==='fourKind'?1:0;
+const meta={combo,remainMask,plan,finish:remainMask===0,threat,freeContext,forcedMaxSingle,immediateDefense:hintImmediateDefenseValue(combo,playerIndex,threat),controlWaste:hintControlWaste(combo,beforePlan,plan),specialReward,currentStrength:hintComboStrength(combo),turnBand:0,preservedStructure:hintPreservedStructureLabel(plan.plan)};combo.hintMeta=meta;return meta;
+}
+function autoSkipImpossibleTurn(){
+if(gameOver||!lastPlay)return false;if(players[currentPlayer]?.human)return false;if(!isPubliclyImpossibleToPlay(currentPlayer))return false;
+const skipped=currentPlayer,requiredCount=lastPlay.cards.length,remainingCount=players[skipped].hand.length;passes++;
+const reason=remainingCount<requiredCount?`只剩${remainingCount}张，无法回应${requiredCount}张牌型`:`根据已出牌判断，理论上不存在更大的${typeName(lastPlay)}`;logMsg(`${players[skipped].name}${reason}，自动过牌`);
+if(passes>=activePassTarget()){lastPlay=null;passes=0;currentPlayer=leader;logMsg(`${players[leader].name}直接获得自由`)}else currentPlayer=nextActivePlayer(skipped);renderAll();setTimeout(nextTurn,160);return true;
+}
+function autoPassAfterAbsoluteMax(pi,combo){
+if(absoluteMaxSequenceActive)return;absoluteMaxSequenceActive=true;leader=pi;passes=0;selected.clear();resetHints();currentPlayer=nextActivePlayer(pi);logMsg(`${players[pi].name}打出${typeName(combo)}并压完全场`);renderAll();showAbsoluteMaximumImpact(combo);
+const passOrder=activeOpponentIndices(pi).sort((a,b)=>((a-pi+activePlayerCount)%activePlayerCount)-((b-pi+activePlayerCount)%activePlayerCount));
+passOrder.forEach((passPlayer,index)=>setTimeout(()=>{
+if(gameOver){absoluteMaxSequenceActive=false;return}recordRecentPlay({player:players[passPlayer].name,type:'过牌',pass:true,auto:true});passes=index+1;currentPlayer=passPlayer;logMsg(`${players[passPlayer].name}无法压过最大牌，自动过牌`);sfx('pass');document.getElementById('pileCards')?.classList.remove('absoluteMaxStrike','absoluteMaxImpact');renderAll();
+if(index===passOrder.length-1)setTimeout(()=>{lastPlay=null;passes=0;leader=pi;currentPlayer=pi;absoluteMaxSequenceActive=false;document.getElementById('pileCards')?.classList.remove('absoluteMaxStrike','absoluteMaxImpact');logMsg(`${players[pi].name}压完全场，重新自由出牌`);sfx('turn');renderAll();nextTurn()},260);
+},560+index*310));
+}
+function executePlay(pi,combo){
+clearTimeout(turnTimer);turnTimer=null;clearTurnDeadline();sfx('play');if(pi===0)humanPassedPlaySignature='';const preserveHumanPlan=pi!==0&&hasHumanPreAction();if(!preserveHumanPlan)selected.clear();resetHints();combo={...combo,cards:sortComboCards(combo)};markCardsPlayed(combo.cards);players[pi].hand=players[pi].hand.filter(c=>!combo.cards.some(x=>x.id===c.id));lastPlay=combo;leader=pi;passes=0;firstPlay=false;openingRequiredCardId='';mustDiamond3=false;if(pi!==0)validateHumanPreActionAfterPlay();recordRecentPlay({player:players[pi].name,type:typeName(combo),cards:combo.cards.map(c=>({...c}))});logMsg(`${players[pi].name}出了${typeName(combo)}：${combo.cards.map(cardText).join(' ')}`);if(combo.type==='fourKind')awardImmediate(pi,5,'铁支',combo.cards);if(combo.type==='straightFlush')awardImmediate(pi,10,'同花顺',combo.cards);renderAll();if(players[pi].hand.length===0){finishNormal(pi);return}if(isAbsoluteMaximumPlay(combo,pi)){autoPassAfterAbsoluteMax(pi,combo);return}currentPlayer=nextActivePlayer(pi);nextTurn();
+}
+function awardImmediate(pi,amount,label,cards=[]){
+roundSpecialPlays.push({player:pi,type:label,amount,cards:cards.map(cardText)});for(const i of activeOpponentIndices(pi))recordTransfer(i,pi,amount,`${label}即时分`,'即时奖励');toast(`${players[pi].name}打出${label}，其余每家支付${amount}分`);
+}
+function executePass(pi){
+clearTimeout(turnTimer);turnTimer=null;clearTurnDeadline();sfx('pass');const preserveHumanPlan=pi!==0&&hasHumanPreAction();if(!preserveHumanPlan)selected.clear();resetHints();if(!lastPlay){if(players[pi].human)toast('新一轮不能过牌');return}if(pi===0)humanPassedPlaySignature=currentTablePlaySignature();recordRecentPlay({player:players[pi].name,type:'过牌',pass:true});passes++;logMsg(`${players[pi].name}过牌`);if(passes>=activePassTarget()){lastPlay=null;humanPassedPlaySignature='';passes=0;currentPlayer=leader;logMsg(`${players[leader].name}获得新一轮出牌权`)}else currentPlayer=nextActivePlayer(pi);nextTurn();
+}
+function shouldAIPass(pi,best,beforeTurns,passOption){
+if(!lastPlay||!best||!passOption)return false;if(lastPlay.cards.length===5)return false;if(best.remain.length===0||best.afterTurns===1)return false;if(players[nextActivePlayer(pi)].hand.length===1)return false;if(players[pi].hand.length>=10&&best.penaltySaved>0)return false;return passOption.score>best.score+.55*120;
+}
+
+function settlementPenaltyByCount(n){return remainingCardSettlementAmount(n)}
+function loserMultiplier(n){return n>=17?4:n>=13?3:n>=10?2:1}
+function remainingCardSettlementAmount(count){const n=Math.max(0,Number(count)||0);if(n<=0)return 0;return n*loserMultiplier(n)+2}
+function settlementGrassLabel(n){return n===17?'17草（四倍）':n>=13?'三倍草':n>=10?'二倍草':'剩牌结算'}
+function estimateMoneyOutcome(pi,remain,afterTurns,combo=null,isPass=false){
+const ownCount=remain.length,opponents=activeOpponentIndices(pi),oppTurns=opponents.map(estimatedPublicTurns),fastestOpponent=Math.min(...oppTurns),structure=handStructureValue(remain),control=twoControlValue(remain),initiative=(!lastPlay||leader===pi)?.5:0,passTempo=isPass?.55:0;
+let winChance=sigmoid((fastestOpponent-afterTurns)*1.12+structure/145+control/185+initiative-passTempo);winChance=clamp(winChance,.04,.96);if(ownCount===0)winChance=1;
+const projectedOppCounts=opponents.map(i=>projectedPublicCount(i,afterTurns)),winIncome=projectedOppCounts.reduce((sum,n)=>sum+settlementPenaltyByCount(n),0),baseLoss=settlementPenaltyByCount(ownCount),pairScale=opponents.length>1?2/opponents.length:0,pairwiseAverage=projectedOppCounts.reduce((sum,n)=>sum+selfPairwiseCost(ownCount,n),0)*pairScale;
+let immediateIncome=0;if(combo?.type==='fourKind')immediateIncome=5*opponents.length;if(combo?.type==='straightFlush')immediateIncome=10*opponents.length;
+const expectedLoss=baseLoss+pairwiseAverage,expectedNet=immediateIncome+winChance*winIncome-(1-winChance)*expectedLoss;return{winChance,winIncome,expectedLoss,immediateIncome,expectedNet,ownPenalty:settlementPenaltyByCount(ownCount)};
+}
+function buildRoundPairwiseMatrix(){
+const matrix=Array.from({length:4},()=>Array(4).fill(0));for(const t of currentRoundTransactions()){if(!Number.isFinite(t.amount)||t.amount<=0)continue;matrix[t.from][t.to]-=t.amount;matrix[t.to][t.from]+=t.amount}return matrix;
+}
+function reconcileRoundScoresFromPairwise(){const matrix=buildRoundPairwiseMatrix();players.forEach((p,i)=>p.round=isActivePlayerIndex(i)?matrix[i].reduce((sum,n)=>sum+n,0):0);return matrix}
+function commitRoundScores(){activePlayerIndices().forEach(i=>players[i].score+=players[i].round)}
+function roundSettlementHtml(options={}){
+const records=currentRoundTransactions(),opponentsFinished=!!options.opponentsFinished;
+const opponentRows=activeOpponentIndices(0).map(opponentIndex=>{
+const result=pairSettlementBreakdown(opponentIndex,records);let runningTotal=result.baseAmount;
+const specialRows=result.specialParts.map(item=>{runningTotal+=item.amount;return`<div class="pairSettlementSpecial"><span class="pairSpecialLabel">${escapeLobbyHtml(item.label)}</span><strong class="pairSpecialDelta ${moneyClass(item.amount)}">${signed(item.amount)}</strong><span class="pairEquals">＝</span><strong class="pairSettlementAmount pairSpecialTotal ${moneyClass(runningTotal)}">${signed(runningTotal)}</strong></div>`}).join('');
+return`<div class="pairSettlementLine ${result.specialParts.length?'hasSpecial':''}"><div class="pairSettlementMain"><span class="pairOpponentName">${escapeLobbyHtml(players[opponentIndex].name)}</span><span class="pairOpponentRemain">${opponentsFinished?'已出完':`剩 ${players[opponentIndex].hand.length} 张`}</span><span class="pairEquals">＝</span><strong class="pairSettlementAmount ${moneyClass(result.baseAmount)}">${signed(result.baseAmount)}</strong></div>${specialRows}</div>`;
+}).join('');
+const userRoundNet=records.reduce((sum,t)=>sum+transactionNetForPlayer(t,0),0);
+return`<div class="selfSettlementCard"><div class="settlementSelfRemaining"><span>${escapeLobbyHtml(players[0].name)}</span><strong>剩 ${players[0].hand.length} 张</strong></div><div class="settlementRoundNet"><span>本局总变化</span><strong class="${moneyClass(userRoundNet)}">${signed(userRoundNet)}</strong></div><div class="pairSettlementRows">${opponentRows}</div></div>`;
+}
+function finishSpecial(winners){
+sfx('win');ceremonyActive=false;clearRandomMatchMidDeparture();gameOver=true;const ws=new Set(winners.map(w=>w.i)),maxPay=remainingCardSettlementAmount(startingHandSize()),label=startingHandSize()===17?'17草':'13草';
+if(ws.size===1){const wi=[...ws][0];for(const i of activeOpponentIndices(wi))recordTransfer(i,wi,maxPay,`${label}：特殊牌型直接胜利`,'特殊胜利')}
+else for(const i of activePlayerIndices())if(!ws.has(i))for(const wi of ws)recordTransfer(i,wi,maxPay,`${label}：共同特殊胜利`,'特殊胜利');
+winners.forEach(w=>logMsg(`${players[w.i].name}以${w.type}直接胜利`));reconcileRoundScoresFromPairwise();commitRoundScores();if(randomMatchGameMode){randomMatchSessionScores=players.map(p=>p.score);planRandomMatchRosterChangesAfterRound()}previousWinner=winners[0].i;
+if(activePlayerCount===2&&twoPlayerLeg===1)twoPlayerSecondLegPending=true;showResults('特殊牌型直接胜利');
+}
+function finishNormal(winner){
+sfx('win');clearRandomMatchMidDeparture();gameOver=true;
+for(const i of activeOpponentIndices(winner)){const n=players[i].hand.length,pay=remainingCardSettlementAmount(n);recordTransfer(i,winner,pay,`${settlementGrassLabel(n)}：剩${n}张`,'赢家结算')}
+const losers=activeOpponentIndices(winner);
+for(let a=0;a<losers.length;a++)for(let b=a+1;b<losers.length;b++){
+const i=losers[a],j=losers[b],ni=players[i].hand.length,nj=players[j].hand.length;if(ni===nj)continue;const payer=ni>nj?i:j,receiver=ni>nj?j:i,high=Math.max(ni,nj),low=Math.min(ni,nj),mult=loserMultiplier(high),pay=(high-low)*mult;recordTransfer(payer,receiver,pay,`输家对扣：${high}-${low}，×${mult}`,'输家对扣');
+}
+reconcileRoundScoresFromPairwise();commitRoundScores();if(randomMatchGameMode){randomMatchSessionScores=players.map(p=>p.score);planRandomMatchRosterChangesAfterRound()}previousWinner=winner;logMsg(`${players[winner].name}出完牌，获得胜利`);if(activePlayerCount===2&&twoPlayerLeg===1)twoPlayerSecondLegPending=true;showResults(`${players[winner].name}胜利`);
+}
+
+function renderPreGameReady(){
+const root=document.getElementById('preGameReadyList');if(root)root.innerHTML=activePlayerIndices().map(i=>{const p=players[i];return`<div class="preReadyPlayer ${i===0?'me':''}"><div class="preReadyName">${escapeLobbyHtml(p.name)}</div><div class="preReadyState ${preGameReadyStates[i]?'on':''}">${preGameReadyStates[i]?'READY':'未准备'}</div></div>`}).join('');
+renderSeats();renderPile();const main=document.getElementById('turnMain'),sub=document.getElementById('turnSub'),humanTurn=document.getElementById('humanTurnText');if(main)main.textContent='理牌准备';if(sub)sub.textContent=`${activePlayerIndices().filter(i=>preGameReadyStates[i]).length}/${activePlayerCount} READY`;if(humanTurn)humanTurn.textContent=preGameReadyStates[0]?'等待其他玩家':'整理后按 READY';const btn=document.getElementById('preGameReadyBtn');if(btn){btn.textContent=preGameReadyStates[0]?'✓ 已准备':'READY';btn.classList.toggle('ready',preGameReadyStates[0]);btn.disabled=false}if(activePlayerIndices().every(i=>preGameReadyStates[i]))finishPreGameReady();
+}
+function playerPreGameReady(){
+if(!preGameReadyActive||preGameReadyStates[0])return;preGameReadyStates[0]=true;if(developerMode)activePlayerIndices().forEach(i=>preGameReadyStates[i]=true);renderPreGameReady();
+}
+function schedulePreGameAIReady(){
+for(const i of activeOpponentIndices(0)){
+const fastChance=randomMatchSpeed==='turbo'?.48:randomMatchSpeed==='quick'?.38:.18,fast=Math.random()<fastChance;let delay;
+if(randomMatchSpeed==='turbo')delay=fast?350+Math.floor(Math.random()*900):1400+Math.floor(Math.random()*10500);else if(randomMatchSpeed==='quick')delay=fast?500+Math.floor(Math.random()*1200):2500+Math.floor(Math.random()*9500);else delay=fast?1200+Math.floor(Math.random()*2600):5000+Math.floor(Math.random()*30000);
+preGameReadyAITimers.push(setTimeout(()=>{if(!preGameReadyActive)return;preGameReadyStates[i]=true;renderPreGameReady()},delay));
+}
+}
+function startPreGameReady(options={}){
+if(!randomMatchGameMode&&!seedAIGameMode)return Promise.resolve();const timed=options.timed!==undefined?!!options.timed:randomMatchGameMode;clearPreGameReady();preGameReadyTimed=timed&&!developerMode;preGameReadyActive=true;preGameReadyStates=[false,false,false,false];activeOpponentIndices(0).forEach(i=>{if(seedAIGameMode)preGameReadyStates[i]=true});
+const arrangeSeconds=timed?randomMatchClock('arrange'):0;preGameReadySeconds=arrangeSeconds;document.body.classList.add('arrangeMode');document.getElementById('preGameReadyPanel')?.classList.remove('show');document.getElementById('app')?.classList.add('preGameReadyActive');const secondsEl=document.getElementById('preGameReadySeconds');if(secondsEl)secondsEl.textContent=timed?String(arrangeSeconds):'不限时';const hint=document.getElementById('preGameReadyHint');if(hint)hint.textContent=timed?`${randomMatchModeLabel()} · ${currentModeLabel()}${currentTwoPlayerLegLabel()} · ${randomMatchClock('arrange')}秒理牌 · 全员READY立即开始`:'种子对局不限时 · 电脑已准备 · 完成理牌后按READY开始';clearTurnDeadline();renderAll();renderPreGameReady();updateVisibleTurnTimer();requestAnimationFrame(()=>{document.getElementById('preGameReadyPanel')?.classList.remove('show');renderAll();requestAnimationFrame(fitHandCards)});
+if(timed){schedulePreGameAIReady();preGameReadyTicker=setInterval(()=>{preGameReadySeconds=Math.max(0,preGameReadySeconds-1);const el=document.getElementById('preGameReadySeconds');if(el)el.textContent=String(preGameReadySeconds);updateVisibleTurnTimer()},1000);preGameReadyTimeout=setTimeout(finishPreGameReady,arrangeSeconds*1000)}
+return new Promise(resolve=>{preGameReadyResolve=resolve});
+}
+function renderReadyTableBoard(){
+const ready=!!preGameReadyStates[0],name=escapeLobbyHtml(players[0]?.name||'我');
+return`<div class="readyTableBoard"><div class="readyPlayerBox ${ready?'ready':'waiting'}"><div class="readyPlayerName">${name}</div><div class="readyPlayerState">${ready?'READY':'未准备'}</div><div class="readyPlayerIcon ${ready?'':'waitingSignalHost'}">${ready?'✓':readyWaitingDotsHTML()}</div></div></div>`;
+}
+function renderPile(){
+const pileCards=document.getElementById('pileCards'),label=document.getElementById('pileLabel');
+if(preGameReadyActive){if(pileCards){pileCards.classList.remove('specialOpening');pileCards.innerHTML=renderReadyTableBoard()}if(label){const readyCount=activePlayerIndices().filter(i=>preGameReadyStates[i]).length;label.style.display='flex';if(activePlayerCount===3&&threePlayerMiddleCard){label.innerHTML=`<div class="threeReadyHistory"><div class="threeReadyHistoryTitle">中间底牌</div><div class="threeReadyHistoryCard" id="threePlayerMiddleCardSlot">${playingCardHtml(threePlayerMiddleCard,'historyPlayingCard')}</div><div class="threeReadyHistoryState">${readyCount}/${activePlayerCount} READY</div></div>`}else{label.innerHTML=`<div class="recentPlayList"><div class="recentPlayItem latest"><span class="recentPlayPlayer">正在理牌</span></div><div class="recentPlayItem"><span class="recentPlayType">${readyCount}/${activePlayerCount}</span></div><div class="recentPlayHint">${readyCount===activePlayerCount?'全部玩家已准备':'等待玩家 READY'}</div></div>`}}return}
+if(label)label.style.display='';const shown=lastPlay?sortComboCards(lastPlay):[];if(pileCards){if(!absoluteMaxSequenceActive)pileCards.classList.remove('absoluteMaxStrike');pileCards.classList.toggle('specialOpening',!!lastPlay?.specialOpening);pileCards.style.display='flex';pileCards.style.alignItems='center';pileCards.style.justifyContent='center';pileCards.innerHTML=shown.map(c=>renderCard(c,'played')).join('');if(lastPlay?.specialOpening)requestAnimationFrame(fitSpecialOpeningPile)}
+if(!label)return;if(!recentPlayHistory.length){const middleText=activePlayerCount===3&&threePlayerMiddleCard?`底牌 ${cardText(threePlayerMiddleCard)} 已移出本局`:'自由出牌';label.innerHTML=`<div class="recentPlayList"><div class="recentPlayEmpty">${middleText}</div></div><div class="recentPlayHint">点击查看完整资讯</div>`;return}
+label.innerHTML='<div class="recentPlayList">'+recentPlayHistory.slice(0,3).map((item,index)=>`<div class="recentPlayItem ${index===0?'latest':''} ${item.pass?'pass':''}" title="${escapeLobbyHtml(item.player)} · ${escapeLobbyHtml(item.type)}"><span class="recentPlayPlayer">${escapeLobbyHtml(item.player)}</span><span class="recentPlaySeparator">→</span><span class="recentPlayType">${escapeLobbyHtml(item.type)}</span></div>`).join('')+'</div><div class="recentPlayHint">点击查看完整资讯</div>';
+}
+function renderSeats(){
+const map={1:'west',2:'north',3:'east'};
+for(let i=1;i<4;i++){
+const el=document.getElementById(map[i]);if(!el)continue;const active=isActivePlayerIndex(i);el.classList.toggle('inactiveSeat',!active);el.setAttribute('aria-hidden',active?'false':'true');if(!active){el.classList.remove('active');continue}
+el.classList.toggle('active',!ceremonyActive&&!gameOver&&currentPlayer===i);const nameEl=el.querySelector('.name');if(nameEl){const proxy=randomMatchGameMode&&randomMatchAIProxySeats.has(i);nameEl.innerHTML=`<span>${escapeLobbyHtml(players[i].name)}</span>${proxy?'<small class="aiTakeoverBadge">AI代打</small>':''}`}
+const shown=ceremonyActive?dealCounts[i]:players[i].hand.length,amount=liveBalance(i),balanceClass=moneyClass(amount),countEl=el.querySelector('.count');if(countEl){if(preGameReadyActive)countEl.innerHTML=`<span class="countText">${preGameReadyStates[i]?'READY':'未准备'}</span><span class="seatBalance ${preGameReadyStates[i]?'pos':'zero waitingSignalHost'}">${preGameReadyStates[i]?'✓':readyWaitingDotsHTML()}</span>`;else countEl.innerHTML=`<span class="countText">${ceremonyActive?'已派':'剩'} ${shown} 张 ${!ceremonyActive&&shown===1?'<span class="last">LAST</span>':''}</span><span class="seatBalance ${balanceClass}" id="seatBalance${i}">${signed(amount)}</span>`}const backs=el.querySelector('.cardbacks');if(backs)backs.innerHTML='';
+}
+}
+function renderTurnBanner(){
+const banner=document.getElementById('turnBannerText'),main=document.getElementById('turnMain'),sub=document.getElementById('turnSub');if(ceremonyActive){banner.classList.remove('activeTurn');main.textContent='正在分牌';sub.textContent=`你的手牌 ${dealCounts[0]||0}/${startingHandSize()}`;return}if(preGameReadyActive){banner.classList.remove('activeTurn');main.textContent='理牌准备';sub.textContent=`${activePlayerIndices().filter(i=>preGameReadyStates[i]).length}/${activePlayerCount} READY${currentTwoPlayerLegLabel()}`;return}if(gameOver){banner.classList.remove('activeTurn');main.textContent='本局已结束';sub.textContent='查看结算';return}banner.classList.toggle('activeTurn',currentPlayer===0);main.textContent=currentPlayer===0?'到你':`轮到 ${players[currentPlayer].name}`;sub.textContent=(lastPlay?`需压 ${typeName(lastPlay)}`:'自由')+currentTwoPlayerLegLabel();
+}
+function renderCeremonyNames(){for(let i=1;i<4;i++){const mini=document.querySelector(`#mini${i} b`);if(mini)mini.textContent=isActivePlayerIndex(i)?players[i].name:'空位'}}
+function renderBalanceBar(){
+if(!randomMatchGameMode){const main=document.getElementById('mainBalanceValue');if(main){const persistent=parseInt(safeStorageGet(RANDOM_MATCH_BALANCE_KEY,'0')||'0',10)||0;main.textContent=(persistent>0?'+':'')+persistent}}
+const mine=liveBalance(0),main=document.getElementById('mainBalance'),mineEl=document.getElementById('myBalance');if(main&&mineEl){main.classList.remove('pos','neg','zero');main.classList.add(moneyClass(mine));mineEl.textContent=signed(mine)}
+for(let i=1;i<4;i++){const el=document.getElementById('seatBalance'+i);if(!el||!isActivePlayerIndex(i))continue;const amount=liveBalance(i);el.classList.remove('pos','neg','zero');el.classList.add(moneyClass(amount));el.textContent=signed(amount);el.title=`${players[i].name} 当前金额 ${signed(amount)}`}
+if(randomMatchGameMode)renderRandomLedgerBar();const roundEl=document.getElementById('roundTag');if(roundEl)roundEl.textContent=`第${roundNumber}场 · ${currentModeLabel()}${activePlayerCount===2?` · ${twoPlayerLeg}/2`:''}`;
+const ticker=document.getElementById('recentTransfer');if(ticker){const last=transactionLog[transactionLog.length-1];if(last){ticker.innerHTML=`第${last.round}场 · <b>${escapeLobbyHtml(last.fromName||players[last.from].name)}</b> → <b>${escapeLobbyHtml(last.toName||players[last.to].name)}</b> <span class="transferAmount">${last.amount}</span> · ${last.reason}`;if(last.seq!==lastRenderedTransferSeq){ticker.classList.remove('flash');void ticker.offsetWidth;ticker.classList.add('flash');lastRenderedTransferSeq=last.seq}}else{ticker.textContent='尚无过账记录';ticker.classList.remove('flash')}}
+}
+function renderRandomLedgerBar(){
+const root=document.getElementById('randomLedgerBar');if(!root)return;const topPlayers=(randomMatchGameMode?activeOpponentIndices(0):activePlayerIndices()).map(index=>({player:players[index],index}));root.innerHTML=topPlayers.map(({player,index})=>{const amount=liveBalance(index),cls=moneyClass(amount);return`<div class="randomLedgerPlayer" role="button" tabindex="0" onclick="openPlayerAssetPanel(${index})"><div class="randomLedgerName">${escapeLobbyHtml(player.name)}</div><div class="randomLedgerAmount ${cls}">${amount>0?'+':''}${amount}</div></div>`}).join('');
+}
+function openLedger(){
+const rows=activePlayerIndices().map(i=>{const p=players[i];return`<tr><td>${escapeLobbyHtml(p.name)}</td><td>${signed(p.score)}</td><td>${signed(p.round)}</td><td class="${moneyClass(liveBalance(i))}">${signed(liveBalance(i))}</td></tr>`}).join('');document.getElementById('modal').innerHTML=`<div class="result"><h1>过账记录 · ${currentModeLabel()}</h1><table class="balanceTable"><tr><th>玩家</th><th>已结算</th><th>本局变化</th><th>当前金额</th></tr>${rows}</table>${transactionHtml(false)}<button type="button" class="big" onclick="document.getElementById('overlay').style.display='none'">返回牌局</button></div>`;document.getElementById('overlay').style.display='flex';
+}
+function renderReadyStates(){
+const root=document.getElementById('readyList');if(!root)return;root.innerHTML=activePlayerIndices().map(i=>{const p=players[i],leaving=randomMatchPendingReplacements.has(i),joined=randomMatchNewJoinSeats.has(i),isReady=!!resultReadyStates[i],stateText=leaving?'已离开':isReady?'READY':unifiedWaitIndicatorHTML('WAIT',joined?'玩家已加入，等待 READY':'等待 READY'),stateClass=leaving?'left':isReady?'on':'waitingFlow';return`<div class="readyPlayer ${i===0?'me':''} ${leaving?'leaving':''}"><div class="readyName">${escapeLobbyHtml(p.name)}</div><div class="readyState ${stateClass}">${stateText}</div></div>`}).join('');
+const notice=document.getElementById('randomRosterNotice');if(notice){const signature=randomMatchRosterNotices.join('\n'),hasNew=notice.dataset.noticeSignature!==signature;notice.innerHTML=randomMatchRosterNotices.map(text=>`<span>${escapeLobbyHtml(text)}</span>`).join('');notice.classList.toggle('show',randomMatchRosterNotices.length>0);notice.dataset.noticeSignature=signature;if(hasNew)requestAnimationFrame(()=>notice.scrollTop=notice.scrollHeight)}
+const btn=document.getElementById('readyNextBtn');if(btn){const second=activePlayerCount===2&&twoPlayerSecondLegPending;btn.textContent=resultReadyStates[0]?'已准备，等待其他玩家':second?'准备进入第二局':'准备下一场';btn.classList.toggle('ready',resultReadyStates[0]);btn.disabled=resultReadyStates[0]||roundTransitioning}if(activePlayerIndices().every(i=>resultReadyStates[i])&&!roundTransitioning)startNextRandomRound();
+}
+function scheduleSimulatedReadyStates(){
+for(const i of activeOpponentIndices(0)){
+if(randomMatchPendingReplacements.has(i)){const replaceDelay=650+Math.floor(Math.random()*2200);resultReadyTimers.push(setTimeout(()=>{if(roundTransitioning)return;applyRandomMatchReplacement(i);renderReadyStates();const t=setTimeout(()=>{if(roundTransitioning)return;resultReadyStates[i]=true;renderReadyStates()},550+Math.floor(Math.random()*1900));resultReadyTimers.push(t)},replaceDelay));continue}
+const delay=Math.random()<.18?250+Math.floor(Math.random()*650):1700+Math.floor(Math.random()*10500);resultReadyTimers.push(setTimeout(()=>{if(roundTransitioning)return;resultReadyStates[i]=true;renderReadyStates()},delay));
+}
+}
+function startResultReadyCountdown(){
+clearResultReadyTimers();roundTransitioning=false;const resultSeconds=randomMatchClock('result');resultSecondsLeft=resultSeconds;resultReadyStates=[false,false,false,false];const timerEl=document.getElementById('resultReadyCountdown');if(timerEl)timerEl.textContent=String(resultSecondsLeft);resultReadyTicker=setInterval(()=>{resultSecondsLeft=Math.max(0,resultSecondsLeft-1);if(timerEl)timerEl.textContent=String(resultSecondsLeft)},1000);resultReadyTimer=setTimeout(()=>{if(resultReadyStates[0])startNextRandomRound();else{clearResultReadyTimers();exitRandomMatchSession();toast('未按 READY，已退出匹配')}},resultSeconds*1000);scheduleSimulatedReadyStates();renderReadyStates();
+}
+async function startTwoPlayerSecondLeg(){
+roundTransitioning=true;clearResultReadyTimers();clearTurnDeadline();document.getElementById('overlay').style.display='none';players.forEach(p=>p.round=0);gameOver=false;selected.clear();resetHints();recentPlayHistory=[];roundSpecialPlays=[];lastPlay=null;passes=0;firstPlay=true;mustDiamond3=false;openingRequiredCardId='';twoPlayerLeg=2;twoPlayerSecondLegPending=false;roundNumber++;
+/* 第一局未打出的余牌也已退出牌局；记牌器进入第二局时必须准确只剩封存的26张。 */
+players[0].hand.forEach(card=>playedCardIds.add(card.id));players[1].hand.forEach(card=>playedCardIds.add(card.id));
+players[0].hand=twoPlayerReserveHands[0].slice();players[1].hand=twoPlayerReserveHands[1].slice();twoPlayerReserveHands=[[],[]];renderCardTracker();
+currentPlayer=isActivePlayerIndex(previousWinner)?previousWinner:0;leader=currentPlayer;logMsg(`第二局使用封存的剩余26张牌，由上一局赢家 ${players[currentPlayer].name} 自由先出`);renderAll();
+try{const readyPromise=startPreGameReady({timed:true});await readyPromise;if(!randomMatchGameMode)return;const special=checkSpecialWins();if(special.length){await autoPlaySpecialOpening(special);return}scheduleRandomMatchMidDeparture();nextTurn()}finally{roundTransitioning=false}
+}
+async function startNextRandomRound(){
+finishPreGameReady();if(roundTransitioning)return;if(activePlayerCount===2&&twoPlayerSecondLegPending){await startTwoPlayerSecondLeg();return}
+roundTransitioning=true;clearResultReadyTimers();clearTurnDeadline();const btn=document.getElementById('readyNextBtn');if(btn){btn.disabled=true;btn.textContent='正在开局…'}ensureRandomMatchPendingReplacements();ceremonyActive=false;gameOver=false;selected.clear();resetHints();document.getElementById('overlay').style.display='none';players.forEach(p=>p.round=0);randomMatchSessionScores=players.map(p=>p.score);randomMatchNewJoinSeats.clear();randomMatchRosterNotices=[];await sleep(80);try{await newGame(false)}finally{roundTransitioning=false}
+}
+function showRandomMatchResults(title){
+roundTransitioning=false;clearTurnDeadline();clearSeatInteractionTimer();closeSeatInteractionMenu();renderAll();const isSecondPending=activePlayerCount===2&&twoPlayerSecondLegPending;
+document.getElementById('modal').innerHTML=`<div class="result"><h1>${title}</h1>${isSecondPending?'<div class="twoLegNotice">第一局结算完成 · 下一局继续使用本次发牌封存的另外26张牌<br>记牌器不会重置</div>':''}${roundSettlementHtml()}<div class="readyPanel"><div class="readyHeader"><b>${isSecondPending?'第二局准备':'下一场准备'}</b><div class="readyTimer"><span id="resultReadyCountdown">${randomMatchClock('result')}</span><span class="readyTimerUnit">s</span></div></div><div id="randomRosterNotice" class="randomRosterNotice"></div><div id="readyList" class="readyList"></div><button type="button" id="readyNextBtn" class="readyNextBtn" onclick="playerReadyNextRound()">${isSecondPending?'准备进入第二局':'准备下一场'}</button></div><div class="randomResultActions seedCopyActions"><button type="button" class="copySeed" onclick="copyRoundSeedAndStay()">复制本局种子</button><button type="button" class="exit" onclick="exitRandomMatchSession()">退出匹配</button></div></div>`;document.getElementById('overlay').style.display='flex';startResultReadyCountdown();
+}
+function settleRandomMatchEarlyExit(){
+if(!randomMatchGameMode)return;closeSkipConfirm();clearTimeout(turnTimer);turnTimer=null;clearTurnDeadline();clearResultReadyTimers();clearRandomMatchMidDeparture();const remain=players[0].hand.length,pay=remainingCardSettlementAmount(remain);gameOver=true;for(const i of activeOpponentIndices(0))recordTransfer(0,i,pay,`中途退出：剩${remain}张，对方视为已出完`,'中途退出');reconcileRoundScoresFromPairwise();commitRoundScores();randomMatchSessionScores=players.map(p=>p.score);commitRandomMatchPrincipal();setRandomMatchGameMode(false);finishPreGameReady();renderAll();document.getElementById('modal').innerHTML=`<div class="result"><h1>中途退出结算</h1><div class="randomExitRule">剩 ${remain} 张 · 分别支付 ${pay} 分给其余 ${activePlayerCount-1} 位玩家</div>${roundSettlementHtml({opponentsFinished:true})}<button type="button" class="big" onclick="exitRandomMatchSession()">确认并返回主页</button></div>`;document.getElementById('overlay').style.display='flex';
+}
+function scheduleSeatInteraction(){
+clearSeatInteractionTimer();const dealing=document.body.classList.contains('dealPreviewMode');if(!randomMatchGameMode||(ceremonyActive&&!dealing)||(preGameReadyActive&&!dealing)||gameOver)return;const delay=randomMatchSpeed==='turbo'?3000+Math.floor(Math.random()*3500):randomMatchSpeed==='quick'?4200+Math.floor(Math.random()*4200):6200+Math.floor(Math.random()*7200);seatInteractionTimer=setTimeout(()=>{seatInteractionTimer=null;const stillDealing=document.body.classList.contains('dealPreviewMode');if(!randomMatchGameMode||(ceremonyActive&&!stillDealing)||(preGameReadyActive&&!stillDealing)||gameOver)return;const sourceCandidates=activeOpponentIndices(0);if(!sourceCandidates.length)return;const fromIndex=sourceCandidates[Math.floor(Math.random()*sourceCandidates.length)];let toIndex=0;if(Math.random()<.34){const otherTargets=[0,...sourceCandidates.filter(i=>i!==fromIndex)];toIndex=otherTargets[Math.floor(Math.random()*otherTargets.length)]}performSeatInteraction(fromIndex,toIndex,Math.random()<.44?'tomato':'like',true);scheduleSeatInteraction()},delay);
+}
+function canUseSeatInteraction(targetIndex){if(!activeOpponentIndices(0).includes(targetIndex))return false;const dealing=document.body.classList.contains('dealPreviewMode');if(gameOver||ceremonyActive&&!dealing)return false;if(document.getElementById('lobbyScreen')?.style.display!=='none')return false;return true}
+
+const originalStartSeedAIGame=startSeedAIGame;
+startSeedAIGame=function(level){setActivePlayerCount(4);return originalStartSeedAIGame(level)};
+function evaluateAIPass(pi,planner,beforeTurns){
+const hand=players[pi].hand,money=estimateMoneyOutcome(pi,hand,beforeTurns+.65,null,true);let score=money.expectedNet*120;score+=handStructureValue(hand)*.38;score+=twoControlValue(hand)*.32;score-=loserMultiplier(hand.length)*(hand.length>=10?5:2)*52;return{score,money};
+}
+function renderOpeningTemplatePlayers(stage=openingTemplateStage){
+const list=document.getElementById('preGameReadyList');if(!list)return;list.innerHTML=activePlayerIndices().map(i=>{const p=players[i];let status='等待';if(stage==='draw')status=i<openingDrawRevealedCount?'已翻开':'等待抽牌';else if(stage==='dealer')status=i===dealerIndex?'本局庄家':'等待切牌';else if(stage==='cut')status=i===dealerIndex?'正在翻牌':'等待分牌';else if(stage==='deal')status=`已分 ${dealCounts[i]||0} 张`;return`<div class="preReadyPlayer ${i===0?'me':''}"><div class="preReadyName">${escapeLobbyHtml(p.name)}</div><div class="preReadyState ${i===dealerIndex&&stage!=='deal'?'joining':'on'}">${status}</div></div>`}).join('');
+}
+document.body.classList.add('players-4');
+
+
 mountCeremonyModule();
 initLobby();
 renderHomeRandomBalance();
